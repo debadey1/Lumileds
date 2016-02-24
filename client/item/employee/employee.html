@@ -1,0 +1,49 @@
+<div class="row">
+	<div class="col m9">
+		<h4>Lumileds Employee:</h4>
+		<h5>Name: {{vm.employee.name}}</h5>
+		<h5>Address: {{vm.employee.location.street}}, {{vm.employee.location.city}}, {{vm.employee.location.state}} </h5>
+		<h5>Country: {{vm.employee.location.country}}</h5>
+		<h5>Region: {{vm.employee.location.region}}</h5>
+		<h5>Phone: {{vm.employee.phone}}</h5>
+	</div>
+</div>
+<h4>Edit employee</h4>
+<form>
+ 	<div class="row">
+		<div class="input-field col m3">
+			<input type='text' placeholder="Name" ng-model='vm.new_employee.name'>
+		</div>
+		<div class="input-field col m3">
+			<input type='text' placeholder="Phone" ng-model='vm.new_employee.phone'>
+		</div>
+  </div>
+  <div class="row">
+		<div class="input-field col m3">
+			<input type='text' placeholder="Street" ng-model='vm.new_location.street'/>
+		</div>
+		<div class="input-field col m3">
+			<input type='text' placeholder="City" ng-model='vm.new_location.city'>
+		</div>
+		<div class="input-field col m2">
+			<input type='text' placeholder="State" ng-model='vm.new_location.state'>
+		</div>
+		<div class="input-field col m2">
+			<input type='text' placeholder="Country" ng-model='vm.new_location.country'>
+		</div>
+		<div class="input-field col m2">
+			<span>Region</span>
+	    <select class="browser-default" ng-model='vm.new_location.region'>
+	      <option ng-repeat="region in vm.regions">{{region}}</option>
+	    </select>
+	  </div>
+  </div>
+	<div class="row">
+		<div class="input-field col m1">
+			<input type='submit' value='Edit' ng-click='vm.edit()' class="btn">
+		</div>
+ 	</div>
+</form>
+
+<h4>Delete employee</h4>
+<div ng-click="vm.remove(employee)" class="btn red">Delete</div>

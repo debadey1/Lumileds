@@ -1,0 +1,39 @@
+<h4>Add a new company</h4>
+<div class="row">
+	<form>
+		<div class="input-field col m3">
+			<input type='text' placeholder="Name" ng-model='vm.new_company.name'>
+		</div>
+		<div class="input-field col m3">
+			<input type='submit' value='Add' ng-click='vm.add()' class="btn">
+		</div>
+	</form>
+</div>
+<div class="row">
+	<div class="col m9">
+		<h4>Companies</h4>
+	</div>
+	<div class="input-field col m3 right">
+		<input type="text" placeholder="Search companies" ng-model="companyFilter">
+	</div>
+	<table class="centered highlight">
+		<thead>
+			<tr>
+				<th>Company Name</th>
+				<th>Employees</th>
+				<th>Branches</th>
+				<th>View</th>
+				<th>Delete</th>
+			</tr>
+		</thead>
+		<tbody ng-repeat="company in vm.companies | filter: companyFilter | orderBy: 'name' track by $index">
+			<tr>
+				<td ng-bind="company.name"></td>
+				<td ng-bind="company.customers.length"></td>
+				<td ng-bind="company.branches.length"></td>
+				<td><div ng-click="vm.view(company)" class="btn orange">View</div></td>
+				<td><div ng-click="vm.remove(company)" class="btn red">Delete</div></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
