@@ -36,7 +36,7 @@
     //////////
 
     function getCustomer() {
-      customerFactory.one(customer_id)
+      customerFactory.one(vm.customer_id)
         .then(success)
         .catch(fail);
 
@@ -59,7 +59,7 @@
       var payload = {
         customer: pruneEmpty(vm.new_customer)
       };
-      customerFactory.edit(payload, customer_id)
+      customerFactory.edit(payload, vm.customer_id)
         .then(success)
         .catch(fail);
 

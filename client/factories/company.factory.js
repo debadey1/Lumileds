@@ -6,10 +6,11 @@
     .factory('companyFactory', factory);
 
   factory.$inject = [
-    "$http"
+    "$http",
+    "$log"
   ];
 
-  function factory($http) {
+  function factory($http, $log) {
     var factory = {
       add: add,
       all: all,
@@ -72,7 +73,7 @@
     }
 
     function fail(error) {
-      alert('Company Factory XHR failed: ' + error.data);
+      $log.log('Company Factory XHR failed: ', error.data);
     }
 
   }

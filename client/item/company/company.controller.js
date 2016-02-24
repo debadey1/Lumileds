@@ -6,6 +6,7 @@
     .controller('CompanyController', controller);
 
   controller.$inject = [
+    "$log",
     "$location",
     "$routeParams",
     "companyFactory",
@@ -13,6 +14,7 @@
   ];
 
   function controller(
+    $log,
     $location,
     $routeParams,
     companyFactory,
@@ -30,7 +32,7 @@
     //////////
 
     function getCompany() {
-      companyFactory.one(company_id)
+      companyFactory.one(vm.company_id)
         .then(success)
         .catch(fail);
 
@@ -43,7 +45,7 @@
       var payload = {
         company: pruneEmpty(vm.new_company)
       };
-      companyFactory.edit(payload, company_id)
+      companyFactory.edit(payload, vm.company_id)
         .then(success)
         .catch(fail);
 
@@ -60,7 +62,7 @@
 
       function success() {
         $location.path("/companies");
-      })
+      }
     }
 
     function fail(err) {

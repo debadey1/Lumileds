@@ -34,7 +34,7 @@
     //////////
 
     function getCompanies() {
-      companyFactory.all(branch_id)
+      companyFactory.all()
         .then(success)
         .catch(fail);
 
@@ -70,7 +70,7 @@
 
       function success() {
         getTrips();
-        vm.new_employee = {};
+        vm.new_trip = {};
         getEmployees();
       }
     }

@@ -6,10 +6,11 @@
     .factory('airportFactory', factory);
 
   factory.$inject = [
-    "$http"
+    "$http",
+    "$log"
   ];
 
-  function factory($http) {
+  function factory($http, $log) {
     var factory = {
       add: add,
       remove: remove
@@ -39,7 +40,7 @@
     }
 
     function fail(error) {
-      alert('Airport Factory XHR failed: ' + error.data);
+      $log.log('Airport Factory XHR failed: ', error.data);
     }
 
   }

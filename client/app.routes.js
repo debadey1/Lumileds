@@ -11,49 +11,63 @@
 
   function routes($routeProvider) {
     $routeProvider
+      // templateUrl: 'dashboard/dashboard.html',
+      // controller: 'DashboardController',
+      // controllerAs: 'vm'
       .when('/',{
-          templateUrl: 'dashboard/dashboard.html',
-          controller: 'DashboardController as vm'
+          templateUrl: 'lists/companies/companies.html',
+          controller: 'CompaniesController',
+          controllerAs: 'vm'
       })
       .when('/employees',{
           templateUrl: 'lists/employees/employees.html',
-          controller: 'EmployeesController as vm'
+          controller: 'EmployeesController',
+          controllerAs: 'vm'
       })
       .when('/customers',{
           templateUrl: 'lists/customers/customers.html',
-          controller: 'CustomersController as vm'
+          controller: 'CustomersController',
+          controllerAs: 'vm'
       })
       .when('/trips',{
           templateUrl: 'lists/trips/trips.html',
-          controller: 'TripsController as vm'
+          controller: 'TripsController',
+          controllerAs: 'vm'
       })
       .when('/companies',{
           templateUrl: 'lists/companies/companies.html',
-          controller: 'CompaniesController as vm'
+          controller: 'CompaniesController',
+          controllerAs: 'vm'
       })
       .when('/branches',{
           templateUrl: 'lists/branches/branches.html',
-          controller: 'BranchesController as vm'
+          controller: 'BranchesController',
+          controllerAs: 'vm'
       })
       .when('/employee/:id',{
           templateUrl: 'item/employee/employee.html',
-          controller: 'EmployeeController as vm'
+          controller: 'EmployeeController',
+          controllerAs: 'vm'
       })
       .when('/customer/:id',{
           templateUrl: 'item/customer/customer.html',
-          controller: 'CustomerController as vm'
+          controller: 'CustomerController',
+          controllerAs: 'vm'
       })
       .when('/trip/:id',{
           templateUrl: 'item/trip/trip.html',
-          controller: 'TripController as vm'
+          controller: 'TripController',
+          controllerAs: 'vm'
       })
       .when('/company/:id',{
           templateUrl: 'item/company/company.html',
-          controller: 'CompanyController as vm'
+          controller: 'CompanyController',
+          controllerAs: 'vm'
       })
       .when('/branch/:id',{
           templateUrl: 'item/branch/branch.html',
-          controller: 'BranchController as vm'
+          controller: 'BranchController',
+          controllerAs: 'vm'
       })
       .otherwise({
         redirectTo: '/'

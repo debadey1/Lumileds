@@ -1,6 +1,13 @@
 <div class="row">
 	<div class="col m12">
-		<h4><a href="#/company/{{vm.branch.company._id}}">{{vm.branch.company.name}}</a> - {{vm.branch.location.city}} Branch</h4>
+		<div class="row valign-wrapper">
+			<div class="col m10">
+				<h4><a href="#/company/{{vm.branch.company._id}}">{{vm.branch.company.name}}</a> - {{vm.branch.location.city}} Branch</h4>
+			</div>
+			<div class="col m2 right">
+				<a class="btn blue darken-4 valign" href="#/branches">Back</a>
+			</div>
+		</div>
 		<h5>Address: {{vm.branch.location.street}}, {{vm.branch.location.city}}, {{vm.branch.location.state}} </h5>
 		<h5>Country: {{vm.branch.location.country}}</h5>
 		<h5>Region: {{vm.branch.location.region}}</h5>
@@ -256,6 +263,6 @@
 <div id="delete" class="row">
 	<div class="col m12">
 		<h4>Delete branch</h4>
-		<div ng-click="vm.remove(branch)" class="btn red">Delete</div>
+		<div ng-click="vm.remove(vm.branch)" class="btn red">Delete</div>
 	</div>
 </div>

@@ -33,7 +33,7 @@
     //////////
 
     function getEmployee() {
-      employeeFactory.one(employee_id)
+      employeeFactory.one(vm.employee_id)
         .then(success)
         .catch(fail);
 
@@ -48,7 +48,7 @@
         location_id: vm.employee.location._id,
         location: pruneEmpty(vm.new_location)
       };
-      employeeFactory.edit(payload, employee_id)
+      employeeFactory.edit(payload, vm.employee_id)
         .then(success)
         .catch(fail);
 
@@ -67,7 +67,7 @@
 
       function success() {
         $location.path("/employees");
-      })
+      }
     }
 
     function fail(err) {

@@ -1,6 +1,13 @@
 <div class="row">
-	<div class="col m9">
-		<h4>Trip Information:</h4>
+	<div class="col m12">
+		<div class="row valign-wrapper">
+			<div class="col m10">
+				<h4 id="airport">Trip Information</h4>
+			</div>
+			<div class="col m2 right">
+				<a class="btn blue darken-4 valign" href="#/trips">Back</a>
+			</div>
+		</div>
 		<h5>Duration: {{vm.trip.start_date | date: format: 'mediumDate'}} - {{vm.trip.end_date | date: format: 'mediumDate'}}</h5>
 		<h5>Company: <a href="#/company/{{vm.trip.company._id}}">{{vm.trip.company.name}}</a> </h5>
 		<h5>Region: {{vm.trip.region}}</h5>
@@ -13,7 +20,7 @@
 	</div>
 </div>
 <h4>Edit trip</h4>
-<form>
+<form ng-submit='vm.edit()'>
  	<div class="row">
 		<div class="input-field col m3">
 			<input type='date' placeholder="Start Date" ng-model='vm.new_trip.start_date'>
@@ -23,13 +30,13 @@
 		</div>
 		<div class="input-field col m2">
 			<span>Region</span>
-	    <select class="browser-default" ng-model='vm.new_trip.region'>
+	    <select class="browser-default" ng-model='vm.new_trip.region' required>
 	      <option ng-repeat="region in vm.regions">{{region}}</option>
 	    </select>
 	  </div>
 	  <div class="input-field col m3">
 			<span>Company</span>
-	    <select class="browser-default" ng-model='vm.new_trip.company'>
+	    <select class="browser-default" ng-model='vm.new_trip.company' required>
 	      <option ng-repeat="company in vm.companies" value="{{company._id}}">{{company.name}}</option>
 	    </select>
 	  </div>
@@ -64,10 +71,14 @@
 	</div>
 	<div class="row">
 		<div class="input-field col m1">
-			<input type='submit' value='Edit' ng-click='vm.edit()' class="btn orange">
+			<input type='submit' value='Edit' class="btn orange">
 		</div>
  	</div>
 </form>
 
-<h4>Delete trip</h4>
-<div ng-click="vm.remove(trip)" class="btn red">Delete</div>
+<div class="row">
+	<div class="col m12">
+		<h4>Delete trip</h4>
+		<div ng-click="vm.remove(vm.trip)" class="btn red">Delete</div>
+	</div>
+</div>

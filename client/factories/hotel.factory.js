@@ -6,10 +6,11 @@
     .factory('hotelFactory', factory);
 
   factory.$inject = [
-    "$http"
+    "$http",
+    "$log"
   ];
 
-  function factory($http) {
+  function factory($http, $log) {
     var factory = {
       add: add,
       remove: remove
@@ -39,7 +40,7 @@
     }
 
     function fail(error) {
-      alert('Hotel Factory XHR failed: ' + error.data);
+      $log.log('Hotel Factory XHR failed: ', error.data);
     }
 
   }

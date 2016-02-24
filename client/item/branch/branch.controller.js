@@ -51,7 +51,7 @@
     //////////
 
     function getBranch() {
-      branchFactory.one(branch_id)
+      branchFactory.one(vm.branch_id)
         .then(success)
         .catch(fail);
 
@@ -77,7 +77,7 @@
         location: pruneEmpty(vm.branch_location)
       };
 
-      branchFactory.edit(payload, branch_id)
+      branchFactory.edit(payload, vm.branch_id)
         .then(success)
         .catch(fail);
 
@@ -102,7 +102,7 @@
       var payload = {
         airport: pruneEmpty(vm.new_airport),
         location: pruneEmpty(vm.airport_location),
-        branch_id: branch_id
+        branch_id: vm.branch_id
       };
 
       airportFactory.add(payload)
@@ -120,7 +120,7 @@
       var payload = {
         hotel: pruneEmpty(vm.new_hotel),
         location: pruneEmpty(vm.hotel_location),
-        branch_id: branch_id
+        branch_id: vm.branch_id
       };
 
       hotelFactory.add(payload)
@@ -138,7 +138,7 @@
       var payload = {
         restaurant: pruneEmpty(vm.new_restaurant),
         location: pruneEmpty(vm.restaurant_location),
-        branch_id: branch_id
+        branch_id: vm.branch_id
       };
       restaurantFactory.add(payload)
         .then(success)

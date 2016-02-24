@@ -6,6 +6,7 @@
     .controller('BranchesController', controller);
 
   controller.$inject = [
+    "$routeParams",
     "$location",
     "branchFactory",
     "companyFactory",
@@ -14,6 +15,7 @@
   ];
 
   function controller(
+    $routeParams,
     $location,
     branchFactory,
     companyFactory,
@@ -26,7 +28,7 @@
     vm.regions = regionFactory.regions;
 
     vm.branch_id = $routeParams.id;
-    vm.branch = getBranches();
+    vm.branches = getBranches();
     vm.companies = getCompanies();
 
     vm.add = add;
@@ -36,7 +38,7 @@
 
 
     function getBranches() {
-      branchFactory.one(branch_id)
+      branchFactory.all(vm.branch_id)
         .then(success)
         .catch(fail);
 
@@ -61,7 +63,7 @@
         branch_location: pruneEmpty(vm.branch_location)
       };
 
-      BranchFactory.add(payload)
+      branchFactory.add(payload)
         .then(success)
         .catch(fail);
 
@@ -73,7 +75,7 @@
     }
     
     function remove(data) {
-      BranchFactory.remove(data)
+      branchFactory.remove(data)
         .then(success)
         .catch(fail);
 

@@ -1,6 +1,13 @@
 <div class="row">
-	<div class="col m9">
-		<h4><a href="#/company/{{vm.customer.company._id}}">{{vm.customer.company.name}}</a> Employee:</h4>
+	<div class="col m12">
+		<div class="row valign-wrapper">
+			<div class="col m10">
+				<h4><a href="#/company/{{vm.customer.company._id}}">{{vm.customer.company.name}}</a> Employee:</h4>
+			</div>
+			<div class="col m2 right">
+				<a class="btn blue darken-4 valign" href="#/customers">Back</a>
+			</div>
+		</div>
 		<h5>Name: {{vm.customer.name}}</h5>
 		<h5>Phone: {{vm.customer.phone}}</h5>
 		<h5>Title: {{vm.customer.title}}</h5>
@@ -32,5 +39,9 @@
  	</div>
 </form>
 
-<h4>Delete customer</h4>
-<div ng-click="vm.remove(customer)" class="btn red">Delete</div>
+<div class="row">
+	<div class="col m12">
+		<h4>Delete customer</h4>
+		<div ng-click="vm.remove(vm.customer)" class="btn red">Delete</div>
+	</div>
+</div>

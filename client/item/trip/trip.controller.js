@@ -6,6 +6,7 @@
     .controller('TripController', controller);
 
   controller.$inject = [
+    "$log",
     "$location",
     "$routeParams",
     "tripFactory",
@@ -16,6 +17,7 @@
   ];
 
   function controller(
+    $log,
     $location,
     $routeParams,
     tripFactory,
@@ -39,7 +41,7 @@
     //////////
 
     function getTrip() {
-      tripFactory.one(trip_id)
+      tripFactory.one(vm.trip_id)
         .then(success)
         .catch(fail);
 
@@ -76,11 +78,15 @@
     }
 
     function edit() {
-      for (var i = 0; i < vm.add_employees.length; i++) {
-        vm.add_employees[i] = vm.add_employees[i]._id;
+      if (vm.add_employees.length > 0) {
+        for (var i = 0; i < vm.add_employees.length; i++) {
+          vm.add_employees[i] = vm.add_employees[i]._id;
+        }
       }
-      for (var i = 0; i < vm.remove_employees.length; i++) {
-        vm.remove_employees[i] = vm.remove_employees[i]._id;
+      if (vm.remove_employees.length > 0) {
+        for (var i = 0; i < vm.remove_employees.length; i++) {
+          vm.remove_employees[i] = vm.remove_employees[i]._id;
+        }
       }
 
       var payload = {
@@ -89,14 +95,14 @@
         remove_employees: pruneEmpty(vm.remove_employees)
       };
 
-      tripFactory.edit(payload, company_id)
+      tripFactory.edit(payload, vm.trip_id)
         .then(success)
         .catch(fail);
 
       function success() {
         getTrip();
-        vm.new_trip = {};
         getEmployees();
+        vm.new_trip = {};
       }
     }
 
@@ -107,7 +113,7 @@
 
       function success() {
         $location.path("/trips");
-      })
+      }
     }
 
     function fail(err) {
