@@ -1,12 +1,12 @@
 {
-  "name": "Mini-Store",
+  "name": "lumileds",
   "version": "0.0.1",
-  "description": "Mini-Store",
+  "description": "stuff",
   "scripts": {
     "q": "nodemon server.js",
-    "start": "mongodump --db lumileds && pm2 start mongod && pm2 start pm2.json",
-    "stop": "pm2 delete all"
-    "restart": "pm2 delete all && pm2 start mongod && pm2 start pm2.json",
+    "start": "pm2 start mongod && mongodump --db lumileds && pm2 start pm2.json",
+    "stop": "pm2 delete all",
+    "restart": "pm2 stop all && pm2 start mongod && pm2 start pm2.json"
   },
   "dependencies": {
     "body-parser": "^1.13.3",

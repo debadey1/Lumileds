@@ -5,7 +5,7 @@ function gruntfile(grunt) {
     eslint: {
       gruntfile: ['Gruntfile.js'],
       client: {
-        src: ['client/**/*.js', '!client/build/**/*'],
+        src: ['client/**/*.js', '!client/build/**/*', '!client/static/**/*'],
         options: {
           configFile: '.eslintrc.json',
         },
@@ -55,7 +55,7 @@ function gruntfile(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('gruntify-eslint');
   grunt.registerTask('client-external', ['clean:external', 'concat:external']);
-  grunt.registerTask('client-internal', ['clean:internal', 'concat:internal']);
+  grunt.registerTask('client-internal', ['eslint:client', 'clean:internal', 'concat:internal']);
   grunt.registerTask('server-internal', ['eslint:server']);
   grunt.registerTask('build', ['clean:internal', 'clean:external', 'concat:internal', 'concat:external']);
   grunt.registerTask('default', ['watch:client']);

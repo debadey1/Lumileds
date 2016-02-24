@@ -1,954 +1,1663 @@
-angular.module('miniStore', ['ngRoute', 'isteven-multi-select'])
+(function () {
+  'use strict';
 
-.config(["$routeProvider", function ($routeProvider) {
-  $routeProvider
-    .when('/',{
-        templateUrl: 'partials/dashboard.html',
-        controller: 'DashboardController'
-    })
-    .when('/employees',{
-        templateUrl: 'partials/employees.html',
-        controller: 'EmployeeController'
-    })
-    .when('/customers',{
-        templateUrl: 'partials/customers.html',
-        controller: 'CustomerController'
-    })
-    .when('/trips',{
-        templateUrl: 'partials/trips.html',
-        controller: 'TripController'
-    })
-    .when('/companies',{
-        templateUrl: 'partials/companies.html',
-        controller: 'CompanyController'
-    })
-    .when('/branches',{
-        templateUrl: 'partials/branches.html',
-        controller: 'BranchController'
-    })
-    .when('/employee/:id',{
-        templateUrl: 'partials/employee.html',
-        controller: 'EmployeeViewController'
-    })
-    .when('/customer/:id',{
-        templateUrl: 'partials/customer.html',
-        controller: 'CustomerViewController'
-    })
-    .when('/trip/:id',{
-        templateUrl: 'partials/trip.html',
-        controller: 'TripViewController'
-    })
-    .when('/company/:id',{
-        templateUrl: 'partials/company.html',
-        controller: 'CompanyViewController'
-    })
-    .when('/branch/:id',{
-        templateUrl: 'partials/branch.html',
-        controller: 'BranchViewController'
-    })
-    .otherwise({
-      redirectTo: '/'
-    });
-}]);
-angular.module('miniStore')
-.controller('BranchViewController', ["$scope", "BranchFactory", "$location", "$routeParams", "$anchorScroll", "CompanyFactory", "AirportFactory", "HotelFactory", "RestaurantFactory", function($scope, BranchFactory, $location, $routeParams, $anchorScroll, CompanyFactory, AirportFactory, HotelFactory, RestaurantFactory) {
-  $scope.regions = [
-    "Americas",
-    "APAC",
-    "EMEA",
-    "Japan"
+  angular.module('app', [
+    'ngRoute',
+    'isteven-multi-select'
+  ]);
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .config(routes);
+
+  routes.$inject = [
+    '$routeProvider'
   ];
-  BranchFactory.one($routeParams.id, function(data) {
-    $scope.branch = data;
-  });
-  CompanyFactory.all(function (data) {
-    $scope.companies = data;
-  });
 
-  $scope.edit = function() {
-    var payload = {
-      branch: pruneEmpty($scope.new_branch),
-      location_id: $scope.branch.location._id,
-      location: pruneEmpty($scope.branch_location)
-    };
-    BranchFactory.edit(payload, $routeParams.id, function() {
-      BranchFactory.one($routeParams.id, function(data) {
-        $scope.branch = data;
+  function routes($routeProvider) {
+    $routeProvider
+      // templateUrl: 'dashboard/dashboard.html',
+      // controller: 'DashboardController',
+      // controllerAs: 'vm'
+      .when('/',{
+          templateUrl: 'lists/companies/companies.html',
+          controller: 'CompaniesController',
+          controllerAs: 'vm'
+      })
+      .when('/employees',{
+          templateUrl: 'lists/employees/employees.html',
+          controller: 'EmployeesController',
+          controllerAs: 'vm'
+      })
+      .when('/customers',{
+          templateUrl: 'lists/customers/customers.html',
+          controller: 'CustomersController',
+          controllerAs: 'vm'
+      })
+      .when('/trips',{
+          templateUrl: 'lists/trips/trips.html',
+          controller: 'TripsController',
+          controllerAs: 'vm'
+      })
+      .when('/companies',{
+          templateUrl: 'lists/companies/companies.html',
+          controller: 'CompaniesController',
+          controllerAs: 'vm'
+      })
+      .when('/branches',{
+          templateUrl: 'lists/branches/branches.html',
+          controller: 'BranchesController',
+          controllerAs: 'vm'
+      })
+      .when('/employee/:id',{
+          templateUrl: 'item/employee/employee.html',
+          controller: 'EmployeeController',
+          controllerAs: 'vm'
+      })
+      .when('/customer/:id',{
+          templateUrl: 'item/customer/customer.html',
+          controller: 'CustomerController',
+          controllerAs: 'vm'
+      })
+      .when('/trip/:id',{
+          templateUrl: 'item/trip/trip.html',
+          controller: 'TripController',
+          controllerAs: 'vm'
+      })
+      .when('/company/:id',{
+          templateUrl: 'item/company/company.html',
+          controller: 'CompanyController',
+          controllerAs: 'vm'
+      })
+      .when('/branch/:id',{
+          templateUrl: 'item/branch/branch.html',
+          controller: 'BranchController',
+          controllerAs: 'vm'
+      })
+      .otherwise({
+        redirectTo: '/'
       });
-      $scope.new_branch = {};
-      $scope.branch_location = {};
-    });
   }
+})();
+(function () {
+	'use strict';
 
-  $scope.addAirport = function() {
-    var payload = {
-      airport: pruneEmpty($scope.new_airport),
-      location: pruneEmpty($scope.airport_location),
-      branch_id: $routeParams.id
-    };
-    AirportFactory.add(payload, function() {
-      BranchFactory.one($routeParams.id, function(data) {
-        $scope.branch = data;
-      });
-      $scope.new_airport = {};
-      $scope.airport_location = {};
-    });
-  }
+	angular
+		.module('app')
+		.controller('DashboardController', controller);
 
-  $scope.addHotel = function() {
-    var payload = {
-      hotel: pruneEmpty($scope.new_hotel),
-      location: pruneEmpty($scope.hotel_location),
-      branch_id: $routeParams.id
-    };
-    HotelFactory.add(payload, function() {
-      BranchFactory.one($routeParams.id, function(data) {
-        $scope.branch = data;
-      });
-      $scope.new_hotel = {};
-      $scope.hotel_location = {};
-    });
-  }
+	function controller() {
+	}
+})();
+(function () {
+  'use strict';
 
-  $scope.addRestaurant = function() {
-    var payload = {
-      restaurant: pruneEmpty($scope.new_restaurant),
-      location: pruneEmpty($scope.restaurant_location),
-      branch_id: $routeParams.id
-    };
-    RestaurantFactory.add(payload, function() {
-      BranchFactory.one($routeParams.id, function(data) {
-        $scope.branch = data;
-      });
-      $scope.new_restaurant = {};
-      $scope.restaurant_location = {};
-    });
-  }
+  angular
+    .module('app')
+    .factory('airportFactory', factory);
 
-  $scope.remove = function(data) {
-    BranchFactory.remove(data, function(){
-      $location.path("/branches");
-    });
-  }
-
-  $scope.removeAirport = function(data) {
-    AirportFactory.remove(data, function(){
-      BranchFactory.one($routeParams.id, function(data) {
-        $scope.branch = data;
-      });
-    });
-  }
-
-  $scope.removeHotel = function(data) {
-    HotelFactory.remove(data, function(){
-      BranchFactory.one($routeParams.id, function(data) {
-        $scope.branch = data;
-      });
-    });
-  }
-
-  $scope.removeRestaurant = function(data) {
-    RestaurantFactory.remove(data, function(){
-      BranchFactory.one($routeParams.id, function(data) {
-        $scope.branch = data;
-      });
-    });
-  }
-
-  $scope.scrollTo = function(id) {
-    var old = $location.hash();
-    $location.hash(id);
-    $anchorScroll();
-    //reset to old to keep any additional routing logic from kicking in
-    $location.hash(old);
-  };
-
-  function pruneEmpty(obj) {
-    return function prune(current) {
-      _.forOwn(current, function (value, key) {
-        if (_.isUndefined(value) || _.isNull(value) || _.isNaN(value) ||
-          (_.isString(value) && _.isEmpty(value)) ||
-          (_.isObject(value) && _.isEmpty(prune(value)))) {
-
-          delete current[key];
-        }
-      });
-      // remove any leftover undefined values from the delete 
-      // operation on an array
-      if (_.isArray(current)) _.pull(current, undefined);
-
-      return current;
-
-    }(_.cloneDeep(obj));  // Do not modify the original object, create a clone instead
-  }
-}]);
-angular.module('miniStore')
-.controller('BranchController', ["$scope", "CompanyFactory", "BranchFactory", "$location", function($scope, CompanyFactory, BranchFactory, $location) {
-  $scope.regions = [
-    "Americas",
-    "APAC",
-    "EMEA",
-    "Japan"
+  factory.$inject = [
+    "$http",
+    "$log"
   ];
-  BranchFactory.all(function(data) {
-    $scope.branches = data;
-  });
-  CompanyFactory.all(function(data) {
-    $scope.companies = data;
-  });
-  $scope.add = function() {
-    var payload = {
-      branch: pruneEmpty($scope.new_branch),
-      branch_location: pruneEmpty($scope.branch_location)
+
+  function factory($http, $log) {
+    var factory = {
+      add: add,
+      remove: remove
     };
 
-    BranchFactory.add(payload, function() {
-      BranchFactory.all(function(data) {
-        $scope.branches = data;
-      });
-      $scope.new_branch = {};
-      $scope.new_airport = {};
-      $scope.new_hotel = {};
-      $scope.branch_location = {};
-      $scope.airport_location = {};
-      $scope.hotel_location = {};
-    });
-  }
-  $scope.remove = function(data) {
-    BranchFactory.remove(data, function(){
-      $scope.branches.splice($scope.branches.indexOf(data), 1);
-    });
-  }
+    return factory;
+    //////////
 
-  $scope.view = function(data) {
-    $location.path('/branch/' + data._id);
-  }
+    function add(payload) {
+      return $http.post('/airports', payload)
+        .then(success)
+        .catch(fail);
 
-  function pruneEmpty(obj) {
-    return function prune(current) {
-      _.forOwn(current, function (value, key) {
-        if (_.isUndefined(value) || _.isNull(value) || _.isNaN(value) ||
-          (_.isString(value) && _.isEmpty(value)) ||
-          (_.isObject(value) && _.isEmpty(prune(value)))) {
-
-          delete current[key];
-        }
-      });
-      // remove any leftover undefined values from the delete 
-      // operation on an array
-      if (_.isArray(current)) _.pull(current, undefined);
-
-      return current;
-
-    }(_.cloneDeep(obj));  // Do not modify the original object, create a clone instead
-  }
-}]);
-angular.module('miniStore')
-.controller('CompanyController', ["$scope", "CompanyFactory", "$location", function($scope, CompanyFactory, $location) {
-  CompanyFactory.all(function(data) {
-    $scope.companies = data;
-  });
-  $scope.add = function() {
-    var payload = {
-      company: $scope.new_company
-    }
-    CompanyFactory.add(payload, function() {
-      CompanyFactory.all(function(data) {
-        $scope.companies = data;
-      });
-      $scope.new_company = {};
-    });
-  }
-  $scope.remove = function(data) {
-    CompanyFactory.remove(data, function(){
-      $scope.companies.splice($scope.companies.indexOf(data), 1);
-    });
-  }
-  $scope.view = function(data) {
-    $location.path('/company/' + data._id);
-  }
-}]);
-angular.module('miniStore')
-.controller('CompanyViewController', ["$scope", "CompanyFactory", "$location", "$routeParams", function($scope, CompanyFactory, $location, $routeParams) {
-  
-  CompanyFactory.one($routeParams.id, function(data) {
-    $scope.company = data;
-  });
-  $scope.edit = function() {
-    var payload = {
-      company: pruneEmpty($scope.new_company)
-    };
-    CompanyFactory.edit(payload, $routeParams.id, function() {
-      CompanyFactory.one($routeParams.id, function(data) {
-        $scope.company = data;
-      });
-      $scope.new_company = {};
-    });
-  }
-  $scope.remove = function(data) {
-    CompanyFactory.remove(data, function(){
-      $location.path("/companies");
-    });
-  }
-
-  function pruneEmpty(obj) {
-    return function prune(current) {
-      _.forOwn(current, function (value, key) {
-        if (_.isUndefined(value) || _.isNull(value) || _.isNaN(value) ||
-          (_.isString(value) && _.isEmpty(value)) ||
-          (_.isObject(value) && _.isEmpty(prune(value)))) {
-
-          delete current[key];
-        }
-      });
-      // remove any leftover undefined values from the delete 
-      // operation on an array
-      if (_.isArray(current)) _.pull(current, undefined);
-
-      return current;
-
-    }(_.cloneDeep(obj));  // Do not modify the original object, create a clone instead
-  }
-}]);
-angular.module('miniStore')
-.controller('CustomerViewController', ["$scope", "CustomerFactory", "$location", "$routeParams", "CompanyFactory", function($scope, CustomerFactory, $location, $routeParams, CompanyFactory) {
-  $scope.regions = [
-    "Americas",
-    "APAC",
-    "EMEA",
-    "Japan"
-  ];
-  CustomerFactory.one($routeParams.id, function(data) {
-    $scope.customer = data;
-  });
-  CompanyFactory.all(function(data) {
-    $scope.companies = data;
-  });
-  $scope.edit = function() {
-    var payload = {
-      customer: pruneEmpty($scope.new_customer)
-    };
-    CustomerFactory.edit(payload, $routeParams.id, function() {
-      CustomerFactory.one($routeParams.id, function(data) {
-        $scope.customer = data;
-      });
-      $scope.new_customer = {};
-      $scope.new_location = {};
-    });
-  }
-  $scope.remove = function(data) {
-    CustomerFactory.remove(data, function(){
-      $location.path("/customers");
-    });
-  }
-
-  function pruneEmpty(obj) {
-    return function prune(current) {
-      _.forOwn(current, function (value, key) {
-        if (_.isUndefined(value) || _.isNull(value) || _.isNaN(value) ||
-          (_.isString(value) && _.isEmpty(value)) ||
-          (_.isObject(value) && _.isEmpty(prune(value)))) {
-
-          delete current[key];
-        }
-      });
-      // remove any leftover undefined values from the delete 
-      // operation on an array
-      if (_.isArray(current)) _.pull(current, undefined);
-
-      return current;
-
-    }(_.cloneDeep(obj));  // Do not modify the original object, create a clone instead
-  }
-}]);
-angular.module('miniStore')
-.controller('CustomerController', ["$scope", "CompanyFactory", "CustomerFactory", "$location",function($scope, CompanyFactory, CustomerFactory, $location) {
-  CompanyFactory.all(function(data) {
-    $scope.companies = data;
-  });
-  CustomerFactory.all(function(data) {
-    $scope.customers = data;
-  });
-  
-  $scope.add = function() {
-    CustomerFactory.add($scope.new_customer, function() {
-      CustomerFactory.all(function(data) {
-        $scope.customers = data;
-      });
-      $scope.new_customer = {};
-    });
-  }
-  $scope.remove = function(data) {
-    CustomerFactory.remove(data, function(){
-      $scope.customers.splice($scope.customers.indexOf(data), 1);
-    });
-  }
-  $scope.view = function(data) {
-    $location.path('/customer/' + data._id);
-  }
-}]);
-angular.module('miniStore')
-.controller('DashboardController', ["$scope", function($scope) {
-}]);
-angular.module('miniStore')
-.controller('EmployeeViewController', ["$scope", "EmployeeFactory", "$location", "$routeParams", function($scope, EmployeeFactory, $location, $routeParams) {
-  $scope.regions = [
-    "Americas",
-    "APAC",
-    "EMEA",
-    "Japan"
-  ];
-  EmployeeFactory.one($routeParams.id, function(data) {
-    $scope.employee = data;
-  });
-  $scope.edit = function() {
-    var payload = {
-      employee: pruneEmpty($scope.new_employee),
-      location_id: $scope.employee.location._id,
-      location: pruneEmpty($scope.new_location)
-    };
-    EmployeeFactory.edit(payload, $routeParams.id, function(data) {
-      $scope.employee = data[0];
-      $scope.employee.location = data[1];
-      $scope.new_employee = {};
-      $scope.new_location = {};
-    });
-  }
-  $scope.remove = function(data) {
-    EmployeeFactory.remove(data, function(){
-      $location.path("/employees");
-    });
-  }
-
-  function pruneEmpty(obj) {
-    return function prune(current) {
-      _.forOwn(current, function (value, key) {
-        if (_.isUndefined(value) || _.isNull(value) || _.isNaN(value) ||
-          (_.isString(value) && _.isEmpty(value)) ||
-          (_.isObject(value) && _.isEmpty(prune(value)))) {
-
-          delete current[key];
-        }
-      });
-      // remove any leftover undefined values from the delete 
-      // operation on an array
-      if (_.isArray(current)) _.pull(current, undefined);
-
-      return current;
-
-    }(_.cloneDeep(obj));  // Do not modify the original object, create a clone instead
-  }
-}]);
-angular.module('miniStore')
-.controller('EmployeeController', ["$scope", "EmployeeFactory", "$location", function($scope, EmployeeFactory, $location) {
-  $scope.regions = [
-    "Americas",
-    "APAC",
-    "EMEA",
-    "Japan"
-  ];
-  EmployeeFactory.all(function(data) {
-    $scope.employees = data;
-  });
-  
-  $scope.add = function() {
-    var payload = {
-      employee: $scope.new_employee,
-      location: $scope.new_location
-    };
-    EmployeeFactory.add(payload, function() {
-      EmployeeFactory.all(function(data) {
-        $scope.employees = data;
-      });
-      $scope.new_employee = {};
-      $scope.new_location = {};
-    });
-  }
-  $scope.remove = function(data) {
-    EmployeeFactory.remove(data, function(){
-      $scope.employees.splice($scope.employees.indexOf(data), 1);
-    });
-  }
-
-  $scope.view = function(data) {
-    $location.path('/employee/' + data._id);
-  }
-}]);
-angular.module('miniStore')
-.controller('TripViewController', ["$scope", "TripFactory", "$location", "$routeParams", "CompanyFactory", "EmployeeFactory", function($scope, TripFactory, $location, $routeParams, CompanyFactory, EmployeeFactory) {
-  $scope.regions = [
-    "Americas",
-    "APAC",
-    "EMEA",
-    "Japan"
-  ];
-  TripFactory.one($routeParams.id, function(data) {
-    $scope.trip = data;
-  });
-  CompanyFactory.all(function(data) {
-    $scope.companies = data;
-  });
-  EmployeeFactory.all(function(data) {
-    $scope.employees = data;
-    for (var i = 0; i < $scope.trip.employees.length; i++) {
-      for (var j = 0; j < $scope.employees.length; j++) {
-        if ($scope.employees[j]._id === $scope.trip.employees[i]._id) {
-          $scope.employees.splice(j, 1);
-        }
+      function success(response) {
+        return response.data;
       }
     }
-  });
-  $scope.edit = function() {
-    for (var i = 0; i < $scope.add_employees.length; i++) {
-      $scope.add_employees[i] = $scope.add_employees[i]._id;
-    }
-    for (var i = 0; i < $scope.remove_employees.length; i++) {
-      $scope.remove_employees[i] = $scope.remove_employees[i]._id;
+
+    function remove(data) {
+      return $http.delete('/airports/' + data._id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
     }
 
-    var payload = {
-      trip: pruneEmpty($scope.new_trip),
-      add_employees: pruneEmpty($scope.add_employees),
-      remove_employees: pruneEmpty($scope.remove_employees)
+    function fail(error) {
+      $log.log('Airport Factory XHR failed: ', error.data);
+    }
+
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .factory('branchFactory', factory);
+
+  factory.$inject = [
+    "$http",
+    "$log"
+  ];
+
+  function factory($http, $log) {
+    var factory = {
+      add: add,
+      all: all,
+      one: one,
+      edit: edit,
+      remove: remove
     };
-    TripFactory.edit(payload, $routeParams.id, function() {
-      TripFactory.one($routeParams.id, function(data) {
-        $scope.trip = data;
-      });
-      $scope.new_trip = {};
-      EmployeeFactory.all(function(data) {
-        $scope.employees = data;
-        for (var i = 0; i < $scope.trip.employees.length; i++) {
-          for (var j = 0; j < $scope.employees.length; j++) {
-            if ($scope.employees[j]._id === $scope.trip.employees[i]._id) {
-              $scope.employees.splice(j, 1);
+
+    return factory;
+    //////////
+
+    function all() {
+      return $http.get('/branches')
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function one(id) {
+      return $http.get('/branches/' + id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function edit(payload, id) {
+      return $http.post('/branches/' + id, payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function add(payload) {
+      return $http.post('/branches', payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function remove(data) {
+      return $http.delete('/branches/' + data._id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function fail(error) {
+      $log.log('Branch Factory XHR failed: ', error.data);
+    }
+
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .factory('companyFactory', factory);
+
+  factory.$inject = [
+    "$http",
+    "$log"
+  ];
+
+  function factory($http, $log) {
+    var factory = {
+      add: add,
+      all: all,
+      one: one,
+      edit: edit,
+      remove: remove
+    };
+
+    return factory;
+    //////////
+
+    function all() {
+      return $http.get('/companies')
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function one(id) {
+      return $http.get('/companies/' + id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function edit(payload, id) {
+      return $http.post('/companies/' + id, payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function add(payload) {
+      return $http.post('/companies', payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function remove(data) {
+      return $http.delete('/companies/' + data._id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function fail(error) {
+      $log.log('Company Factory XHR failed: ', error.data);
+    }
+
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .factory('customerFactory', factory);
+
+  factory.$inject = [
+    "$http",
+    "$log"
+  ];
+
+  function factory($http, $log) {
+    var factory = {
+      add: add,
+      all: all,
+      one: one,
+      edit: edit,
+      remove: remove
+    };
+
+    return factory;
+    //////////
+
+    function all() {
+      return $http.get('/customers')
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function one(id) {
+      return $http.get('/customers/' + id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function edit(payload, id) {
+      return $http.post('/customers/' + id, payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function add(payload) {
+      return $http.post('/customers', payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function remove(data) {
+      return $http.delete('/customers/' + data._id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function fail(error) {
+      $log.log('Customer Factory XHR failed: ', error.data);
+    }
+
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .factory('employeeFactory', factory);
+
+  factory.$inject = [
+    "$http",
+    "$log"
+  ];
+
+  function factory($http, $log) {
+    var factory = {
+      add: add,
+      all: all,
+      one: one,
+      edit: edit,
+      remove: remove
+    };
+
+    return factory;
+    //////////
+
+    function all() {
+      return $http.get('/employees')
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function one(id) {
+      return $http.get('/employees/' + id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function edit(payload, id) {
+      return $http.post('/employees/' + id, payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function add(payload) {
+      return $http.post('/employees', payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function remove(data) {
+      return $http.delete('/employees/' + data._id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function fail(error) {
+      $log.log('Employee Factory XHR failed: ', error.data);
+    }
+
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .factory('hotelFactory', factory);
+
+  factory.$inject = [
+    "$http",
+    "$log"
+  ];
+
+  function factory($http, $log) {
+    var factory = {
+      add: add,
+      remove: remove
+    };
+
+    return factory;
+    //////////
+
+    function add(payload) {
+      return $http.post('/hotels', payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function remove(data) {
+      return $http.delete('/hotels/' + data._id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function fail(error) {
+      $log.log('Hotel Factory XHR failed: ', error.data);
+    }
+
+  }
+})();
+(function () {
+	'use strict';
+
+	angular
+		.module('app')
+		.factory('pruneFactory', factory);
+
+	factory.$inject = ["$log"];
+
+	function factory($log) {
+		var factory = {
+			pruneEmpty: pruneEmpty
+		};
+
+		return factory;
+		//////////////
+
+		function pruneEmpty(obj) {
+	    return function prune(current) {
+	      _.forOwn(current, function (value, key) {
+	        if (_.isUndefined(value) || _.isNull(value) || _.isNaN(value) || (_.isString(value) && _.isEmpty(value)) || (_.isObject(value) && _.isEmpty(prune(value))) && !_.isDate(value)) {
+	          delete current[key];
+	        }
+	      });
+	      // remove any leftover undefined values from the delete 
+	      // operation on an array
+	      if (_.isArray(current)) {
+	      	_.pull(current, undefined)
+	      };
+
+	      return current;
+
+	    }(_.cloneDeep(obj));  // Do not modify the original object, create a clone instead
+	  }
+	}
+})();
+(function () {
+	'use strict';
+
+	angular
+		.module('app')
+		.factory('regionFactory', factory);
+
+	factory.$inject = [];
+
+	function factory() {
+		var factory = {
+			regions: [
+		    "Americas",
+		    "APAC",
+		    "EMEA",
+		    "Japan"
+		  ]
+		};
+
+		return factory;
+	}
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .factory('restaurantFactory', factory);
+
+  factory.$inject = [
+    "$http",
+    "$log"
+  ];
+
+  function factory($http, $log) {
+    var factory = {
+      add: add,
+      remove: remove
+    };
+
+    return factory;
+    //////////
+
+    function add(payload) {
+      return $http.post('/restaurants', payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function remove(data) {
+      return $http.delete('/restaurants/' + data._id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function fail(error) {
+      $log.log('Restaurant Factory XHR failed: ', error.data);
+    }
+
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .factory('tripFactory', factory);
+
+  factory.$inject = [
+    "$http",
+    "$log"
+  ];
+
+  function factory($http, $log) {
+    var factory = {
+      add: add,
+      all: all,
+      one: one,
+      edit: edit,
+      remove: remove
+    };
+
+    return factory;
+    //////////
+
+    function all() {
+      return $http.get('/trips')
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function one(id) {
+      return $http.get('/trips/' + id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function edit(payload, id) {
+      return $http.post('/trips/' + id, payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function add(payload) {
+      return $http.post('/trips', payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function remove(data) {
+      return $http.delete('/trips/' + data._id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function fail(error) {
+      $log.log('Trip Factory XHR failed: ', error.data);
+    }
+
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .controller('BranchController', controller);
+
+  controller.$inject = [
+    "$location",
+    "$routeParams",
+    "$anchorScroll",
+    "branchFactory",
+    "companyFactory",
+    "airportFactory",
+    "hotelFactory",
+    "restaurantFactory",
+    "regionFactory",
+    "pruneFactory"
+  ];
+
+  function controller(
+    $location,
+    $routeParams,
+    $anchorScroll,
+    branchFactory,
+    companyFactory,
+    airportFactory,
+    hotelFactory,
+    restaurantFactory,
+    regionFactory,
+    pruneFactory
+  ) {
+    /* jshint validthis: true */
+    var vm = this;
+    var pruneEmpty = pruneFactory.pruneEmpty;
+    vm.regions = regionFactory.regions;
+
+    vm.branch_id = $routeParams.id;
+    vm.branch = getBranch();
+    vm.companies = getCompanies();
+
+    vm.edit = edit;
+    vm.remove = remove;
+    vm.addAirport = addAirport;
+    vm.addHotel = addHotel;
+    vm.addRestaurant = addRestaurant;
+    vm.removeAirport = removeAirport;
+    vm.removeHotel = removeHotel;
+    vm.removeRestaurant = removeRestaurant;
+    vm.scrollTo = scrollTo;
+    //////////
+
+    function getBranch() {
+      branchFactory.one(vm.branch_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.branch = res;
+      }
+    }
+
+    function getCompanies() {
+      companyFactory.all()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.companies = res;
+      }
+    }
+
+    function edit() {
+      var payload = {
+        branch: pruneEmpty(vm.new_branch),
+        location_id: vm.branch.location._id,
+        location: pruneEmpty(vm.branch_location)
+      };
+
+      branchFactory.edit(payload, vm.branch_id)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        getBranch();
+        vm.new_branch = {};
+        vm.branch_location = {};
+      }
+    }
+
+    function remove(data) {
+      branchFactory.remove(data)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        $location.path("/branches");
+      }
+    }
+
+    function addAirport() {
+      var payload = {
+        airport: pruneEmpty(vm.new_airport),
+        location: pruneEmpty(vm.airport_location),
+        branch_id: vm.branch_id
+      };
+
+      airportFactory.add(payload)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        getBranch();
+        vm.new_airport = {};
+        vm.airport_location = {};
+      }
+    }
+
+    function addHotel() {
+      var payload = {
+        hotel: pruneEmpty(vm.new_hotel),
+        location: pruneEmpty(vm.hotel_location),
+        branch_id: vm.branch_id
+      };
+
+      hotelFactory.add(payload)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        getBranch();
+        vm.new_hotel = {};
+        vm.hotel_location = {};
+      }
+    }
+
+    function addRestaurant() {
+      var payload = {
+        restaurant: pruneEmpty(vm.new_restaurant),
+        location: pruneEmpty(vm.restaurant_location),
+        branch_id: vm.branch_id
+      };
+      restaurantFactory.add(payload)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        getBranch();
+        vm.new_restaurant = {};
+        vm.restaurant_location = {};
+      }
+    }
+
+    function removeAirport(data) {
+      airportFactory.remove(data)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        getBranch();
+      }
+    }
+
+    function removeHotel(data) {
+      hotelFactory.remove(data)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        getBranch();
+      }
+    }
+
+    function removeRestaurant(data) {
+      restaurantFactory.remove(data)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        getBranch();
+      }
+    }
+
+    function scrollTo(id) {
+      var old = $location.hash();
+      $location.hash(id);
+      $anchorScroll();
+      //reset to old to keep any additional routing logic from kicking in
+      $location.hash(old);
+    };
+
+    function fail(err) {
+      alert('Branch Controller XHR Failed: ' + err.data);
+    }
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .controller('CompanyController', controller);
+
+  controller.$inject = [
+    "$log",
+    "$location",
+    "$routeParams",
+    "companyFactory",
+    "pruneFactory"
+  ];
+
+  function controller(
+    $log,
+    $location,
+    $routeParams,
+    companyFactory,
+    pruneFactory
+  ) {
+    /* jshint validthis: true */
+    var vm = this;
+    var pruneEmpty = pruneFactory.pruneEmpty;
+
+    vm.company_id = $routeParams.id;
+    vm.company = getCompany();
+
+    vm.edit = edit;
+    vm.remove = remove;
+    //////////
+
+    function getCompany() {
+      companyFactory.one(vm.company_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.company = res;
+      }
+    }
+
+    function edit() {
+      var payload = {
+        company: pruneEmpty(vm.new_company)
+      };
+      companyFactory.edit(payload, vm.company_id)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        getCompany();
+        vm.new_company = {};
+      }
+    }
+
+    function remove(data) {
+      companyFactory.remove(data)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        $location.path("/companies");
+      }
+    }
+
+    function fail(err) {
+      alert('Company Controller XHR Failed: ' + err.data);
+    }
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .controller('CustomerController', controller);
+
+  controller.$inject = [
+    "$location",
+    "$routeParams",
+    "customerFactory",
+    "companyFactory",
+    "regionFactory",
+    "pruneFactory"
+  ];
+
+  function controller(
+    $location,
+    $routeParams,
+    customerFactory,
+    companyFactory,
+    regionFactory,
+    pruneFactory
+  ) {
+    /* jshint validthis: true */
+    var vm = this;
+    var pruneEmpty = pruneFactory.pruneEmpty;
+    vm.regions = regionFactory.regions;
+
+    vm.customer_id = $routeParams.id;
+    vm.customer = getCustomer();
+    vm.companies = getCompanies();
+
+    vm.edit = edit;
+    vm.remove = remove;
+    //////////
+
+    function getCustomer() {
+      customerFactory.one(vm.customer_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.customer = res;
+      }
+    }
+
+    function getCompanies() {
+      companyFactory.all()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.companies = res;
+      }
+    }
+
+    function edit() {
+      var payload = {
+        customer: pruneEmpty(vm.new_customer)
+      };
+      customerFactory.edit(payload, vm.customer_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        getCustomer();
+        vm.new_customer = {};
+      }
+    }
+
+    function remove(data) {
+      customerFactory.remove(data)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        $location.path("/customers");
+      }
+    }
+
+    function fail(err) {
+      alert('Customer Controller XHR Failed: ' + err.data);
+    }
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .controller('EmployeeController', controller);
+
+  controller.$inject = [
+    "$location",
+    "$routeParams",
+    "employeeFactory",
+    "pruneFactory",
+    "regionFactory"
+  ];
+
+  function controller(
+    $location,
+    $routeParams,
+    employeeFactory,
+    pruneFactory,
+    regionFactory
+  ) {
+    /* jshint validthis: true */
+    var vm = this;
+    var pruneEmpty = pruneFactory.pruneEmpty;
+    vm.regions = regionFactory.regions;
+
+    vm.employee_id = $routeParams.id;
+    vm.employee = getEmployee();
+
+    vm.edit = edit;
+    vm.remove = remove;
+    //////////
+
+    function getEmployee() {
+      employeeFactory.one(vm.employee_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.employee = res;
+      }
+    }
+
+    function edit() {
+      var payload = {
+        employee: pruneEmpty(vm.new_employee),
+        location_id: vm.employee.location._id,
+        location: pruneEmpty(vm.new_location)
+      };
+      employeeFactory.edit(payload, vm.employee_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.employee = res[0];
+        vm.employee.location = res[1];
+        vm.new_employee = {};
+        vm.new_location = {};
+      }
+    }
+
+    function remove(data) {
+      employeeFactory.remove(data)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        $location.path("/employees");
+      }
+    }
+
+    function fail(err) {
+      alert('Employee Controller XHR Failed: ' + err.data);
+    }
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .controller('TripController', controller);
+
+  controller.$inject = [
+    "$log",
+    "$location",
+    "$routeParams",
+    "tripFactory",
+    "companyFactory",
+    "employeeFactory",
+    "regionFactory",
+    "pruneFactory"
+  ];
+
+  function controller(
+    $log,
+    $location,
+    $routeParams,
+    tripFactory,
+    companyFactory,
+    employeeFactory,
+    regionFactory,
+    pruneFactory
+  ) {
+    /* jshint validthis: true */
+    var vm = this;
+    var pruneEmpty = pruneFactory.pruneEmpty;
+    vm.regions = regionFactory.regions;
+
+    vm.trip_id = $routeParams.id;
+    vm.trip = getTrip();
+    vm.companies = getCompanies();
+    vm.employees = getEmployees();
+
+    vm.edit = edit;
+    vm.remove = remove;
+    //////////
+
+    function getTrip() {
+      tripFactory.one(vm.trip_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.trip = res;
+      }
+    }
+
+    function getCompanies() {
+      companyFactory.all()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.companies = res;
+      }
+    }
+
+    function getEmployees() {
+      employeeFactory.all()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.employees = res;
+        for (var i = 0; i < vm.trip.employees.length; i++) {
+          for (var j = 0; j < vm.employees.length; j++) {
+            if (vm.employees[j]._id === vm.trip.employees[i]._id) {
+              vm.employees.splice(j, 1);
             }
           }
         }
-      });
-    });
-  }
-  $scope.remove = function(data) {
-    TripFactory.remove(data, function(){
-      $location.path("/trips");
-    });
-  }
+      }
+    }
 
-  function pruneEmpty(obj) {
-    return function prune(current) {
-      _.forOwn(current, function (value, key) {
-        if (_.isUndefined(value) || _.isNull(value) || _.isNaN(value) ||
-          (_.isString(value) && _.isEmpty(value)) ||
-          (_.isObject(value) && _.isEmpty(prune(value)))) {
-
-          delete current[key];
+    function edit() {
+      if (vm.add_employees.length > 0) {
+        for (var i = 0; i < vm.add_employees.length; i++) {
+          vm.add_employees[i] = vm.add_employees[i]._id;
         }
-      });
-      // remove any leftover undefined values from the delete 
-      // operation on an array
-      if (_.isArray(current)) _.pull(current, undefined);
+      }
+      if (vm.remove_employees.length > 0) {
+        for (var i = 0; i < vm.remove_employees.length; i++) {
+          vm.remove_employees[i] = vm.remove_employees[i]._id;
+        }
+      }
 
-      return current;
+      var payload = {
+        trip: pruneEmpty(vm.new_trip),
+        add_employees: pruneEmpty(vm.add_employees),
+        remove_employees: pruneEmpty(vm.remove_employees)
+      };
 
-    }(_.cloneDeep(obj));  // Do not modify the original object, create a clone instead
+      tripFactory.edit(payload, vm.trip_id)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        getTrip();
+        getEmployees();
+        vm.new_trip = {};
+      }
+    }
+
+    function remove(data) {
+      tripFactory.remove(data)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        $location.path("/trips");
+      }
+    }
+
+    function fail(err) {
+      alert('Trip Controller XHR Failed: ' + err.data);
+    }
   }
-}]);
-angular.module('miniStore')
-.controller('TripController', ["$scope", "TripFactory", "CompanyFactory", "EmployeeFactory", "$location", function($scope, TripFactory, CompanyFactory, EmployeeFactory, $location) {
-  $scope.regions = [
-    "Americas",
-    "APAC",
-    "EMEA",
-    "Japan"
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .controller('BranchesController', controller);
+
+  controller.$inject = [
+    "$routeParams",
+    "$location",
+    "branchFactory",
+    "companyFactory",
+    "regionFactory",
+    "pruneFactory"
   ];
-  CompanyFactory.all(function(data) {
-    $scope.companies = data;
-  });
-  EmployeeFactory.all(function(data) {
-    $scope.employees = data;
-  });
-  TripFactory.all(function(data) {
-    $scope.trips = data;
-  });
 
-  $scope.add = function() {
-    TripFactory.add($scope.new_trip, function() {
-      TripFactory.all(function(data) {
-        $scope.trips = data;
-      });
-      $scope.new_trip = {};
-      EmployeeFactory.all(function(data) {
-        $scope.employees = data;
-      });
-    });
-  }
-  $scope.remove = function(data) {
-    TripFactory.remove(data, function(){
-      $scope.trips.splice($scope.trips.indexOf(data), 1);
-    });
-  }
-  $scope.view = function(data) {
-    $location.path('/trip/' + data._id);
-  }
-}]);
-angular.module('miniStore')
-.factory('AirportFactory', ["$http", function($http) {
-  var factory = {};
-  factory.add = function(payload, callback) {
-    $http.post('/airports', payload)
-      .then(function (response) {
-        callback();
-      }, function (error){
-        throw error;
-      });
-  }
-  factory.remove = function(data, callback) {
-    $http.delete('/airports/'+ data._id)
-      .then(function (response) {
-        callback();
-      }, function (error){
-        throw error;
-      });
-  }
+  function controller(
+    $routeParams,
+    $location,
+    branchFactory,
+    companyFactory,
+    regionFactory,
+    pruneFactory
+  ) {
+    /* jshint validthis: true */
+    var vm = this;
+    var pruneEmpty = pruneFactory.pruneEmpty;
+    vm.regions = regionFactory.regions;
 
-  return factory;
-  // factory.all = function(callback) {
-  //   $http.get('/airports')
-  //     .then(function (response) {
-  //       callback(response.data);
-  //     }, function (error) {
-  //       throw error;
-  //     });
-  // }
-  // factory.one = function(id, callback) {
-  //   $http.get('/airports/' + id)
-  //     .then(function (response) {
-  //       callback(response.data);
-  //     }, function (error) {
-  //       throw error;
-  //     });
-  // }
-  // factory.edit = function(payload, id, callback) {
-  //   $http.post('/airports/' + id, payload)
-  //     .then(function (response) {
-  //       callback(response.data);
-  //     }, function (error) {
-  //       throw error;
-  //     });
-  // }
-}]);
-angular.module('miniStore')
-.factory('BranchFactory', ["$http", function($http) {
-  var factory = {};
-  factory.all = function(callback) {
-    $http.get('/branches')
-      .then(function (response) {
-        callback(response.data);
-      }, function (error) {
-        throw error;
-      });
+    vm.branch_id = $routeParams.id;
+    vm.branches = getBranches();
+    vm.companies = getCompanies();
+
+    vm.add = add;
+    vm.remove = remove;
+    vm.view = view;
+    //////////
+
+
+    function getBranches() {
+      branchFactory.all(vm.branch_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.branches = res;
+      }
+    }
+
+    function getCompanies() {
+      companyFactory.all()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.companies = res;
+      }
+    }
+
+    function add() {
+      var payload = {
+        branch: pruneEmpty(vm.new_branch),
+        branch_location: pruneEmpty(vm.branch_location)
+      };
+
+      branchFactory.add(payload)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        getBranches();
+        vm.new_branch = {};
+        vm.branch_location = {};
+      }
+    }
+    
+    function remove(data) {
+      branchFactory.remove(data)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.branches.splice(vm.branches.indexOf(data), 1);
+      }
+    }
+
+    function view(data) {
+      $location.path('/branch/' + data._id);
+    }
+
+    function fail(err) {
+      alert('Branches Controller XHR Failed: ' + err.data);
+    }
   }
-  factory.one = function(id, callback) {
-    $http.get('/branches/' + id)
-      .then(function (response) {
-        callback(response.data);
-      }, function (error) {
-        throw error;
-      });
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .controller('CompaniesController', controller);
+
+  controller.$inject = [
+    "$location",
+    "companyFactory"
+  ];
+
+  function controller(
+    $location,
+    companyFactory
+  ) {
+    /* jshint validthis: true */
+    var vm = this;
+
+    vm.companies = getCompanies();
+
+    vm.add = add;
+    vm.remove = remove;
+    vm.view = view;
+    //////////
+
+    function getCompanies() {
+      companyFactory.all()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.companies = res;
+      }
+    }
+
+    function add() {
+      var payload = {
+        company: vm.new_company
+      };
+
+      companyFactory.add(payload)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        getCompanies();
+        vm.new_company = {};
+      }
+    }
+    
+    function remove(data) {
+      companyFactory.remove(data)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        vm.companies.splice(vm.companies.indexOf(data), 1);
+      }
+    }
+
+    function view(data) {
+      $location.path('/company/' + data._id);
+    }
+
+    function fail(err) {
+      alert('Companies Controller XHR Failed: ' + err.data);
+    }
   }
-  factory.edit = function(payload, id, callback) {
-    $http.post('/branches/' + id, payload)
-      .then(function (response) {
-        callback(response.data);
-      }, function (error) {
-        throw error;
-      });
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .controller('CustomersController', controller);
+
+  controller.$inject = [
+    "$location",
+    "companyFactory",
+    "customerFactory"
+  ];
+
+  function controller(
+    $location,
+    companyFactory,
+    customerFactory
+  ) {
+    /* jshint validthis: true */
+    var vm = this;
+
+    vm.customers = getCustomers();
+    vm.companies = getCompanies();
+
+    vm.add = add;
+    vm.remove = remove;
+    vm.view = view;
+    //////////
+
+
+    function getCustomers() {
+      customerFactory.all()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.customers = res;
+      }
+    }
+
+    function getCompanies() {
+      companyFactory.all()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.companies = res;
+      }
+    }
+
+    function add() {
+      customerFactory.add(vm.new_customer)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        getCustomers();
+        vm.new_customer = {};
+      }
+    }
+    
+    function remove(data) {
+      customerFactory.remove(data)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        vm.customers.splice(vm.customers.indexOf(data), 1);
+      }
+    }
+
+    function view(data) {
+      $location.path('/customer/' + data._id);
+    }
+
+    function fail(err) {
+      alert('Customers Controller XHR Failed: ' + err.data);
+    }
   }
-  factory.add = function(payload, callback) {
-    $http.post('/branches', payload)
-      .then(function (response) {
-        callback();
-      }, function (error){
-        throw error;
-      });
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .controller('EmployeesController', controller);
+
+  controller.$inject = [
+    "$location",
+    "employeeFactory",
+    "regionFactory"
+  ];
+
+  function controller(
+    $location,
+    employeeFactory,
+    regionFactory
+  ) {
+    /* jshint validthis: true */
+    var vm = this;
+    vm.regions = regionFactory.regions;
+
+    vm.employees = getEmployees();
+
+    vm.add = add;
+    vm.remove = remove;
+    vm.view = view;
+    //////////
+
+
+    function getEmployees() {
+      employeeFactory.all()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.employees = res;
+      }
+    }
+
+    function add() {
+      var payload = {
+        employee: vm.new_employee,
+        location: vm.new_location
+      };
+      employeeFactory.add(payload)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        getEmployees();
+        vm.new_employee = {};
+        vm.new_location = {};
+      }
+    }
+    
+    function remove(data) {
+      employeeFactory.remove(data)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        vm.employees.splice(vm.employees.indexOf(data), 1);
+      }
+    }
+
+    function view(data) {
+      $location.path('/employee/' + data._id);
+    }
+
+    function fail(err) {
+      alert('Employees Controller XHR Failed: ' + err.data);
+    }
   }
-  factory.remove = function(branch, callback) {
-    $http.delete('/branches/'+ branch._id)
-      .then(function (response) {
-        callback();
-      }, function (error){
-        throw error;
-      });
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .controller('TripsController', controller);
+
+  controller.$inject = [
+    "$location",
+    "tripFactory",
+    "companyFactory",
+    "employeeFactory",
+    "regionFactory"
+  ];
+
+  function controller(
+    $location,
+    tripFactory,
+    companyFactory,
+    employeeFactory,
+    regionFactory
+  ) {
+    /* jshint validthis: true */
+    var vm = this;
+    vm.regions = regionFactory.regions;
+
+    vm.companies = getCompanies();
+    vm.employees = getEmployees();
+    vm.trips = getTrips();
+
+    vm.add = add;
+    vm.remove = remove;
+    vm.view = view;
+    //////////
+
+    function getCompanies() {
+      companyFactory.all()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.companies = res;
+      }
+    }
+
+    function getEmployees() {
+      employeeFactory.all()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.employees = res;
+      }
+    }
+
+    function getTrips() {
+      tripFactory.all()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.trips = res;
+      }
+    }
+
+    function add() {
+      tripFactory.add(vm.new_trip)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        getTrips();
+        vm.new_trip = {};
+        getEmployees();
+      }
+    }
+    
+    function remove(data) {
+      tripFactory.remove(data)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        vm.trips.splice(vm.trips.indexOf(data), 1);
+      }
+    }
+
+    function view(data) {
+      $location.path('/trip/' + data._id);
+    }
+
+    function fail(err) {
+      alert('Trips Controller XHR Failed: ' + err.data);
+    }
   }
-  return factory;
-}]);
-angular.module('miniStore')
-.factory('CompanyFactory', ["$http", function($http) {
-  var factory = {};
-  factory.all = function(callback) {
-    $http.get('/companies')
-      .then(function (response) {
-        callback(response.data);
-      }, function (error) {
-        throw error;
-      });
-  }
-  factory.one = function(id, callback) {
-    $http.get('/companies/' + id)
-      .then(function (response) {
-        callback(response.data);
-      }, function (error) {
-        throw error;
-      });
-  }
-  factory.edit = function(payload, id, callback) {
-    $http.post('/companies/' + id, payload)
-      .then(function (response) {
-        callback(response.data);
-      }, function (error) {
-        throw error;
-      });
-  }
-  factory.add = function(new_company, callback) {
-    $http.post('/companies', new_company)
-      .then(function (response) {
-        callback();
-      }, function (error){
-        throw error;
-      });
-  }
-  factory.remove = function(company, callback) {
-    $http.delete('/companies/'+ company._id)
-      .then(function (response) {
-        callback();
-      }, function (error){
-        throw error;
-      });
-  }
-  return factory;
-}]);
-angular.module('miniStore')
-.factory('CustomerFactory', ["$http", function($http) {
-  var factory = {};
-  factory.all = function(callback) {
-    $http.get('/customers')
-      .then(function (response) {
-        callback(response.data);
-      }, function (error) {
-        throw error;
-      });
-  }
-  factory.one = function(id, callback) {
-    $http.get('/customers/' + id)
-      .then(function (response) {
-        callback(response.data);
-      }, function (error) {
-        throw error;
-      });
-  }
-  factory.add = function(new_customer, callback) {
-    $http.post('/customers', new_customer)
-      .then(function (response) {
-        callback();
-      }, function (error){
-        throw error;
-      });
-  }
-  factory.edit = function(payload, id, callback) {
-    $http.post('/customers/' + id, payload)
-      .then(function (response) {
-        callback(response.data);
-      }, function (error) {
-        throw error;
-      });
-  }
-  factory.remove = function(customer, callback) {
-    $http.delete('/customers/'+ customer._id)
-      .then(function (response) {
-        callback();
-      }, function (error){
-        throw error;
-      });
-  }
-  return factory;
-}]);
-angular.module('miniStore')
-.factory('EmployeeFactory', ["$http", function($http) {
-  var factory = {};
-  factory.all = function(callback) {
-    $http.get('/employees')
-      .then(function (response) {
-        callback(response.data);
-      }, function (error) {
-        throw error;
-      });
-  }
-  factory.one = function(id, callback) {
-    $http.get('/employees/' + id)
-      .then(function (response) {
-        callback(response.data);
-      }, function (error) {
-        throw error;
-      });
-  }
-  factory.edit = function(payload, id, callback) {
-    $http.post('/employees/' + id, payload)
-      .then(function (response) {
-        callback(response.data);
-      }, function (error) {
-        throw error;
-      });
-  }
-  factory.add = function(payload, callback) {
-    $http.post('/employees', payload)
-      .then(function (response) {
-        callback();
-      }, function (error){
-        throw error;
-      });
-  }
-  factory.remove = function(employee, callback) {
-    $http.delete('/employees/'+ employee._id)
-      .then(function (response) {
-        callback();
-      }, function (error){
-        throw error;
-      });
-  }
-  return factory;
-}]);
-angular.module('miniStore')
-.factory('HotelFactory', ["$http", function($http) {
-  var factory = {};
-  factory.add = function(payload, callback) {
-    $http.post('/hotels', payload)
-      .then(function (response) {
-        callback();
-      }, function (error){
-        throw error;
-      });
-  }
-  factory.remove = function(data, callback) {
-    $http.delete('/hotels/'+ data._id)
-      .then(function (response) {
-        callback();
-      }, function (error){
-        throw error;
-      });
-  }
-  return factory;
-  // factory.all = function(callback) {
-  //   $http.get('/airports')
-  //     .then(function (response) {
-  //       callback(response.data);
-  //     }, function (error) {
-  //       throw error;
-  //     });
-  // }
-  // factory.one = function(id, callback) {
-  //   $http.get('/airports/' + id)
-  //     .then(function (response) {
-  //       callback(response.data);
-  //     }, function (error) {
-  //       throw error;
-  //     });
-  // }
-  // factory.edit = function(payload, id, callback) {
-  //   $http.post('/airports/' + id, payload)
-  //     .then(function (response) {
-  //       callback(response.data);
-  //     }, function (error) {
-  //       throw error;
-  //     });
-  // }
-}]);
-angular.module('miniStore')
-.factory('RestaurantFactory', ["$http", function($http) {
-  var factory = {};
-  factory.add = function(payload, callback) {
-    $http.post('/restaurants', payload)
-      .then(function (response) {
-        callback();
-      }, function (error){
-        throw error;
-      });
-  }
-  factory.remove = function(data, callback) {
-    $http.delete('/restaurants/'+ data._id)
-      .then(function (response) {
-        callback();
-      }, function (error){
-        throw error;
-      });
-  }
-  return factory;
-  // factory.all = function(callback) {
-  //   $http.get('/airports')
-  //     .then(function (response) {
-  //       callback(response.data);
-  //     }, function (error) {
-  //       throw error;
-  //     });
-  // }
-  // factory.one = function(id, callback) {
-  //   $http.get('/airports/' + id)
-  //     .then(function (response) {
-  //       callback(response.data);
-  //     }, function (error) {
-  //       throw error;
-  //     });
-  // }
-  // factory.edit = function(payload, id, callback) {
-  //   $http.post('/airports/' + id, payload)
-  //     .then(function (response) {
-  //       callback(response.data);
-  //     }, function (error) {
-  //       throw error;
-  //     });
-  // }
-}]);
-angular.module('miniStore')
-.factory('TripFactory', ["$http", function($http) {
-  var factory = {};
-  factory.all = function(callback) {
-    $http.get('/trips')
-      .then(function (response) {
-        callback(response.data);
-      }, function (error) {
-        throw error;
-      });
-  }
-  factory.one = function(id, callback) {
-    $http.get('/trips/' + id)
-      .then(function (response) {
-        callback(response.data);
-      }, function (error) {
-        throw error;
-      });
-  }
-  factory.edit = function(payload, id, callback) {
-    $http.post('/trips/' + id, payload)
-      .then(function (response) {
-        callback(response.data);
-      }, function (error) {
-        throw error;
-      });
-  }
-  factory.add = function(new_trip, callback) {
-    $http.post('/trips', new_trip)
-      .then(function (response) {
-        callback();
-      }, function (error){
-        throw error;
-      });
-  }
-  factory.remove = function(trip, callback) {
-    $http.delete('/trips/'+ trip._id)
-      .then(function (response) {
-        callback();
-      }, function (error){
-        throw error;
-      });
-  }
-  return factory;
-}]);
+})();

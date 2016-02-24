@@ -70,6 +70,7 @@ function one(req, res) {
 function edit(req, res) {
   var trip_id = req.params.id;
   var trip = req.body.trip;
+  console.log(trip);
   var promises = [
     Trip.findByIdAndUpdate(trip_id, trip).exec(),
     Trip.findByIdAndUpdate(trip_id, {$pullAll: {employees: req.body.remove_employees}}).exec(),
