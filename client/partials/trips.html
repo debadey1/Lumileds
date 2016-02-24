@@ -1,0 +1,75 @@
+<h4>Add a new trip</h4>
+<form>
+ 	<div class="row">
+		<div class="input-field col m3">
+			<input type='date' placeholder="Start Date" ng-model='new_trip.start_date'>
+		</div>
+		<div class="input-field col m3">
+			<input type='date' placeholder="End Date" ng-model='new_trip.end_date'>
+		</div>
+		<div class="input-field col m2">
+			<span>Region</span>
+	    <select class="browser-default" ng-model='new_trip.region'>
+	      <option ng-repeat="region in regions">{{region}}</option>
+	    </select>
+	  </div>
+	  <div class="input-field col m3">
+			<span>Company</span>
+	    <select class="browser-default" ng-model='new_trip.company'>
+	      <option ng-repeat="company in companies" value="{{company._id}}">{{company.name}}</option>
+	    </select>
+	  </div>
+  </div>
+  <div class="row">
+  	<div class="col m12">
+			<div
+			    isteven-multi-select
+			    input-model="employees"
+			    output-model="new_trip.employees"
+			    button-label="name"
+			    item-label="name"
+			    tick-property="ticked"
+			>
+			</div>
+  	</div>
+	</div>
+	<div class="row">
+		<div class="input-field col m12">
+			<input type='submit' value='Add' ng-click='add()' class="btn right">
+		</div>
+ 	</div>
+</form>
+<div class="row">
+	<div class="col m9">
+		<h4>Trips</h4>
+	</div>
+	<div class="input-field col m3 right">
+		<input type="text" placeholder="Search trips" ng-model="tripFilter">
+	</div>
+	<table class="centered highlight">
+		<thead>
+			<tr>
+				<th>Duration</th>
+				<th>Company</th>
+				<th>Region</th>
+				<th>Attendees</th>
+				<th>Edit</th>
+				<th>Delete</th>
+			</tr>
+		</thead>
+		<tbody ng-repeat="trip in trips | filter: tripFilter | orderBy: 'start_date' track by $index">
+			<tr>
+				<td>{{trip.start_date | date: format: 'mediumDate'}} - {{trip.end_date | date: format: 'mediumDate'}}</td>
+				<td>{{trip.company.name}}</td>
+				<td>{{trip.region}}</td>
+				<td>
+					<span ng-repeat="attendee in trip.employees">
+						{{attendee.name}},
+					</span>
+				</td>
+				<td><div ng-click="view(trip)" class="btn orange">Edit</div></td>
+				<td><div ng-click="remove(trip)" class="btn red">Delete</div></td>
+			</tr>
+		</tbody>
+	</table>
+</div>

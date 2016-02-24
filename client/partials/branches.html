@@ -1,0 +1,67 @@
+<h4>Add a new branch</h4>
+<form>
+	<div class="row">
+		<div class="input-field col m3">
+			<span>Company</span>
+	    <select class="browser-default" ng-model='new_branch.company'>
+	      <option ng-repeat="company in companies" value="{{company._id}}">{{company.name}}</option>
+	    </select>
+	  </div>
+ 	</div>
+	
+	<p>Branch Adress</p>
+ 	<div class="row">
+		<div class="input-field col m3">
+			<input type='text' placeholder="Address" ng-model='branch_location.street'>
+		</div>
+		<div class="input-field col m3">
+			<input type='text' placeholder="City" ng-model='branch_location.city'>
+		</div>
+		<div class="input-field col m2">
+			<input type='text' placeholder="State" ng-model='branch_location.state'>
+		</div>
+		<div class="input-field col m2">
+			<input type='text' placeholder="Country" ng-model='branch_location.country'>
+		</div>
+		<div class="input-field col m2">
+			<span>Region</span>
+	    <select class="browser-default" ng-model='branch_location.region'>
+	      <option ng-repeat="region in regions">{{region}}</option>
+	    </select>
+	  </div>
+  </div>
+
+ 	<div class="row">
+		<div class="input-field col m12">
+			<input type='submit' value='Add' ng-click='add()' class="btn right">
+		</div>
+ 	</div>
+</form>
+<div class="row">
+	<div class="col m9">
+		<h4>Branches</h4>
+	</div>
+	<div class="input-field col m3 right">
+		<input type="text" placeholder="Search branches" ng-model="orderFilter">
+	</div>
+	<table class="centered highlight">
+		<thead>
+			<tr>
+				<th>Company</th>
+				<th>Address</th>
+				<th>Region</th>
+				<th>View</th>
+				<th>Delete</th>
+			</tr>
+		</thead>
+		<tbody ng-repeat="branch in branches | filter: orderFilter | orderBy: 'company.name' track by $index">
+			<tr>
+				<td>{{branch.company.name}}</td>
+				<td>{{branch.location.street}}, {{branch.location.city}}, {{branch.location.country}}</td>
+				<td>{{branch.location.region}}</td>
+				<td><div ng-click="view(branch)" class="btn orange">Edit</div></td>
+				<td><div ng-click="remove(branch)" class="btn red">Delete</div></td>
+			</tr>
+		</tbody>
+	</table>
+</div>

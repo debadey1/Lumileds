@@ -1,0 +1,48 @@
+<div class="row">
+	<div class="col m3">
+		<div class="input-field">
+			<input type="text" placeholder="Search.." ng-model="dashboardFilter">
+		</div>
+	</div>
+	<div class="col m9">
+		<h5>Product List</h5>
+		<div class="row">
+			<div class="col m3" ng-repeat="product in products | filter: dashboardFilter | orderBy: '-created_at' | limitTo:4 track by $index">
+        <div class="card-panel grey lighten-5 z-depth-1">
+          <div class="row valign-wrapper">
+            <div class="col s12">
+              <img src="" alt="{{product.name}}" class="responsive-img">
+            </div>
+          </div>
+        </div>
+        <p class="center">{{product.name}}</p>
+        <p class="center">({{product.stock}} left)</p>
+      </div>
+		</div>
+    <div class="center">
+      <a href="#/products" class="chip">show more...</a>
+    </div>
+		<div class="row">
+			<div class="col m12">
+				<h5>Recent Orders</h5>
+				<p ng-repeat="order in orders | filter: dashboardFilter | orderBy: '-created_at' | limitTo:3 track by $index">{{order.customer_id.name}} purchased {{order.quantity}} {{order.product_id.name}}... ({{order.created_at}})</p>
+      </div>
+      <div class="center">
+	      <a href="#/orders" class="chip">show more...</a>
+      </div>
+		</div>
+		<div class="row">
+			<div class="col m12">
+				<h5>New Customers</h5>
+        <p ng-repeat="customer in customers | filter: dashboardFilter | orderBy: 'created_at' | limitTo:3 track by $index">{{customer.name}} joined the store. ({{customer.created_at}})</p>
+      </div>
+      <div class="col m12">
+	      <div class="row">
+		      <div class="center">
+			      <a href="#/customers" class="chip">show more...</a>
+		      </div>
+	      </div>
+      </div>
+		</div>
+	</div>
+</div>

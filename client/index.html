@@ -1,0 +1,42 @@
+<html ng-app='miniStore'>
+<head>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+		<link rel="stylesheet" type="text/css" href="static/style.css">
+		<link rel="stylesheet" href="static/autocomplete.css">
+		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js'/></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.5/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+		<script type="text/javascript" src="static/autocomplete.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.5.1/lodash.min.js"></script>
+</head>
+<body>
+	<nav>
+	  <div class="nav-wrapper blue darken-4" id="root">
+	  	<div class="container">
+	  		<div class="row">
+	  			<div class="col m12">
+				    <a href="#/" class="brand-logo">Lumileds</a>
+				    <ul id="nav-mobile" class="right hide-on-med-and-down">
+							<li><a href="#/">Dashboard</a></li>
+							<li><a href="#/trips">Trips</a></li>
+							<li><a href="#/branches">Branches</a></li>
+							<li><a href="#/customers">Customers</a></li>
+							<li><a href="#/companies">Companies</a></li>
+							<li><a href="#/employees">Employees</a></li>
+				    </ul>
+	  			</div>
+	  		</div>
+	  	</div>
+	  </div>
+	</nav>
+	<div class="container">
+		<br>
+		<div ng-view=""></div>
+	</div>
+
+  <!-- Internal scripts -->
+  <script src="./build/internal/bundle.js"></script>
+</body>
+</html>
