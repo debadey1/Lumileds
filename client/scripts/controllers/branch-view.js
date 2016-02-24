@@ -1,132 +1,161 @@
-angular.module('miniStore')
-.controller('BranchViewController', ["$scope", "BranchFactory", "$location", "$routeParams", "$anchorScroll", "CompanyFactory", "AirportFactory", "HotelFactory", "RestaurantFactory", function($scope, BranchFactory, $location, $routeParams, $anchorScroll, CompanyFactory, AirportFactory, HotelFactory, RestaurantFactory) {
-  $scope.regions = [
-    "Americas",
-    "APAC",
-    "EMEA",
-    "Japan"
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .controller('BranchViewController', controller);
+
+  controller.$inject = [
+    "$location",
+    "$routeParams",
+    "$anchorScroll",
+    "branchFactory",
+    "companyFactory",
+    "airportFactory",
+    "hotelFactory",
+    "restaurantFactory",
+    "regionFactory",
+    "pruneFactory"
   ];
-  BranchFactory.one($routeParams.id, function(data) {
-    $scope.branch = data;
-  });
-  CompanyFactory.all(function (data) {
-    $scope.companies = data;
-  });
 
-  $scope.edit = function() {
-    var payload = {
-      branch: pruneEmpty($scope.new_branch),
-      location_id: $scope.branch.location._id,
-      location: pruneEmpty($scope.branch_location)
+  function controller(
+    $location,
+    $routeParams,
+    $anchorScroll,
+    branchFactory,
+    companyFactory,
+    airportFactory,
+    hotelFactory,
+    restaurantFactory,
+    regionFactory,
+    pruneFactory
+  ) {
+    /* jshint validthis: true */
+    var vm = this;
+    var pruneEmpty = pruneFactory.pruneEmpty;
+    vm.regions = regionFactory.regions;
+
+    vm.branch_id = $routeParams.id;
+    vm.branch = getBranch();
+    vm.companies = getCompanies();
+
+    vm.edit = edit;
+    vm.remove = remove;
+    vm.addAirport = addAirport;
+    vm.addHotel = addHotel;
+    vm.addRestaurant = addRestaurant;
+    vm.removeAirport = removeAirport;
+    vm.removeHotel = removeHotel;
+    vm.removeRestaurant = removeRestaurant;
+    vm.scrollTo = scrollTo;
+    //////////
+
+    function getBranch() {
+      branchFactory.one(branch_id)
+        .then(getSucceeded)
+        .catch(fail);
+
+      function getSucceeded(res) {
+        vm.branch = res;
+      }
+    }
+
+    function getCompanies() {
+      companyFactory.all(branch_id)
+        .then(getSucceeded)
+        .catch(fail);
+
+      function getSucceeded(res) {
+        vm.companies = res;
+      }
+    }
+
+    function edit() {
+      var payload = {
+        branch: pruneEmpty(vm.new_branch),
+        location_id: vm.branch.location._id,
+        location: pruneEmpty(vm.branch_location)
+      };
+      branchFactory.edit(payload, branch_id, function() {
+        getBranch();
+        vm.new_branch = {};
+        vm.branch_location = {};
+      });
+    }
+
+    function remove(data) {
+      branchFactory.remove(data, function(){
+        $location.path("/branches");
+      });
+    }
+
+    function addAirport() {
+      var payload = {
+        airport: pruneEmpty(vm.new_airport),
+        location: pruneEmpty(vm.airport_location),
+        branch_id: branch_id
+      };
+      airportFactory.add(payload, function() {
+        getBranch();
+        vm.new_airport = {};
+        vm.airport_location = {};
+      });
+    }
+
+    function addHotel() {
+      var payload = {
+        hotel: pruneEmpty(vm.new_hotel),
+        location: pruneEmpty(vm.hotel_location),
+        branch_id: branch_id
+      };
+      hotelFactory.add(payload, function() {
+        getBranch();
+        vm.new_hotel = {};
+        vm.hotel_location = {};
+      });
+    }
+
+    function addRestaurant() {
+      var payload = {
+        restaurant: pruneEmpty(vm.new_restaurant),
+        location: pruneEmpty(vm.restaurant_location),
+        branch_id: branch_id
+      };
+      restaurantFactory.add(payload, function() {
+        getBranch();
+        vm.new_restaurant = {};
+        vm.restaurant_location = {};
+      });
+    }
+
+    function removeAirport(data) {
+      airportFactory.remove(data, function(){
+        getBranch();
+      });
+    }
+
+    function removeHotel(data) {
+      hotelFactory.remove(data, function(){
+        getBranch();
+      });
+    }
+
+    function removeRestaurant(data) {
+      restaurantFactory.remove(data, function(){
+        getBranch();
+      });
+    }
+
+    function scrollTo(id) {
+      var old = $location.hash();
+      $location.hash(id);
+      $anchorScroll();
+      //reset to old to keep any additional routing logic from kicking in
+      $location.hash(old);
     };
-    BranchFactory.edit(payload, $routeParams.id, function() {
-      BranchFactory.one($routeParams.id, function(data) {
-        $scope.branch = data;
-      });
-      $scope.new_branch = {};
-      $scope.branch_location = {};
-    });
+
+    function fail(err) {
+      alert('Branch View Controller XHR Failed: ' + err.data);
+    }
   }
-
-  $scope.addAirport = function() {
-    var payload = {
-      airport: pruneEmpty($scope.new_airport),
-      location: pruneEmpty($scope.airport_location),
-      branch_id: $routeParams.id
-    };
-    AirportFactory.add(payload, function() {
-      BranchFactory.one($routeParams.id, function(data) {
-        $scope.branch = data;
-      });
-      $scope.new_airport = {};
-      $scope.airport_location = {};
-    });
-  }
-
-  $scope.addHotel = function() {
-    var payload = {
-      hotel: pruneEmpty($scope.new_hotel),
-      location: pruneEmpty($scope.hotel_location),
-      branch_id: $routeParams.id
-    };
-    HotelFactory.add(payload, function() {
-      BranchFactory.one($routeParams.id, function(data) {
-        $scope.branch = data;
-      });
-      $scope.new_hotel = {};
-      $scope.hotel_location = {};
-    });
-  }
-
-  $scope.addRestaurant = function() {
-    var payload = {
-      restaurant: pruneEmpty($scope.new_restaurant),
-      location: pruneEmpty($scope.restaurant_location),
-      branch_id: $routeParams.id
-    };
-    RestaurantFactory.add(payload, function() {
-      BranchFactory.one($routeParams.id, function(data) {
-        $scope.branch = data;
-      });
-      $scope.new_restaurant = {};
-      $scope.restaurant_location = {};
-    });
-  }
-
-  $scope.remove = function(data) {
-    BranchFactory.remove(data, function(){
-      $location.path("/branches");
-    });
-  }
-
-  $scope.removeAirport = function(data) {
-    AirportFactory.remove(data, function(){
-      BranchFactory.one($routeParams.id, function(data) {
-        $scope.branch = data;
-      });
-    });
-  }
-
-  $scope.removeHotel = function(data) {
-    HotelFactory.remove(data, function(){
-      BranchFactory.one($routeParams.id, function(data) {
-        $scope.branch = data;
-      });
-    });
-  }
-
-  $scope.removeRestaurant = function(data) {
-    RestaurantFactory.remove(data, function(){
-      BranchFactory.one($routeParams.id, function(data) {
-        $scope.branch = data;
-      });
-    });
-  }
-
-  $scope.scrollTo = function(id) {
-    var old = $location.hash();
-    $location.hash(id);
-    $anchorScroll();
-    //reset to old to keep any additional routing logic from kicking in
-    $location.hash(old);
-  };
-
-  function pruneEmpty(obj) {
-    return function prune(current) {
-      _.forOwn(current, function (value, key) {
-        if (_.isUndefined(value) || _.isNull(value) || _.isNaN(value) ||
-          (_.isString(value) && _.isEmpty(value)) ||
-          (_.isObject(value) && _.isEmpty(prune(value)))) {
-
-          delete current[key];
-        }
-      });
-      // remove any leftover undefined values from the delete 
-      // operation on an array
-      if (_.isArray(current)) _.pull(current, undefined);
-
-      return current;
-
-    }(_.cloneDeep(obj));  // Do not modify the original object, create a clone instead
-  }
-}]);
+})();

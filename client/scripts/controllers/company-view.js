@@ -1,42 +1,65 @@
-angular.module('miniStore')
-.controller('CompanyViewController', ["$scope", "CompanyFactory", "$location", "$routeParams", function($scope, CompanyFactory, $location, $routeParams) {
-  
-  CompanyFactory.one($routeParams.id, function(data) {
-    $scope.company = data;
-  });
-  $scope.edit = function() {
-    var payload = {
-      company: pruneEmpty($scope.new_company)
-    };
-    CompanyFactory.edit(payload, $routeParams.id, function() {
-      CompanyFactory.one($routeParams.id, function(data) {
-        $scope.company = data;
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .controller('CompanyViewController', controller);
+
+  controller.$inject = [
+    "$location",
+    "$routeParams",
+    "$anchorScroll",
+    "restaurantFactory",
+    "pruneFactory"
+  ];
+
+  function controller(
+    $location,
+    $routeParams,
+    $anchorScroll,
+    companyFactory,
+    pruneFactory
+  ) {
+    /* jshint validthis: true */
+    var vm = this;
+    var pruneEmpty = pruneFactory.pruneEmpty;
+    vm.regions = regionFactory.regions;
+
+    vm.company_id = $routeParams.id;
+    vm.company = getCompany();
+
+    vm.edit = edit;
+    vm.remove = remove;
+    //////////
+
+    function getCompany() {
+      companyFactory.one(company_id)
+        .then(getSucceeded)
+        .catch(fail);
+
+      function getSucceeded(res) {
+        vm.company = res;
+      }
+    }
+
+    function edit() {
+      var payload = {
+        company: pruneEmpty($scope.new_company)
+      };
+      companyFactory.edit(payload, company_id, function() {
+        getCompany();
+        vm.new_company = {};
       });
-      $scope.new_company = {};
-    });
-  }
-  $scope.remove = function(data) {
-    CompanyFactory.remove(data, function(){
-      $location.path("/companies");
-    });
-  }
+    }
 
-  function pruneEmpty(obj) {
-    return function prune(current) {
-      _.forOwn(current, function (value, key) {
-        if (_.isUndefined(value) || _.isNull(value) || _.isNaN(value) ||
-          (_.isString(value) && _.isEmpty(value)) ||
-          (_.isObject(value) && _.isEmpty(prune(value)))) {
-
-          delete current[key];
-        }
+    function remove(data) {
+      companyFactory.remove(data, function(){
+        $location.path("/companies");
       });
-      // remove any leftover undefined values from the delete 
-      // operation on an array
-      if (_.isArray(current)) _.pull(current, undefined);
+    }
 
-      return current;
-
-    }(_.cloneDeep(obj));  // Do not modify the original object, create a clone instead
+    function fail(err) {
+      alert('Company View Controller XHR Failed: ' + err.data);
+    }
   }
-}]);
+})();
