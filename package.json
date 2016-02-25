@@ -5,8 +5,8 @@
   "scripts": {
     "q": "nodemon server.js",
     "start": "mongodump --db lumileds && pm2 start mongod && pm2 start pm2.json",
-    "stop": "pm2 delete all"
-    "restart": "pm2 delete all && pm2 start mongod && pm2 start pm2.json",
+    "stop": "pm2 delete all",
+    "restart": "pm2 delete all && pm2 start mongod && pm2 start pm2.json"
   },
   "dependencies": {
     "body-parser": "^1.13.3",
