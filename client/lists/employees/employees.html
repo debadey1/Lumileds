@@ -1,0 +1,70 @@
+<h4>Add a new employee</h4>
+<form>
+ 	<div class="row">
+		<div class="input-field col m3">
+			<input type='text' placeholder="Name" ng-model='vm.new_employee.name'>
+		</div>
+		<div class="input-field col m3">
+			<input type='text' placeholder="Phone" ng-model='vm.new_employee.phone'>
+		</div>
+  </div>
+  <div class="row">
+		<div class="input-field col m3">
+			<input type='text' placeholder="Street" ng-model='vm.new_location.street'>
+		</div>
+		<div class="input-field col m3">
+			<input type='text' placeholder="City" ng-model='vm.new_location.city'>
+		</div>
+		<div class="input-field col m2">
+			<input type='text' placeholder="State" ng-model='vm.new_location.state'>
+		</div>
+		<div class="input-field col m2">
+			<input type='text' placeholder="Country" ng-model='vm.new_location.country'>
+		</div>
+		<div class="input-field col m2">
+			<span>Region</span>
+	    <select class="browser-default" ng-model='vm.new_location.region'>
+	      <option ng-repeat="region in vm.regions">{{region}}</option>
+	    </select>
+	  </div>
+  </div>
+	<div class="row">
+		<div class="input-field col m12">
+			<input type='submit' value='Add' ng-click='vm.add()' class="btn right">
+		</div>
+ 	</div>
+</form>
+<div class="row">
+	<div class="col m9">
+		<h4>Employees</h4>
+	</div>
+	<div class="input-field col m3 right">
+		<input type="text" placeholder="Search employees" ng-model="employeeFilter">
+	</div>
+	<table class="centered highlight">
+		<thead>
+			<tr>
+				<th>Employee Name</th>
+				<th>Address</th>
+				<th>Country</th>
+				<th>Region</th>
+				<th>Phone</th>
+				<th>View</th>
+				<th>Delete</th>
+			</tr>
+		</thead>
+		<tbody ng-repeat="employee in vm.employees | filter: employeeFilter | orderBy: 'name' track by $index">
+			<tr >
+				<td ng-bind="employee.name"></td>
+				<td>
+					{{employee.location.street}}, {{employee.location.city}}, {{employee.location.state}} 
+				</td>
+				<td>{{employee.location.country}}</td>
+				<td>{{employee.location.region}}</td>
+				<td ng-bind="employee.phone"></td>
+				<td><div ng-click="vm.view(employee)" class="btn orange">Edit</div></td>
+				<td><div ng-click="vm.remove(employee)" class="btn red">Delete</div></td>
+			</tr>
+		</tbody>
+	</table>
+</div>

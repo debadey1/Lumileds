@@ -12,5 +12,4 @@ var deepPopulate = require('mongoose-deep-populate')(mongoose);
 TripSchema.plugin(deepPopulate);
 TripSchema.path('region').required(true, 'Region cannot be empty');
 TripSchema.path('company').required(true, 'Company cannot be empty');
-TripSchema.path('employees').required(true, 'Employees cannot be empty');
 mongoose.model('Trip', TripSchema);
