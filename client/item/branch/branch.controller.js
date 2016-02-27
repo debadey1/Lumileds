@@ -6,27 +6,21 @@
     .controller('BranchController', controller);
 
   controller.$inject = [
+    "$log",
     "$location",
     "$routeParams",
-    "$anchorScroll",
     "branchFactory",
     "companyFactory",
-    "airportFactory",
-    "hotelFactory",
-    "restaurantFactory",
     "regionFactory",
     "pruneFactory"
   ];
 
   function controller(
+    $log,
     $location,
     $routeParams,
-    $anchorScroll,
     branchFactory,
     companyFactory,
-    airportFactory,
-    hotelFactory,
-    restaurantFactory,
     regionFactory,
     pruneFactory
   ) {
@@ -40,14 +34,8 @@
     vm.companies = getCompanies();
 
     vm.edit = edit;
+    vm.view = view;
     vm.remove = remove;
-    vm.addAirport = addAirport;
-    vm.addHotel = addHotel;
-    vm.addRestaurant = addRestaurant;
-    vm.removeAirport = removeAirport;
-    vm.removeHotel = removeHotel;
-    vm.removeRestaurant = removeRestaurant;
-    vm.scrollTo = scrollTo;
     //////////
 
     function getBranch() {
@@ -71,10 +59,13 @@
     }
 
     function edit() {
+      var location = vm.branch.location;
+      delete vm.branch.location;
+
       var payload = {
-        branch: pruneEmpty(vm.new_branch),
-        location_id: vm.branch.location._id,
-        location: pruneEmpty(vm.branch_location)
+        branch: pruneEmpty(vm.branch),
+        location_id: location._id,
+        location: pruneEmpty(location)
       };
 
       branchFactory.edit(payload, vm.branch_id)
@@ -83,8 +74,6 @@
 
       function success() {
         getBranch();
-        vm.new_branch = {};
-        vm.branch_location = {};
       }
     }
 
@@ -98,96 +87,9 @@
       }
     }
 
-    function addAirport() {
-      var payload = {
-        airport: pruneEmpty(vm.new_airport),
-        location: pruneEmpty(vm.airport_location),
-        branch_id: vm.branch_id
-      };
-
-      airportFactory.add(payload)
-        .then(success)
-        .catch(fail);
-
-      function success() {
-        getBranch();
-        vm.new_airport = {};
-        vm.airport_location = {};
-      }
+    function view(path) {
+      $location.path(path);
     }
-
-    function addHotel() {
-      var payload = {
-        hotel: pruneEmpty(vm.new_hotel),
-        location: pruneEmpty(vm.hotel_location),
-        branch_id: vm.branch_id
-      };
-
-      hotelFactory.add(payload)
-        .then(success)
-        .catch(fail);
-
-      function success() {
-        getBranch();
-        vm.new_hotel = {};
-        vm.hotel_location = {};
-      }
-    }
-
-    function addRestaurant() {
-      var payload = {
-        restaurant: pruneEmpty(vm.new_restaurant),
-        location: pruneEmpty(vm.restaurant_location),
-        branch_id: vm.branch_id
-      };
-      restaurantFactory.add(payload)
-        .then(success)
-        .catch(fail);
-
-      function success() {
-        getBranch();
-        vm.new_restaurant = {};
-        vm.restaurant_location = {};
-      }
-    }
-
-    function removeAirport(data) {
-      airportFactory.remove(data)
-        .then(success)
-        .catch(fail);
-
-      function success() {
-        getBranch();
-      }
-    }
-
-    function removeHotel(data) {
-      hotelFactory.remove(data)
-        .then(success)
-        .catch(fail);
-
-      function success() {
-        getBranch();
-      }
-    }
-
-    function removeRestaurant(data) {
-      restaurantFactory.remove(data)
-        .then(success)
-        .catch(fail);
-
-      function success() {
-        getBranch();
-      }
-    }
-
-    function scrollTo(id) {
-      var old = $location.hash();
-      $location.hash(id);
-      $anchorScroll();
-      //reset to old to keep any additional routing logic from kicking in
-      $location.hash(old);
-    };
 
     function fail(err) {
       alert('Branch Controller XHR Failed: ' + err.data);

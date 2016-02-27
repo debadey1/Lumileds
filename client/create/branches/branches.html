@@ -1,0 +1,57 @@
+<div class="row">
+	<div class="col m12">
+		<h5 class="left"><span class="green-text text-accent-4">Add</span> New Branch</h5>
+		<a class="btn blue darken-4 right" href="#/branches/all">View All</a>
+	</div>
+</div>
+<form>
+ 	<div class="row">
+		<div class="input-field col m3">
+	    <select class="browser-default validate" ng-model='vm.new_branch.company' required>
+		    <option value="" disabled selected>Company (Required)</option>
+	      <option ng-repeat="company in vm.companies" value="{{company._id}}">{{company.name}}</option>
+	    </select>
+	  </div>
+  </div>
+  <div class="row">
+		<div class="input-field col m3">
+			<input type='text' placeholder="Address" ng-model='vm.branch_location.street'>
+		</div>
+		<div class="input-field col m3">
+			<input type='text' placeholder="City (Required)" ng-model='vm.branch_location.city' class="validate" required>
+		</div>
+		<div class="input-field col m2">
+			<input type='text' placeholder="State" ng-model='vm.branch_location.state'>
+		</div>
+		<div class="input-field col m2">
+			<input type='text' placeholder="Country (Required)" ng-model='vm.branch_location.country' class="validate" required>
+		</div>
+		<div class="input-field col m2">
+	    <select class="browser-default validate" ng-model='vm.branch_location.region' required>
+		    <option value="" disabled selected>Region (Required)</option>
+	      <option ng-repeat="region in vm.regions">{{region}}</option>
+	    </select>
+	  </div>
+  </div>
+	<div class="row">
+		<div class="input-field col m12">
+			<input type='submit' value='Add' ng-click='vm.add()' class="btn green accent-4">
+		</div>
+ 	</div>
+</form>
+<div class="row blue darken-4 blue-text text-darken-4 z-depth-2">-</div>
+<div class="row">
+	<div class="col m9">
+		<h5>Recently Added</h5>
+	</div>
+	<div class="input-field col m3 right">
+		<input type="text" placeholder="Search branches" ng-model="branchFilter">
+	</div>
+</div>
+<div class="row">
+	<div class="col s4 m4">
+		<div class="collection">
+			<a href="" class="collection-item" ng-click="vm.view(branch)" ng-repeat="branch in vm.branches | filter: branchFilter | limitTo: -10 | orderBy: '-created_at' track by $index">{{branch.company.name}} - {{branch.location.city}} Branch - {{branch.location.region}}</a>
+		</div>
+	</div>
+</div>

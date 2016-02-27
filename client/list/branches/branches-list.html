@@ -1,0 +1,33 @@
+<div class="row">
+	<div class="col m12">
+		<h5 class="left">All Branches</h5>
+		<a class="btn blue darken-4 right" href="#/branches">Back</a>
+	</div>
+</div>
+<div class="row">
+	<div class="input-field col m3 right">
+		<input type="text" placeholder="Search branches" ng-model="branchFilter">
+	</div>
+	<table class="centered highlight">
+		<thead>
+			<tr>
+				<th>Company</th>
+				<th>Branch</th>
+				<th>Address</th>
+				<th>State</th>
+				<th>Country</th>
+				<th>Region</th>
+			</tr>
+		</thead>
+		<tbody ng-repeat="branch in vm.branches | filter: branchFilter | orderBy: 'company.name' track by $index">
+			<tr ng-click="vm.view(branch)">
+				<td>{{branch.company.name}}</td>
+				<td>{{branch.location.city}} Branch</td>
+				<td>{{branch.location.street}}</td>
+				<td>{{branch.location.state}}</td>
+				<td>{{branch.location.country}}</td>
+				<td>{{branch.location.region}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

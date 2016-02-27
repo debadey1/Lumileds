@@ -6,16 +6,22 @@
     .controller('EmployeeController', controller);
 
   controller.$inject = [
+    "$q",
+    "$log",
     "$location",
     "$routeParams",
+    "companyFactory",
     "employeeFactory",
     "pruneFactory",
     "regionFactory"
   ];
 
   function controller(
+    $q,
+    $log,
     $location,
     $routeParams,
+    companyFactory,
     employeeFactory,
     pruneFactory,
     regionFactory
@@ -33,30 +39,50 @@
     //////////
 
     function getEmployee() {
-      employeeFactory.one(vm.employee_id)
-        .then(success)
-        .catch(fail);
+      var promises = [
+        employeeFactory.one(vm.employee_id),
+        companyFactory.all()
+      ];
 
-      function success(res) {
-        vm.employee = res;
-      }
-    }
-
-    function edit() {
-      var payload = {
-        employee: pruneEmpty(vm.new_employee),
-        location_id: vm.employee.location._id,
-        location: pruneEmpty(vm.new_location)
-      };
-      employeeFactory.edit(payload, vm.employee_id)
+      $q.all(promises)
         .then(success)
         .catch(fail);
 
       function success(res) {
         vm.employee = res[0];
-        vm.employee.location = res[1];
-        vm.new_employee = {};
-        vm.new_location = {};
+        vm.employee.lumileds = vm.employee.lumileds ? true : false;
+        vm.companies = res[1];
+
+        return res;
+      }
+    }
+
+
+    function edit() {
+      var location = vm.employee.location;
+      delete vm.employee.location;
+
+      var payload = {
+        employee: pruneEmpty(vm.employee),
+        location_id: location._id,
+        location: pruneEmpty(location)
+      };
+
+      // set to string, to use for angular filters
+      // do it after pruning
+      if (payload.employee.lumileds) {
+        payload.employee.lumileds = "Lumileds";
+        payload.employee.company = null;
+      } else {
+        payload.employee.lumileds = "";
+      }
+      
+      employeeFactory.edit(payload, vm.employee_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        getEmployee();
       }
     }
 

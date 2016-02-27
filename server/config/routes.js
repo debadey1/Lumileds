@@ -1,6 +1,7 @@
 var companies = require('../controllers/companies.js');
 var employees = require('../controllers/employees.js');
-var trips = require('../controllers/trips.js');
+var visits = require('../controllers/visits.js');
+var itineraries = require('../controllers/itineraries.js');
 var customers = require('../controllers/customers.js');
 var branches = require('../controllers/branches.js');
 var airports = require('../controllers/airports.js');
@@ -50,25 +51,46 @@ module.exports = function (app) {
       employees.destroy(req, res);
     });
 
-  app.get('/trips',
+  app.get('/itineraries',
     function (req, res){
-      trips.all(req, res);
+      itineraries.all(req, res);
     });
-  app.get('/trips/:id',
+  app.get('/itineraries/:id',
     function (req, res){
-      trips.one(req, res);
+      itineraries.one(req, res);
     });
-  app.post('/trips/:id',
+  app.put('/itineraries/:id',
     function (req, res){
-      trips.edit(req, res);
+      itineraries.edit(req, res);
     });
-  app.post('/trips',
+  app.post('/itineraries',
     function (req, res){
-      trips.create(req, res);
+      itineraries.create(req, res);
     });
-  app.delete('/trips/:id',
+  app.post('/itineraries/:id',
     function (req, res){
-      trips.destroy(req, res);
+      itineraries.destroy(req, res);
+    });
+
+  app.get('/visits',
+    function (req, res){
+      visits.all(req, res);
+    });
+  app.get('/visits/:id',
+    function (req, res){
+      visits.one(req, res);
+    });
+  app.put('/visits/:id',
+    function (req, res){
+      visits.edit(req, res);
+    });
+  app.post('/visits',
+    function (req, res){
+      visits.create(req, res);
+    });
+  app.post('/visits/:id',
+    function (req, res){
+      visits.destroy(req, res);
     });
 
   app.get('/customers',
@@ -113,6 +135,18 @@ module.exports = function (app) {
       branches.destroy(req, res);
     });
 
+  app.get('/airports',
+    function (req, res){
+      airports.all(req, res);
+    });
+  app.get('/airports/:id',
+    function (req, res){
+      airports.one(req, res);
+    });
+  app.post('/airports/:id',
+    function (req, res){
+      airports.edit(req, res);
+    });
   app.post('/airports',
     function (req, res){
       airports.create(req, res);
@@ -121,6 +155,19 @@ module.exports = function (app) {
     function (req, res){
       airports.destroy(req, res);
     });
+
+  app.get('/hotels',
+    function (req, res){
+      hotels.all(req, res);
+    });
+  app.get('/hotels/:id',
+    function (req, res){
+      hotels.one(req, res);
+    });
+  app.post('/hotels/:id',
+    function (req, res){
+      hotels.edit(req, res);
+    });
   app.post('/hotels',
     function (req, res){
       hotels.create(req, res);
@@ -128,6 +175,19 @@ module.exports = function (app) {
   app.delete('/hotels/:id',
     function (req, res){
       hotels.destroy(req, res);
+    });
+
+  app.get('/restaurants',
+    function (req, res){
+      restaurants.all(req, res);
+    });
+  app.get('/restaurants/:id',
+    function (req, res){
+      restaurants.one(req, res);
+    });
+  app.post('/restaurants/:id',
+    function (req, res){
+      restaurants.edit(req, res);
     });
   app.post('/restaurants',
     function (req, res){

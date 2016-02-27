@@ -4,8 +4,9 @@ var EmployeeSchema = new mongoose.Schema({
   name: String,
   phone: String,
   title: String,
+  lumileds: String,
+  company: {type: Schema.Types.ObjectId, ref: "Company"},
   location: {type: Schema.Types.ObjectId, ref: "Location"},
-  trips: [{type: Schema.Types.ObjectId, ref: "Trip"}],
   created_at: {type: Date, default: Date.now}
 });
 var deepPopulate = require('mongoose-deep-populate')(mongoose);

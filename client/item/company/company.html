@@ -1,42 +1,43 @@
 <div class="row">
 	<div class="col m12">
-		<div class="row valign-wrapper">
-			<div class="col m10">
-				<h4>Company: {{vm.company.name}}</h4>
-			</div>
-			<div class="col m2 right">
-				<a class="btn blue darken-4 valign" href="#/companies">Back</a>
-			</div>
-		</div>
-		<h5>Employees: </h5>
-		<ul>
-			<li ng-repeat="customer in vm.company.customers">
-				<a href="#/customer/{{customer._id}}">
-					{{customer.name}}
-				</a>
-			</li>
-		</ul>
-		<h5>Branches: </h5>
-		<ul>
-			<li ng-repeat="branch in vm.company.branches">
-				<a href="#/branch/{{branch._id}}">
-					{{branch.location.city}} Branch
-				</a>
-			</li>
-		</ul>
+		<h5 class="left">Edit Company:</h5>
+		<a class="btn blue darken-4 right" href="#/companies">Back</a>
 	</div>
 </div>
-<h4>Edit company</h4>
 <div class="row">
-	<form>
-		<div class="input-field col m3">
-			<input type='text' placeholder="Name" ng-model='vm.new_company.name'>
+	<form class="col m12">
+		<div class="row">
+		  <div class="input-field col s3">
+		    <input ng-model='vm.company.name' id="name" type="text" class="validate" required>
+		    <label class="active" for="name">Name</label>
+		  </div>
+		</div>
+		<div class="row">
+			<div class="col m12">
+				<input type='submit' value='Submit' ng-click='vm.edit()' class="btn green accent-4">
+			</div>
 		</div>
 	</form>
 </div>
-<div class="input-field col m3">
-	<input type='submit' value='Edit' ng-click='vm.edit()' class="btn">
+<div class="row blue darken-4 blue-text text-darken-4 z-depth-2">-</div>
+<div class="row">
+	<div class="col m4">
+		<h5>Branches</h5>
+		<div class="collection">
+			<a href="#/branch/{{branch._id}}" class="collection-item" ng-repeat="branch in vm.company.branches | orderBy: 'name' track by $index">{{branch.location.city}} Branch</a>
+		</div>
+	</div>
+	<div class="col m8">
+		<h5>Employees</h5>
+		<div class="collection">
+			<a href="#/customer/{{customer._id}}" class="collection-item" ng-repeat="customer in vm.company.customers | orderBy: 'name' track by $index">{{customer.name}}</a>
+		</div>
+	</div>
 </div>
-
-<h4>Delete company</h4>
-<div ng-click="vm.remove(vm.company)" class="btn red">Delete</div>
+<div class="row red red-text z-depth-2">-</div>
+<div class="row">
+	<div class="col m12">
+		<h5 class="red-text">WARNING: Delete company</h5>
+		<div ng-click="vm.remove(vm.company)" class="btn blue-grey darken-3 red-text">Delete</div>
+	</div>
+</div>
