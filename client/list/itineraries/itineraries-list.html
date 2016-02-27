@@ -1,0 +1,27 @@
+<div class="row">
+	<div class="col m12">
+		<h5 class="left">All Itineraries</h5>
+		<a class="btn blue darken-4 right" href="#/itineraries">Back</a>
+	</div>
+</div>
+<div class="row">
+	<div class="input-field col m3 right">
+		<input type="text" placeholder="Search itineraries" ng-model="itineraryFilter">
+	</div>
+	<table class="highlight">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Duation</th>
+				<th>Created At</th>
+			</tr>
+		</thead>
+		<tbody ng-repeat="itinerary in vm.itineraries | filter: itineraryFilter | orderBy: 'start_date' track by $index">
+			<tr ng-click="vm.view(itinerary._id)">
+				<td>{{$index+1}}</td>
+				<td>{{itinerary.start_date | date: format: 'mediumDate'}} - {{itinerary.end_date | date: format: 'mediumDate'}}</td>
+				<td>{{itinerary.created_at | date: format: 'mediumDate'}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

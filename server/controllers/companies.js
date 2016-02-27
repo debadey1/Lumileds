@@ -14,7 +14,7 @@ var exports = {
 
 function all(req, res) {
   Company.find()
-    .deepPopulate()
+    .deepPopulate(["branches.location"])
     .exec()
     .then(function (result) {
       res.status(200).send(result);

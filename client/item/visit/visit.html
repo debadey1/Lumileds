@@ -1,0 +1,75 @@
+<div class="row">
+	<div class="col m12">
+		<h5 class="left">Edit Visit</h5>
+		<a class="btn blue darken-4 right" href="#/visits/all">Back</a>
+	</div>
+</div>
+<div class="row valign-wrapper">
+	<div class="input-field col m3">
+		<input type='date' class=" validate" placeholder="Start Date" ng-model='vm.visit.start_date' required>
+	</div>
+	<div class="input-field col m3">
+		<input type='date' class="datepicker validate" placeholder="End Date" ng-model='vm.visit.end_date' required>
+	</div>
+	<div class="input-field col m2">
+    <select class="browser-default validate" ng-model='vm.visit.region' required>
+	    <option value="" disabled selected>Region (Required)</option>
+      <option ng-repeat="region in vm.regions">{{region}}</option>
+    </select>
+  </div>
+  <div class="input-field col m3">
+    <select class="browser-default validate" ng-model='vm.visit.company' ng-change="vm.getCompanyBranches(visit.company)" required>
+	    <option value="" disabled selected>Company (Required)</option>
+      <option ng-repeat="company in vm.companies" value="{{company._id}}">{{company.name}}</option>
+    </select>
+  </div>
+</div>
+<div class="row">
+	<div class="col m3">
+		<p>Add Attendees</p>
+		<div
+		    isteven-multi-select
+		    input-model="vm.employees"
+		    output-model="vm.add_employees"
+		    output-properties="_id"
+		    button-label="name"
+		    item-label="name"
+		    tick-property="ticked"
+		    translation="vm.selectPropsAdd"
+		>
+		</div>
+	</div>
+	<div class="col m3">
+		<p>Remove Attendees</p>
+		<div
+		    isteven-multi-select
+		    input-model="vm.visit.employees"
+		    output-model="vm.remove_employees"
+		    output-properties="_id"
+		    button-label="name"
+		    item-label="name"
+		    tick-property="ticked"
+		    translation="vm.selectPropsRemove"
+		>
+		</div>
+	</div>
+	<div class="col m3 offset-m2">
+		<select class="browser-default validate" ng-model='vm.visit.branch' required>
+	    <option value="" disabled selected>Branch (Required)</option>
+      <option ng-repeat="branch in vm.branchesToVisit" value="{{branch._id}}">{{branch.location.city}} Branch</option>
+    </select>
+	</div>
+</div>
+<div class="row">
+	<div class="col m12">
+		<input type='submit' value='Submit' ng-click='vm.edit()' class="btn green accent-4">
+	</div>
+</div>
+
+<div class="row red red-text z-depth-2">-</div>
+<div class="row">
+	<div class="col m12">
+		<h5 class="red-text">WARNING: Delete visit</h5>
+		<div ng-click="vm.remove(vm.visit)" class="btn blue-grey darken-3 red-text">Delete</div>
+	</div>
+</div>

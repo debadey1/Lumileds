@@ -1,0 +1,31 @@
+<div class="row">
+	<div class="col m12">
+		<h5 class="left">All Employees</h5>
+		<a class="btn blue darken-4 right" href="#/employees">Back</a>
+	</div>
+</div>
+<div class="row">
+	<div class="input-field col m3 right">
+		<input type="text" placeholder="Search employees" ng-model="employeeFilter">
+	</div>
+	<table class="centered highlight">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Company</th>
+				<th>State</th>
+				<th>Country</th>
+				<th>Region</th>
+			</tr>
+		</thead>
+		<tbody ng-repeat="employee in vm.employees | filter: employeeFilter | orderBy: 'company.name' track by $index">
+			<tr ng-click="vm.view(employee)">
+				<td>{{employee.name}}</td>
+				<td>{{employee.company.name}}<span ng-if="employee.lumileds">{{employee.lumileds}}</span></td>
+				<td>{{employee.location.state}}</td>
+				<td>{{employee.location.country}}</td>
+				<td>{{employee.location.region}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

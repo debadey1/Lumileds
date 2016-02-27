@@ -15,48 +15,39 @@
       // controller: 'DashboardController',
       // controllerAs: 'vm'
       .when('/',{
-          templateUrl: 'lists/companies/companies.html',
-          controller: 'CompaniesController',
+          templateUrl: 'create/itineraries/itineraries.html',
+          controller: 'ItinerariesController',
           controllerAs: 'vm'
       })
       .when('/employees',{
-          templateUrl: 'lists/employees/employees.html',
+          templateUrl: 'create/employees/employees.html',
           controller: 'EmployeesController',
           controllerAs: 'vm'
       })
-      .when('/customers',{
-          templateUrl: 'lists/customers/customers.html',
-          controller: 'CustomersController',
-          controllerAs: 'vm'
-      })
-      .when('/trips',{
-          templateUrl: 'lists/trips/trips.html',
-          controller: 'TripsController',
+      .when('/itineraries',{
+          templateUrl: 'create/itineraries/itineraries.html',
+          controller: 'ItinerariesController',
           controllerAs: 'vm'
       })
       .when('/companies',{
-          templateUrl: 'lists/companies/companies.html',
+          templateUrl: 'create/companies/companies.html',
           controller: 'CompaniesController',
           controllerAs: 'vm'
       })
       .when('/branches',{
-          templateUrl: 'lists/branches/branches.html',
+          templateUrl: 'create/branches/branches.html',
           controller: 'BranchesController',
           controllerAs: 'vm'
       })
+
       .when('/employee/:id',{
           templateUrl: 'item/employee/employee.html',
           controller: 'EmployeeController',
           controllerAs: 'vm'
       })
-      .when('/customer/:id',{
-          templateUrl: 'item/customer/customer.html',
-          controller: 'CustomerController',
-          controllerAs: 'vm'
-      })
-      .when('/trip/:id',{
-          templateUrl: 'item/trip/trip.html',
-          controller: 'TripController',
+      .when('/visit/:id',{
+          templateUrl: 'item/visit/visit.html',
+          controller: 'VisitController',
           controllerAs: 'vm'
       })
       .when('/company/:id',{
@@ -67,6 +58,70 @@
       .when('/branch/:id',{
           templateUrl: 'item/branch/branch.html',
           controller: 'BranchController',
+          controllerAs: 'vm'
+      })
+      .when('/itinerary/:id',{
+          templateUrl: 'item/itinerary/itinerary.html',
+          controller: 'ItineraryController',
+          controllerAs: 'vm'
+      })
+
+      .when('/employees/all',{
+          templateUrl: 'list/employees/employees-list.html',
+          controller: 'EmployeesListController',
+          controllerAs: 'vm'
+      })
+      .when('/branches/all',{
+          templateUrl: 'list/branches/branches-list.html',
+          controller: 'BranchesListController',
+          controllerAs: 'vm'
+      })
+      .when('/itineraries/all',{
+          templateUrl: 'list/itineraries/itineraries-list.html',
+          controller: 'ItinerariesListController',
+          controllerAs: 'vm'
+      })
+      .when('/visits/all',{
+          templateUrl: 'list/visits/visits-list.html',
+          controller: 'VisitsListController',
+          controllerAs: 'vm'
+      })
+
+      .when('/airports/:branch_id',{
+          templateUrl: 'create/airports/airports.html',
+          controller: 'AirportsController',
+          controllerAs: 'vm'
+      })
+      .when('/hotels/:branch_id',{
+          templateUrl: 'create/hotels/hotels.html',
+          controller: 'HotelsController',
+          controllerAs: 'vm'
+      })
+      .when('/restaurants/:branch_id',{
+          templateUrl: 'create/restaurants/restaurants.html',
+          controller: 'RestaurantsController',
+          controllerAs: 'vm'
+      })
+
+      .when('/branch/:branch_id/airport/:id',{
+          templateUrl: 'item/airport/airport.html',
+          controller: 'AirportController',
+          controllerAs: 'vm'
+      })
+      .when('/branch/:branch_id/hotel/:id',{
+          templateUrl: 'item/hotel/hotel.html',
+          controller: 'HotelController',
+          controllerAs: 'vm'
+      })
+      .when('/branch/:branch_id/restaurant/:id',{
+          templateUrl: 'item/restaurant/restaurant.html',
+          controller: 'RestaurantController',
+          controllerAs: 'vm'
+      })
+
+      .when('/itinerary/:itinerary_id/visit/:id',{
+          templateUrl: 'item/visit/visit.html',
+          controller: 'VisitController',
           controllerAs: 'vm'
       })
       .otherwise({
