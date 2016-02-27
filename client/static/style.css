@@ -1,6 +1,7 @@
-.btn, .chip {
-	background-color: #e65100;
+td {
+	padding: 5px;
 }
-.chip {
-	color: white;
+
+select.multiple {
+	height: 80px;
 }

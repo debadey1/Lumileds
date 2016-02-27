@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 var Employee = mongoose.model('Employee');
 var Location = mongoose.model('Location');
-var Trip = mongoose.model('Trip');
+var Visit = mongoose.model('Visit');
+var Company = mongoose.model('Company');
 var Q = require('q');
 mongoose.Promise = Q.Promise;
 
@@ -16,7 +17,7 @@ var exports = {
 
 function all(req, res) {
   Employee.find()
-    .deepPopulate(["location"])
+    .deepPopulate(["location", "company"])
     .exec()
     .then(function (result) {
       res.status(200).send(result);
@@ -49,7 +50,7 @@ function destroy(req, res) {
   var emp_id = req.params.id;
   var promises = [
     Employee.findByIdAndRemove(emp_id).exec(),    
-    Trip.findOneAndUpdate({employees:{$in:[emp_id]}}, {$pull: {employees: emp_id}}).exec()
+    Visit.findOneAndUpdate({employees:{$in:[emp_id]}}, {$pull: {employees: emp_id}}).exec()
   ];
   Q.all(promises)
     .then(function (result) {
@@ -63,7 +64,7 @@ function destroy(req, res) {
 
 function one(req, res) {
   Employee.findById(req.params.id)
-    .deepPopulate(["location", "trips"])
+    .deepPopulate(["location", "visits", "company"])
     .exec()
     .then(function (result) {
       res.status(200).send(result);
@@ -76,13 +77,17 @@ function one(req, res) {
 
 function edit(req, res) {
   var promises = [
-    Employee.findByIdAndUpdate(req.params.id, req.body.employee, {new: true}).exec(),
-    Location.findByIdAndUpdate(req.body.location_id, req.body.location, {new: true}).exec()
+    Employee.findByIdAndUpdate(req.params.id, req.body.employee).exec(),
+    Location.findByIdAndUpdate(req.body.location_id, req.body.location, {new: true}).exec(),
+    Company.findByIdAndUpdate(req.body.employee.company, {$push: {employees: req.params.id}}).exec()
   ];
   Q.all(promises)
     .then(function (result) {
       res.status(200).send(result);
-      return result;
+      return Company.findByIdAndUpdate(result[0].company, {$pull: {employees: req.params.id}});
+    })
+    .then(function (result) {
+      // body...
     })
     .catch(function (err) {
       res.status(500).send(err);

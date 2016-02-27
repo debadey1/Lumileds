@@ -5,13 +5,15 @@ var Airport = mongoose.model('Airport');
 var Q = require('q');
 mongoose.Promise = Q.Promise;
 
-  // edit: edit,
-  // one: one,
-  // all: all
 var exports = {
   destroy: destroy,
-  create: create
+  create: create,
+  edit: edit,
+  one: one,
+  all: all
 };
+
+module.exports = exports;
 
 function create(req, res) {
   new Location(req.body.location).save()
@@ -48,36 +50,48 @@ function destroy(req, res) {
     });
 }
 
-// function all(req, res) {
-//   Airport.find()
-//     .deepPopulate(["company", "location"])
-//     .exec()
-//     .then(function (result) {
-//       res.status(200).send(result);
-//     })
-//     .catch(fail);
-// }
+function all(req, res) {
+  Airport.find()
+    .exec()
+    .then(success)
+    .catch(fail);
 
-// function one(req, res) {
-//   Airport.findById(req.params.id)
-//     .deepPopulate(["company", "location", "airports", "hotels", "restaurants"])
-//     .exec()
-//     .then(function (result) {
-//       res.status(200).send(result);
-//     })
-//     .catch(fail);
-// }
+  function success(result) {
+    res.status(200).send(result);
+  }
+  function fail(result) {
+    res.status(500).send(err);
+  }
+}
 
-// function edit(req, res) {
-//   var promises = [
-//     Airport.findByIdAndUpdate(req.params.id, req.body.branch, {new: true}).exec(),
-//     Location.findByIdAndUpdate(req.body.location_id, req.body.location, {new: true}).exec()
-//   ];
-//   Q.all(promises)
-//     .then(function (result) {
-//       res.status(200).send(result);
-//     })
-//     .catch(fail);
-// }
+function one(req, res) {
+  Airport.findById(req.params.id)
+    .deepPopulate(["location"])
+    .exec()
+    .then(success)
+    .catch(fail);
 
-module.exports = exports;
+  function success(result) {
+    res.status(200).send(result);
+  }
+  function fail(result) {
+    res.status(500).send(err);
+  }
+}
+
+function edit(req, res) {
+  var promises = [
+    Airport.findByIdAndUpdate(req.params.id, req.body.airport, {new: true}).exec(),
+    Location.findByIdAndUpdate(req.body.location_id, req.body.location, {new: true}).exec()
+  ];
+  Q.all(promises)
+    .then(success)
+    .catch(fail);
+
+  function success(result) {
+    res.status(200).send(result);
+  }
+  function fail(result) {
+    res.status(500).send(err);
+  }
+}

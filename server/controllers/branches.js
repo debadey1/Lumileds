@@ -53,11 +53,26 @@ function destroy(req, res) {
 
       var promises = [
         Location.findByIdAndRemove(result.location).exec(),
-        Company.findByIdAndUpdate(result.company, {$pull: {branches: result._id}}).exec(),
-        Airport.find().remove({_id:{$in:result.airports}}).exec(),
-        Hotel.find().remove({_id:{$in:result.hotels}}).exec(),
-        Restaurant.find().remove({_id:{$in:result.restaurants}}).exec()
+        Company.findByIdAndUpdate(result.company, {$pull: {branches: result._id}}).exec()
       ];
+
+      for (var i = 0; i < result.airports.length; i++) {
+        promises.push(Airport.findByIdAndRemove(result.airports[i]).exec());
+      }
+      for (var i = 0; i < result.hotels.length; i++) {
+        promises.push(Hotel.findByIdAndRemove(result.hotels[i]).exec());
+      }
+      for (var i = 0; i < result.restaurants.length; i++) {
+        promises.push(Restaurant.findByIdAndRemove(result.restaurants[i]).exec());
+      }
+      return Q.all(promises);
+    })
+    .then(function (result) {
+      var promises = [];
+      for (var i = 2; i < result.length; i++) {
+        promises.push(Location.findByIdAndRemove(result[i].location).exec());
+      }
+
       return Q.all(promises);
     })
     .catch(function (err) {
@@ -80,13 +95,14 @@ function one(req, res) {
 
 function edit(req, res) {
   var promises = [
-    Branch.findByIdAndUpdate(req.params.id, req.body.branch, {new: true}).exec(),
+    Branch.findByIdAndUpdate(req.params.id, req.body.branch).exec(),
+    Company.findByIdAndUpdate(req.body.branch.company, {$push: {branches: req.params.id}}).exec(),
     Location.findByIdAndUpdate(req.body.location_id, req.body.location, {new: true}).exec()
   ];
   Q.all(promises)
     .then(function (result) {
       res.status(200).send(result);
-      return result;
+      return Company.findByIdAndUpdate(result[0].company, {$pull: {branches: result[0]._id}}).exec();
     })
     .catch(function (err) {
       res.status(500).send(err);

@@ -12,10 +12,10 @@
 
   function factory($http, $log) {
     var factory = {
-      add: add,
       all: all,
       one: one,
       edit: edit,
+      add: add,
       remove: remove
     };
 

@@ -43,7 +43,7 @@
 
     function edit() {
       var payload = {
-        company: pruneEmpty(vm.new_company)
+        company: pruneEmpty(vm.company)
       };
       companyFactory.edit(payload, vm.company_id)
         .then(success)
