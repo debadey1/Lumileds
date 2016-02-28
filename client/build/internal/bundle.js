@@ -2390,7 +2390,12 @@
 
     vm.edit = edit;
     vm.remove = remove;
+
+    initialize();
     //////////
+
+    function initialize() {
+    }
 
     function getVisit() {
       visitFactory.one(vm.visit_id)
@@ -2399,8 +2404,7 @@
 
       function success(res) {
         vm.visit = res;
-        vm.visit.start_date = new Date(vm.visit.start_date);
-        vm.visit.end_date = new Date(vm.visit.end_date);
+        vm.visit.date = new Date(vm.visit.date);
       }
     }
 

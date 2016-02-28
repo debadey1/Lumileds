@@ -2,7 +2,6 @@
 	<div class="col m12">
 		<h5 class="left"><span class="green-text text-accent-4">Create</span> An Itinerary</h5>
 		<a class="btn blue darken-4 right" href="#/itineraries/all">All Itineraries</a>
-		<span></span>
 		<a class="btn purple darken-4 right" href="#/visits/all">All Visits</a>
 	</div>
 </div>
@@ -10,12 +9,9 @@
 	<div ng-repeat="visit in vm.visits">
 	 	<div class="row valign-wrapper">
 			<div class="input-field col m3">
-				<input type='date' class=" validate" placeholder="Start Date" ng-model='visit.start_date' required>
+				<input type='date' class=" validate" placeholder="Date" ng-model='visit.date' required>
 			</div>
 			<div class="input-field col m3">
-				<input type='date' class="datepicker validate" placeholder="End Date" ng-model='visit.end_date' required>
-			</div>
-			<div class="input-field col m2">
 		    <select class="browser-default validate" ng-model='visit.region' required>
 			    <option value="" disabled selected>Region (Required)</option>
 		      <option ng-repeat="region in vm.regions">{{region}}</option>
@@ -27,8 +23,8 @@
 		      <option ng-repeat="company in vm.companies" value="{{company._id}}">{{company.name}}</option>
 		    </select>
 		  </div>
-		  <div class="col m1">
-				<a ng-click='vm.removeVisit($index)' class="btn red darken-4 right valign">X</a>
+		  <div class="col m1 offset-m2">
+				<a ng-click='vm.removeVisit($index)' class="btn red darken-4 right">X</a>
 		  </div>
 	  </div>
 	  <div class="row">
@@ -38,7 +34,7 @@
 		      <option ng-repeat="employee in vm.employees" value="{{employee._id}}">{{employee.name}}</option>
 		    </select>
 	  	</div>
-	  	<div class="col m3 offset-m3" ng-if="visit.company">
+	  	<div class="col m3 offset-m1" ng-if="visit.company">
 	  		<select class="browser-default validate" ng-model='visit.branch' required>
 			    <option value="" disabled selected>Branch (Required)</option>
 		      <option ng-repeat="branch in vm.branchesToVisit[$index]" value="{{branch._id}}">{{branch.location.city}} Branch</option>

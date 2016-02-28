@@ -30,8 +30,8 @@ function all(req, res) {
 function create(req, res) {
   var visits = req.body.visits;
   var promises = [];
-  var min = visits[0].start_date;
-  var max = visits[0].end_date;
+  var min = visits[0].date;
+  var max = visits[0].date;
 
   for (var i = 0; i < visits.length; i++) {
     // push into promises
@@ -39,8 +39,11 @@ function create(req, res) {
 
     // also find min start date and max end date
     if (i > 0) {
-      min = visits[i].start_date < min ? visits[i].start_date : min;
-      max = visits[i].end_date > max ? visits[i].end_date : max;
+      if (visits[i].date < min) {
+        min = visits[i].date;
+      } else if (visits[i].date > max) {
+        max = visits[i].date;
+      }
     }
   }
 
@@ -109,8 +112,8 @@ function edit(req, res) {
   var itinerary_id = req.params.id;
   var visits = req.body.visits;
   var promises = [];
-  var min = visits[0].start_date;
-  var max = visits[0].end_date;
+  var min = visits[0].date;
+  var max = visits[0].date;
 
   for (var i = 0; i < visits.length; i++) {
     // push into promises
@@ -118,8 +121,11 @@ function edit(req, res) {
 
     // also find min start date and max end date
     if (i > 0) {
-      min = visits[i].start_date < min ? visits[i].start_date : min;
-      max = visits[i].end_date > max ? visits[i].end_date : max;
+      if (visits[i].date < min) {
+        min = visits[i].date;
+      } else if (visits[i].date > max) {
+        max = visits[i].date;
+      }
     }
   }
 

@@ -12,16 +12,16 @@
 		<thead>
 			<tr>
 				<th>#</th>
-				<th>Duation</th>
+				<th>Date</th>
 				<th>Location</th>
 				<th>Region</th>
 				<th>Attendees</th>
 			</tr>
 		</thead>
-		<tbody ng-repeat="visit in vm.visits | filter: visitFilter | orderBy: 'start_date' track by $index">
+		<tbody ng-repeat="visit in vm.visits | filter: visitFilter | orderBy: 'date' track by $index">
 			<tr ng-click="vm.view(visit._id)">
 				<td>{{$index+1}}</td>
-				<td>{{visit.start_date | date: format: 'mediumDate'}} - {{visit.end_date | date: format: 'mediumDate'}}</td>
+				<td>{{visit.date | date: format: 'mediumDate'}}</td>
 				<td>{{visit.company.name}} - {{visit.branch.location.city}} Branch</td>
 				<td>{{visit.region}}</td>
 				<td><span ng-repeat="e in visit.employees">{{e.name}}<span ng-if="!$last">, </span></span></td>
