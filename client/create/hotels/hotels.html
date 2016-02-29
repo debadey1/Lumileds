@@ -5,7 +5,7 @@
 		<!-- <a class="btn blue darken-4 right" href="#/hotels/all">View All</a> -->
 	</div>
 </div>
-<form>
+<form name="form" ng-submit="vm.add(form.$valid)">
  	<div class="row">
 		<div class="input-field col m3">
 			<input type='text' placeholder="Name (Required)" ng-model='vm.new_hotel.name' class="validate" required>
@@ -36,7 +36,7 @@
   </div>
 	<div class="row">
 		<div class="input-field col m12">
-			<input type='submit' value='Add' ng-click='vm.add()' class="btn green accent-4">
+			<input type='submit' value='Add' ng-disabled='form.$invalid' class="btn green accent-4">
 		</div>
  	</div>
 </form>

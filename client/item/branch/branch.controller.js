@@ -62,6 +62,8 @@
       var location = vm.branch.location;
       delete vm.branch.location;
 
+      vm.branch.company = vm.new_company;
+
       var payload = {
         branch: pruneEmpty(vm.branch),
         location_id: location._id,

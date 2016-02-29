@@ -3,12 +3,12 @@
 
   angular
     .module('app')
-    .controller('HotelsController', controller);
+    .controller('AirportsController', controller);
 
   controller.$inject = [
     "$routeParams",
     "$location",
-    "hotelFactory",
+    "airportFactory",
     "regionFactory",
     "pruneFactory"
   ];
@@ -16,7 +16,7 @@
   function controller(
     $routeParams,
     $location,
-    hotelFactory,
+    airportFactory,
     regionFactory,
     pruneFactory
   ) {
@@ -26,47 +26,49 @@
     vm.regions = regionFactory.regions;
 
     vm.branch_id = $routeParams.branch_id;
-    vm.hotels = getHotels();
+    vm.airports = getAirports();
 
     vm.add = add;
     vm.view = view;
     //////////
 
 
-    function getHotels() {
-      hotelFactory.all()
+    function getAirports() {
+      airportFactory.all()
         .then(success)
         .catch(fail);
 
       function success(res) {
-        vm.hotels = res;
+        vm.airports = res;
       }
     }
 
-    function add() {
-      var payload = {
-        hotel: pruneEmpty(vm.new_hotel),
-        location: pruneEmpty(vm.new_location),
-        branch_id: vm.branch_id
-      };
+    function add(isValid) {
+      if (isValid) {
+        var payload = {
+          airport: pruneEmpty(vm.new_airport),
+          location: pruneEmpty(vm.new_location),
+          branch_id: vm.branch_id
+        };
 
-      hotelFactory.add(payload)
-        .then(success)
-        .catch(fail);
+        airportFactory.add(payload)
+          .then(success)
+          .catch(fail);
+      }
 
       function success() {
-        getHotels();
-        vm.new_hotel = {};
+        getAirports();
+        vm.new_airport = {};
         vm.new_location = {};
       }
     }
 
     function view(data) {
-      $location.path('/branch/' + vm.branch_id + '/hotel/' + data._id);
+      $location.path('/branch/' + vm.branch_id + '/airport/' + data._id);
     }
 
     function fail(err) {
-      alert('Hotels Controller XHR Failed: ' + err.data);
+      alert('Airports Controller XHR Failed: ' + err.data);
     }
   }
 })();

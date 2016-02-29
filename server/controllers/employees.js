@@ -12,12 +12,25 @@ var exports = {
   create: create,
   destroy: destroy,
   edit: edit,
-  one: one
+  one: one,
+  lumileds: lumileds
 };
 
 function all(req, res) {
   Employee.find()
     .deepPopulate(["location", "company"])
+    .exec()
+    .then(function (result) {
+      res.status(200).send(result);
+      return result;
+    })
+    .catch(function (err) {
+      res.status(500).send(err);
+    });
+}
+
+function lumileds(req, res) {
+  Employee.find({lumileds: "Lumileds"})
     .exec()
     .then(function (result) {
       res.status(200).send(result);

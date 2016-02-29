@@ -19,9 +19,6 @@
 
   function routes($routeProvider) {
     $routeProvider
-      // templateUrl: 'dashboard/dashboard.html',
-      // controller: 'DashboardController',
-      // controllerAs: 'vm'
       .when('/',{
           templateUrl: 'create/itineraries/itineraries.html',
           controller: 'ItinerariesController',
@@ -182,16 +179,18 @@
       }
     }
 
-    function add() {
-      var payload = {
-        airport: pruneEmpty(vm.new_airport),
-        location: pruneEmpty(vm.new_location),
-        branch_id: vm.branch_id
-      };
+    function add(isValid) {
+      if (isValid) {
+        var payload = {
+          airport: pruneEmpty(vm.new_airport),
+          location: pruneEmpty(vm.new_location),
+          branch_id: vm.branch_id
+        };
 
-      airportFactory.add(payload)
-        .then(success)
-        .catch(fail);
+        airportFactory.add(payload)
+          .then(success)
+          .catch(fail);
+      }
 
       function success() {
         getAirports();
@@ -267,15 +266,17 @@
       }
     }
 
-    function add() {
-      var payload = {
-        branch: pruneEmpty(vm.new_branch),
-        branch_location: pruneEmpty(vm.branch_location)
-      };
+    function add(isValid) {
+      if (isValid) {
+        var payload = {
+          branch: pruneEmpty(vm.new_branch),
+          branch_location: pruneEmpty(vm.branch_location)
+        };
 
-      branchFactory.add(payload)
-        .then(success)
-        .catch(fail);
+        branchFactory.add(payload)
+          .then(success)
+          .catch(fail);
+      }
 
       function success(res) {
         getBranches();
@@ -337,14 +338,16 @@
       }
     }
 
-    function add() {
-      var payload = {
-        company: vm.new_company
-      };
+    function add(isValid) {
+      if (isValid) {
+        var payload = {
+          company: vm.new_company
+        };
 
-      companyFactory.add(payload)
-        .then(success)
-        .catch(fail);
+        companyFactory.add(payload)
+          .then(success)
+          .catch(fail);
+      }
 
       function success() {
         getCompanies();
@@ -358,86 +361,6 @@
 
     function fail(err) {
       alert('Companies Controller XHR Failed: ' + err.data);
-    }
-  }
-})();
-(function () {
-  'use strict';
-
-  angular
-    .module('app')
-    .controller('CustomersController', controller);
-
-  controller.$inject = [
-    "$location",
-    "companyFactory",
-    "customerFactory"
-  ];
-
-  function controller(
-    $location,
-    companyFactory,
-    customerFactory
-  ) {
-    /* jshint validthis: true */
-    var vm = this;
-
-    vm.customers = getCustomers();
-    vm.companies = getCompanies();
-
-    vm.add = add;
-    vm.remove = remove;
-    vm.view = view;
-    //////////
-
-
-    function getCustomers() {
-      customerFactory.all()
-        .then(success)
-        .catch(fail);
-
-      function success(res) {
-        vm.customers = res;
-      }
-    }
-
-    function getCompanies() {
-      companyFactory.all()
-        .then(success)
-        .catch(fail);
-
-      function success(res) {
-        vm.companies = res;
-      }
-    }
-
-    function add() {
-      customerFactory.add(vm.new_customer)
-        .then(success)
-        .catch(fail);
-
-      function success() {
-        getCustomers();
-        vm.new_customer = {};
-      }
-    }
-    
-    function remove(data) {
-      customerFactory.remove(data)
-        .then(success)
-        .catch(fail);
-
-      function success() {
-        vm.customers.splice(vm.customers.indexOf(data), 1);
-      }
-    }
-
-    function view(data) {
-      $location.path('/customer/' + data._id);
-    }
-
-    function fail(err) {
-      alert('Customers Controller XHR Failed: ' + err.data);
     }
   }
 })();
@@ -497,18 +420,20 @@
       }
     }
 
-    function add() {
-      if (vm.new_employee.lumileds) {
-        vm.new_employee.lumileds = "Lumileds";
-        delete vm.new_employee.company;
+    function add(isValid) {
+      if (isValid) {
+        if (vm.new_employee.lumileds) {
+          vm.new_employee.lumileds = "Lumileds";
+          delete vm.new_employee.company;
+        }
+        var payload = {
+          employee: vm.new_employee,
+          location: vm.new_location
+        };
+        employeeFactory.add(payload)
+          .then(success)
+          .catch(fail);
       }
-      var payload = {
-        employee: vm.new_employee,
-        location: vm.new_location
-      };
-      employeeFactory.add(payload)
-        .then(success)
-        .catch(fail);
 
       function success() {
         getEmployees();
@@ -571,16 +496,18 @@
       }
     }
 
-    function add() {
-      var payload = {
-        hotel: pruneEmpty(vm.new_hotel),
-        location: pruneEmpty(vm.new_location),
-        branch_id: vm.branch_id
-      };
+    function add(isValid) {
+      if (isValid) {
+        var payload = {
+          hotel: pruneEmpty(vm.new_hotel),
+          location: pruneEmpty(vm.new_location),
+          branch_id: vm.branch_id
+        };
 
-      hotelFactory.add(payload)
-        .then(success)
-        .catch(fail);
+        hotelFactory.add(payload)
+          .then(success)
+          .catch(fail);
+      }
 
       function success() {
         getHotels();
@@ -648,7 +575,7 @@
 
       var promises = [
         companyFactory.all(),
-        employeeFactory.all()
+        employeeFactory.getLumiledsEmployees()
       ];
 
       $q.all(promises)
@@ -764,16 +691,18 @@
       }
     }
 
-    function add() {
-      var payload = {
-        restaurant: pruneEmpty(vm.new_restaurant),
-        location: pruneEmpty(vm.new_location),
-        branch_id: vm.branch_id
-      };
+    function add(isValid) {
+      if (isValid) {
+        var payload = {
+          restaurant: pruneEmpty(vm.new_restaurant),
+          location: pruneEmpty(vm.new_location),
+          branch_id: vm.branch_id
+        };
 
-      restaurantFactory.add(payload)
-        .then(success)
-        .catch(fail);
+        restaurantFactory.add(payload)
+          .then(success)
+          .catch(fail);
+      }
 
       function success() {
         getRestaurants();
@@ -790,16 +719,6 @@
       alert('Restaurants Controller XHR Failed: ' + err.data);
     }
   }
-})();
-(function () {
-	'use strict';
-
-	angular
-		.module('app')
-		.controller('DashboardController', controller);
-
-	function controller() {
-	}
 })();
 (function () {
   'use strict';
@@ -1046,86 +965,6 @@
 
   angular
     .module('app')
-    .factory('customerFactory', factory);
-
-  factory.$inject = [
-    "$http",
-    "$log"
-  ];
-
-  function factory($http, $log) {
-    var factory = {
-      add: add,
-      all: all,
-      one: one,
-      edit: edit,
-      remove: remove
-    };
-
-    return factory;
-    //////////
-
-    function all() {
-      return $http.get('/customers')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function one(id) {
-      return $http.get('/customers/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function edit(payload, id) {
-      return $http.post('/customers/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function add(payload) {
-      return $http.post('/customers', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function remove(data) {
-      return $http.delete('/customers/' + data._id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function fail(error) {
-      $log.log('Customer Factory XHR failed: ', error.data);
-    }
-
-  }
-})();
-(function () {
-  'use strict';
-
-  angular
-    .module('app')
     .factory('employeeFactory', factory);
 
   factory.$inject = [
@@ -1139,7 +978,8 @@
       all: all,
       one: one,
       edit: edit,
-      remove: remove
+      remove: remove,
+      getLumiledsEmployees: getLumiledsEmployees
     };
 
     return factory;
@@ -1187,6 +1027,16 @@
 
     function remove(data) {
       return $http.delete('/employees/' + data._id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function getLumiledsEmployees() {
+      return $http.get('/employees/lumileds')
         .then(success)
         .catch(fail);
 
@@ -1596,7 +1446,7 @@
         .catch(fail);
 
       function success(response) {
-        return response.data;
+        return response;
       }
     }
 
@@ -1751,6 +1601,8 @@
       var location = vm.branch.location;
       delete vm.branch.location;
 
+      vm.branch.company = vm.new_company;
+
       var payload = {
         branch: pruneEmpty(vm.branch),
         location_id: location._id,
@@ -1862,92 +1714,6 @@
 
   angular
     .module('app')
-    .controller('CustomerController', controller);
-
-  controller.$inject = [
-    "$location",
-    "$routeParams",
-    "customerFactory",
-    "companyFactory",
-    "regionFactory",
-    "pruneFactory"
-  ];
-
-  function controller(
-    $location,
-    $routeParams,
-    customerFactory,
-    companyFactory,
-    regionFactory,
-    pruneFactory
-  ) {
-    /* jshint validthis: true */
-    var vm = this;
-    var pruneEmpty = pruneFactory.pruneEmpty;
-    vm.regions = regionFactory.regions;
-
-    vm.customer_id = $routeParams.id;
-    vm.customer = getCustomer();
-    vm.companies = getCompanies();
-
-    vm.edit = edit;
-    vm.remove = remove;
-    //////////
-
-    function getCustomer() {
-      customerFactory.one(vm.customer_id)
-        .then(success)
-        .catch(fail);
-
-      function success(res) {
-        vm.customer = res;
-      }
-    }
-
-    function getCompanies() {
-      companyFactory.all()
-        .then(success)
-        .catch(fail);
-
-      function success(res) {
-        vm.companies = res;
-      }
-    }
-
-    function edit() {
-      var payload = {
-        customer: pruneEmpty(vm.new_customer)
-      };
-      customerFactory.edit(payload, vm.customer_id)
-        .then(success)
-        .catch(fail);
-
-      function success(res) {
-        getCustomer();
-        vm.new_customer = {};
-      }
-    }
-
-    function remove(data) {
-      customerFactory.remove(data)
-        .then(success)
-        .catch(fail);
-
-      function success(res) {
-        $location.path("/customers");
-      }
-    }
-
-    function fail(err) {
-      alert('Customer Controller XHR Failed: ' + err.data);
-    }
-  }
-})();
-(function () {
-  'use strict';
-
-  angular
-    .module('app')
     .controller('EmployeeController', controller);
 
   controller.$inject = [
@@ -2006,7 +1772,8 @@
     function edit() {
       var location = vm.employee.location;
       delete vm.employee.location;
-
+      vm.employee.company = vm.new_company;
+      
       var payload = {
         employee: pruneEmpty(vm.employee),
         location_id: location._id,
@@ -2182,7 +1949,7 @@
 
       var promises = [
         companyFactory.all(),
-        employeeFactory.all()
+        employeeFactory.getLumiledsEmployees()
       ];
 
       $q.all(promises)
@@ -2352,6 +2119,7 @@
     .controller('VisitController', controller);
 
   controller.$inject = [
+    "$q",
     "$log",
     "$location",
     "$routeParams",
@@ -2364,6 +2132,7 @@
   ];
 
   function controller(
+    $q,
     $log,
     $location,
     $routeParams,
@@ -2383,55 +2152,63 @@
 
     vm.visit_id = $routeParams.id;
     vm.itinerary_id = $routeParams.itinerary_id;
-    vm.visit = getVisit();
-    vm.companies = getCompanies();
-    vm.employees = getEmployees();
     vm.getCompanyBranches = getCompanyBranches;
 
     vm.edit = edit;
+    vm.editCompany = editCompany;
     vm.remove = remove;
 
     initialize();
     //////////
 
     function initialize() {
-    }
-
-    function getVisit() {
       visitFactory.one(vm.visit_id)
-        .then(success)
+        .then(getVisitSuccess)
+        .then(getOthersSuccess)
         .catch(fail);
 
-      function success(res) {
+      function getVisitSuccess(res) {
         vm.visit = res;
         vm.visit.date = new Date(vm.visit.date);
+
+        var promises = [
+          companyFactory.all(),
+          employeeFactory.getLumiledsEmployees()
+        ];
+
+        return $q.all(promises);
       }
-    }
 
-    function getCompanies() {
-      companyFactory.all()
-        .then(success)
-        .catch(fail);
-
-      function success(res) {
-        vm.companies = res;
-      }
-    }
-
-    function getEmployees() {
-      employeeFactory.all()
-        .then(success)
-        .catch(fail);
-
-      function success(res) {
-        // remove all of the current visit's employees from the list
-        vm.employees = res;
+      function getOthersSuccess(res) {
+        vm.companies = res[0];
+        vm.employees = res[1];
         for (var i = 0; i < vm.visit.employees.length; i++) {
           for (var j = 0; j < vm.employees.length; j++) {
             if (vm.employees[j]._id === vm.visit.employees[i]._id) {
               vm.employees.splice(j, 1);
             }
           }
+        }
+      }
+    }
+
+    function editCompany(isValid) {
+      if (isValid) {
+        vm.visit.company = vm.new_company;
+        vm.visit.branch = vm.new_branch;
+
+        var payload = {
+          visit: pruneEmpty(vm.visit),
+          add_employees: [],
+          remove_employees: []
+        };
+
+        visitFactory.edit(payload, vm.visit_id)
+          .then(success)
+          .catch(fail);
+
+        function success() {
+          initialize();
         }
       }
     }
@@ -2449,7 +2226,7 @@
       }
 
       var payload = {
-        visit: pruneEmpty(vm.new_visit),
+        visit: pruneEmpty(vm.visit),
         add_employees: pruneEmpty(vm.add_employees),
         remove_employees: pruneEmpty(vm.remove_employees)
       };
@@ -2459,9 +2236,7 @@
         .catch(fail);
 
       function success() {
-        getVisit();
-        getEmployees();
-        vm.new_visit = {};
+        initialize();
       }
     }
 
@@ -2470,17 +2245,18 @@
         .then(success)
         .catch(fail);
 
-      function success() {
-        if (vm.itinerary_id) {
-          $location.path("/itinerary/" + vm.itinerary_id);
+      function success(res) {
+        if (res.status === 204) {
+          $location.path("/itineraries");
         } else {
-          $location.path("/visits/all");
+          $location.path("/itinerary/" + vm.itinerary_id);
         }
       }
     }
 
     // gets branches for the dropdown of each visit after a user selects a company
     function getCompanyBranches(company_id) {
+      vm.new_branch = null;
       vm.branchesToVisit = [];
       for (var i = 0; i < vm.companies.length; i++) {
         if (company_id === vm.companies[i]._id) {
@@ -2490,7 +2266,7 @@
     }
 
     function fail(err) {
-      alert('Visit Controller XHR Failed: ' + err.data);
+      $log.log('Visit Controller XHR Failed: ' + err.data);
     }
   }
 })();
@@ -2590,11 +2366,13 @@
     .controller('ItinerariesListController', controller);
 
   controller.$inject = [
+    "$log",
     "$location",
     "itineraryFactory"
   ];
 
   function controller(
+    $log,
     $location,
     itineraryFactory
   ) {
@@ -2614,6 +2392,10 @@
 
       function success(res) {
         vm.itineraries = res;
+        for (var i = 0; i < vm.itineraries.length; i++) {
+          vm.itineraries[i].start_date = moment(vm.itineraries[i].start_date).format("MMM Do, YYYY");
+          vm.itineraries[i].end_date = moment(vm.itineraries[i].end_date).format("MMM Do, YYYY");
+        }
       }
     }
 
@@ -2622,7 +2404,7 @@
     }
 
     function fail(err) {
-      alert('Itineraries List Controller XHR Failed: ' + err.data);
+      $log.log('Itineraries List Controller XHR Failed: ' + err.data);
     }
   }
 })();
@@ -2634,11 +2416,13 @@
     .controller('VisitsListController', controller);
 
   controller.$inject = [
+    "$log",
     "$location",
     "visitFactory"
   ];
 
   function controller(
+    $log,
     $location,
     visitFactory
   ) {
@@ -2658,6 +2442,9 @@
 
       function success(res) {
         vm.visits = res;
+        for (var i = 0; i < vm.visits.length; i++) {
+          vm.visits[i].date = moment(vm.visits[i].date).format("MMM Do, YYYY");
+        }
       }
     }
 
@@ -2666,7 +2453,7 @@
     }
 
     function fail(err) {
-      alert('Visits List Controller XHR Failed: ' + err.data);
+      $log.log('Visits List Controller XHR Failed: ' + err.data);
     }
   }
 })();

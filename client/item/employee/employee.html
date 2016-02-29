@@ -20,7 +20,8 @@
 		  </div>
 		  <div id="company-select" ng-if="!vm.employee.lumileds" class="col s3 m3">
 		    <label>Change Company</label>
-		  	<select class="browser-default" ng-model='vm.employee.company'>
+		  	<select class="browser-default" ng-model='vm.new_company'>
+			    <option value="" disabled>{{vm.employee.company.name}}</option>
 		      <option ng-repeat="company in vm.companies" value="{{company._id}}">{{company.name}}</option>
 		    </select>
 		  </div>

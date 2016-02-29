@@ -48,7 +48,7 @@
 
       var promises = [
         companyFactory.all(),
-        employeeFactory.all()
+        employeeFactory.getLumiledsEmployees()
       ];
 
       $q.all(promises)

@@ -61,7 +61,8 @@
     function edit() {
       var location = vm.employee.location;
       delete vm.employee.location;
-
+      vm.employee.company = vm.new_company;
+      
       var payload = {
         employee: pruneEmpty(vm.employee),
         location_id: location._id,

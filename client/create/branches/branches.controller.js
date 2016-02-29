@@ -56,15 +56,17 @@
       }
     }
 
-    function add() {
-      var payload = {
-        branch: pruneEmpty(vm.new_branch),
-        branch_location: pruneEmpty(vm.branch_location)
-      };
+    function add(isValid) {
+      if (isValid) {
+        var payload = {
+          branch: pruneEmpty(vm.new_branch),
+          branch_location: pruneEmpty(vm.branch_location)
+        };
 
-      branchFactory.add(payload)
-        .then(success)
-        .catch(fail);
+        branchFactory.add(payload)
+          .then(success)
+          .catch(fail);
+      }
 
       function success(res) {
         getBranches();

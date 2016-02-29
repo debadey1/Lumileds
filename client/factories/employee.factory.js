@@ -16,7 +16,8 @@
       all: all,
       one: one,
       edit: edit,
-      remove: remove
+      remove: remove,
+      getLumiledsEmployees: getLumiledsEmployees
     };
 
     return factory;
@@ -64,6 +65,16 @@
 
     function remove(data) {
       return $http.delete('/employees/' + data._id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function getLumiledsEmployees() {
+      return $http.get('/employees/lumileds')
         .then(success)
         .catch(fail);
 

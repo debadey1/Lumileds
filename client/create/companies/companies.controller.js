@@ -42,14 +42,16 @@
       }
     }
 
-    function add() {
-      var payload = {
-        company: vm.new_company
-      };
+    function add(isValid) {
+      if (isValid) {
+        var payload = {
+          company: vm.new_company
+        };
 
-      companyFactory.add(payload)
-        .then(success)
-        .catch(fail);
+        companyFactory.add(payload)
+          .then(success)
+          .catch(fail);
+      }
 
       function success() {
         getCompanies();

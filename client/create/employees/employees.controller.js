@@ -54,18 +54,20 @@
       }
     }
 
-    function add() {
-      if (vm.new_employee.lumileds) {
-        vm.new_employee.lumileds = "Lumileds";
-        delete vm.new_employee.company;
+    function add(isValid) {
+      if (isValid) {
+        if (vm.new_employee.lumileds) {
+          vm.new_employee.lumileds = "Lumileds";
+          delete vm.new_employee.company;
+        }
+        var payload = {
+          employee: vm.new_employee,
+          location: vm.new_location
+        };
+        employeeFactory.add(payload)
+          .then(success)
+          .catch(fail);
       }
-      var payload = {
-        employee: vm.new_employee,
-        location: vm.new_location
-      };
-      employeeFactory.add(payload)
-        .then(success)
-        .catch(fail);
 
       function success() {
         getEmployees();

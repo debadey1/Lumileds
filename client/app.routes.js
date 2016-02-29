@@ -11,9 +11,6 @@
 
   function routes($routeProvider) {
     $routeProvider
-      // templateUrl: 'dashboard/dashboard.html',
-      // controller: 'DashboardController',
-      // controllerAs: 'vm'
       .when('/',{
           templateUrl: 'create/itineraries/itineraries.html',
           controller: 'ItinerariesController',

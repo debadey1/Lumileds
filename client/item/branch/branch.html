@@ -10,7 +10,8 @@
 		<div class="row">
 		  <div id="company-select" class="col s3 m3">
 		    <label>Change Company</label>
-		  	<select class="browser-default validate" ng-model='vm.branch.company' required>
+		  	<select class="browser-default validate" ng-model='vm.new_company' required>
+			    <option value="" disabled>{{vm.branch.company.name}}</option>
 		      <option ng-repeat="company in vm.companies" value="{{company._id}}">{{company.name}}</option>
 		    </select>
 		  </div>
@@ -49,14 +50,14 @@
 <div class="row">
 	<div class="col m12">
 		<h5>Airports: </h5>
-		<table class="centered bordered highlight">
+		<table class="bordered highlight">
 			<tr ng-repeat="airport in vm.branch.airports | orderBy: 'airport.name' track by $index" ng-click="vm.view('/branch/' + vm.branch_id + '/airport/' + airport._id)">
 				<td>{{airport.name}}</td>
 				<td>{{airport.location.street}} {{airport.location.city}}, {{airport.location.country}}</td>
 			</tr>
 		</table>
 		<h5>Hotels: </h5>
-		<table class="centered bordered highlight">
+		<table class="bordered highlight">
 			<tr ng-repeat="hotel in vm.branch.hotels | orderBy: 'hotel.name' track by $index" ng-click="vm.view('/branch/' + vm.branch_id + '/hotel/' + hotel._id)">
 				<td>{{hotel.name}}</td>
 				<td>{{hotel.phone}}</td>
@@ -64,7 +65,7 @@
 			</tr>
 		</table>
 		<h5>Restaurants: </h5>
-		<table class="centered bordered highlight">
+		<table class="bordered highlight">
 			<tr ng-repeat="restaurant in vm.branch.restaurants | orderBy: 'restaurant.name' track by $index" ng-click="vm.view('/branch/' + vm.branch_id + '/restaurant/' + restaurant._id)">
 				<td>{{restaurant.name}}</td>
 				<td>{{restaurant.phone}}</td>

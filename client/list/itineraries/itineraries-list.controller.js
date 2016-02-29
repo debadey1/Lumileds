@@ -6,11 +6,13 @@
     .controller('ItinerariesListController', controller);
 
   controller.$inject = [
+    "$log",
     "$location",
     "itineraryFactory"
   ];
 
   function controller(
+    $log,
     $location,
     itineraryFactory
   ) {
@@ -30,6 +32,10 @@
 
       function success(res) {
         vm.itineraries = res;
+        for (var i = 0; i < vm.itineraries.length; i++) {
+          vm.itineraries[i].start_date = moment(vm.itineraries[i].start_date).format("MMM Do, YYYY");
+          vm.itineraries[i].end_date = moment(vm.itineraries[i].end_date).format("MMM Do, YYYY");
+        }
       }
     }
 
@@ -38,7 +44,7 @@
     }
 
     function fail(err) {
-      alert('Itineraries List Controller XHR Failed: ' + err.data);
+      $log.log('Itineraries List Controller XHR Failed: ' + err.data);
     }
   }
 })();

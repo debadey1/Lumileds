@@ -43,16 +43,18 @@
       }
     }
 
-    function add() {
-      var payload = {
-        restaurant: pruneEmpty(vm.new_restaurant),
-        location: pruneEmpty(vm.new_location),
-        branch_id: vm.branch_id
-      };
+    function add(isValid) {
+      if (isValid) {
+        var payload = {
+          restaurant: pruneEmpty(vm.new_restaurant),
+          location: pruneEmpty(vm.new_location),
+          branch_id: vm.branch_id
+        };
 
-      restaurantFactory.add(payload)
-        .then(success)
-        .catch(fail);
+        restaurantFactory.add(payload)
+          .then(success)
+          .catch(fail);
+      }
 
       function success() {
         getRestaurants();

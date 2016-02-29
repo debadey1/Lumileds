@@ -1,11 +1,11 @@
 <h5><span class="green-text text-accent-4">Add</span> New Company</h5>
 <div class="row">
-	<form>
+	<form name="form" ng-submit="vm.add(form.$valid)">
 		<div class="input-field col m3">
-			<input type='text' placeholder="Name" ng-model='vm.new_company.name'>
+			<input type='text' placeholder="Name" ng-model='vm.new_company.name' required>
 		</div>
 		<div class="input-field col m3">
-			<input type='submit' value='Add' ng-click='vm.add()' class="btn green accent-4">
+			<input type='submit' value='Add' class="btn green accent-4" ng-disabled="form.$invalid">
 		</div>
 	</form>
 </div>

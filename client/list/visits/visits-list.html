@@ -6,7 +6,7 @@
 </div>
 <div class="row">
 	<div class="input-field col m3 right">
-		<input type="text" placeholder="Search visits" ng-model="visitFilter">
+		<input type="text" placeholder="Search visits" ng-model="visitFilter.$">
 	</div>
 	<table class="highlight">
 		<thead>
@@ -18,10 +18,10 @@
 				<th>Attendees</th>
 			</tr>
 		</thead>
-		<tbody ng-repeat="visit in vm.visits | filter: visitFilter | orderBy: 'date' track by $index">
+		<tbody ng-repeat="visit in vm.visits | filter: visitFilter:strict | orderBy: 'date' track by $index">
 			<tr ng-click="vm.view(visit._id)">
 				<td>{{$index+1}}</td>
-				<td>{{visit.date | date: format: 'mediumDate'}}</td>
+				<td>{{visit.date}}</td>
 				<td>{{visit.company.name}} - {{visit.branch.location.city}} Branch</td>
 				<td>{{visit.region}}</td>
 				<td><span ng-repeat="e in visit.employees">{{e.name}}<span ng-if="!$last">, </span></span></td>

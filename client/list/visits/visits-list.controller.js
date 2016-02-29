@@ -6,11 +6,13 @@
     .controller('VisitsListController', controller);
 
   controller.$inject = [
+    "$log",
     "$location",
     "visitFactory"
   ];
 
   function controller(
+    $log,
     $location,
     visitFactory
   ) {
@@ -30,6 +32,9 @@
 
       function success(res) {
         vm.visits = res;
+        for (var i = 0; i < vm.visits.length; i++) {
+          vm.visits[i].date = moment(vm.visits[i].date).format("MMM Do, YYYY");
+        }
       }
     }
 
@@ -38,7 +43,7 @@
     }
 
     function fail(err) {
-      alert('Visits List Controller XHR Failed: ' + err.data);
+      $log.log('Visits List Controller XHR Failed: ' + err.data);
     }
   }
 })();

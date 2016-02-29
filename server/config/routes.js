@@ -34,6 +34,10 @@ module.exports = function (app) {
     function (req, res){
       employees.all(req, res);
     });
+  app.get('/employees/lumileds',
+    function (req, res){
+      employees.lumileds(req, res);
+    });
   app.get('/employees/:id',
     function (req, res){
       employees.one(req, res);
