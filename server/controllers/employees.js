@@ -30,7 +30,7 @@ function all(req, res) {
 }
 
 function lumileds(req, res) {
-  Employee.find({lumileds: "Lumileds"})
+  Employee.find({lumileds: true})
     .exec()
     .then(function (result) {
       res.status(200).send(result);

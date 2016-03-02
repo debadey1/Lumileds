@@ -10,8 +10,5 @@ var LocationSchema = new mongoose.Schema({
 });
 var deepPopulate = require('mongoose-deep-populate')(mongoose);
 LocationSchema.plugin(deepPopulate);
-LocationSchema.path('street').required(true, 'Street name cannot be empty');
-LocationSchema.path('city').required(true, 'City cannot be empty');
-LocationSchema.path('country').required(true, 'Country cannot be empty');
 LocationSchema.path('region').required(true, 'Region cannot be empty');
 mongoose.model('Location', LocationSchema);

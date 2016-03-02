@@ -9,5 +9,4 @@ var HotelSchema = new mongoose.Schema({
 var deepPopulate = require('mongoose-deep-populate')(mongoose);
 HotelSchema.plugin(deepPopulate);
 HotelSchema.path('name').required(true, 'Name cannot be empty');
-HotelSchema.path('location').required(true, 'Location cannot be empty');
 mongoose.model('Hotel', HotelSchema);

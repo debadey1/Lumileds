@@ -20,112 +20,122 @@
   function routes($routeProvider) {
     $routeProvider
       .when('/',{
-          templateUrl: 'create/itineraries/itineraries.html',
+          templateUrl: 'add/itineraries/itineraries.html',
           controller: 'ItinerariesController',
           controllerAs: 'vm'
       })
-      .when('/employees',{
-          templateUrl: 'create/employees/employees.html',
-          controller: 'EmployeesController',
+      .when('/employees/lumileds',{
+          templateUrl: 'add/employees-lumileds/employees-lumileds.html',
+          controller: 'EmployeesLumiledsController',
           controllerAs: 'vm'
       })
       .when('/itineraries',{
-          templateUrl: 'create/itineraries/itineraries.html',
+          templateUrl: 'add/itineraries/itineraries.html',
           controller: 'ItinerariesController',
           controllerAs: 'vm'
       })
       .when('/companies',{
-          templateUrl: 'create/companies/companies.html',
+          templateUrl: 'add/companies/companies.html',
           controller: 'CompaniesController',
           controllerAs: 'vm'
       })
       .when('/branches',{
-          templateUrl: 'create/branches/branches.html',
-          controller: 'BranchesController',
+          templateUrl: 'all/branches/branches-list.html',
+          controller: 'BranchesListController',
           controllerAs: 'vm'
       })
 
       .when('/employee/:id',{
-          templateUrl: 'item/employee/employee.html',
+          templateUrl: 'edit/employee/employee.html',
           controller: 'EmployeeController',
           controllerAs: 'vm'
       })
       .when('/visit/:id',{
-          templateUrl: 'item/visit/visit.html',
+          templateUrl: 'edit/visit/visit.html',
           controller: 'VisitController',
           controllerAs: 'vm'
       })
       .when('/company/:id',{
-          templateUrl: 'item/company/company.html',
+          templateUrl: 'edit/company/company.html',
           controller: 'CompanyController',
           controllerAs: 'vm'
       })
-      .when('/branch/:id',{
-          templateUrl: 'item/branch/branch.html',
-          controller: 'BranchController',
-          controllerAs: 'vm'
-      })
       .when('/itinerary/:id',{
-          templateUrl: 'item/itinerary/itinerary.html',
+          templateUrl: 'edit/itinerary/itinerary.html',
           controller: 'ItineraryController',
           controllerAs: 'vm'
       })
 
       .when('/employees/all',{
-          templateUrl: 'list/employees/employees-list.html',
+          templateUrl: 'all/employees/employees-list.html',
           controller: 'EmployeesListController',
           controllerAs: 'vm'
       })
-      .when('/branches/all',{
-          templateUrl: 'list/branches/branches-list.html',
-          controller: 'BranchesListController',
+      .when('/employees/lumileds/all',{
+          templateUrl: 'all/employees-lumileds/employees-lumileds-list.html',
+          controller: 'EmployeesLumiledsListController',
           controllerAs: 'vm'
       })
       .when('/itineraries/all',{
-          templateUrl: 'list/itineraries/itineraries-list.html',
+          templateUrl: 'all/itineraries/itineraries-list.html',
           controller: 'ItinerariesListController',
           controllerAs: 'vm'
       })
       .when('/visits/all',{
-          templateUrl: 'list/visits/visits-list.html',
+          templateUrl: 'all/visits/visits-list.html',
           controller: 'VisitsListController',
           controllerAs: 'vm'
       })
 
       .when('/airports/:branch_id',{
-          templateUrl: 'create/airports/airports.html',
+          templateUrl: 'add/airports/airports.html',
           controller: 'AirportsController',
           controllerAs: 'vm'
       })
       .when('/hotels/:branch_id',{
-          templateUrl: 'create/hotels/hotels.html',
+          templateUrl: 'add/hotels/hotels.html',
           controller: 'HotelsController',
           controllerAs: 'vm'
       })
       .when('/restaurants/:branch_id',{
-          templateUrl: 'create/restaurants/restaurants.html',
+          templateUrl: 'add/restaurants/restaurants.html',
           controller: 'RestaurantsController',
+          controllerAs: 'vm'
+      })
+      .when('/branches/:company_id',{
+          templateUrl: 'add/branches/branches.html',
+          controller: 'BranchesController',
+          controllerAs: 'vm'
+      })
+      .when('/employees/:company_id',{
+          templateUrl: 'add/employees/employees.html',
+          controller: 'EmployeesController',
           controllerAs: 'vm'
       })
 
       .when('/branch/:branch_id/airport/:id',{
-          templateUrl: 'item/airport/airport.html',
+          templateUrl: 'edit/airport/airport.html',
           controller: 'AirportController',
           controllerAs: 'vm'
       })
       .when('/branch/:branch_id/hotel/:id',{
-          templateUrl: 'item/hotel/hotel.html',
+          templateUrl: 'edit/hotel/hotel.html',
           controller: 'HotelController',
           controllerAs: 'vm'
       })
       .when('/branch/:branch_id/restaurant/:id',{
-          templateUrl: 'item/restaurant/restaurant.html',
+          templateUrl: 'edit/restaurant/restaurant.html',
           controller: 'RestaurantController',
+          controllerAs: 'vm'
+      })
+      .when('/company/:company_id/branch/:id',{
+          templateUrl: 'edit/branch/branch.html',
+          controller: 'BranchController',
           controllerAs: 'vm'
       })
 
       .when('/itinerary/:itinerary_id/visit/:id',{
-          templateUrl: 'item/visit/visit.html',
+          templateUrl: 'edit/visit/visit.html',
           controller: 'VisitController',
           controllerAs: 'vm'
       })
@@ -329,7 +339,7 @@
       function success(res) {
         vm.companies1 = [], vm.companies2 = [], vm.companies3 = [], vm.companies4 = [];
         for (var i = 0; i < res.length; i++) {
-          var x = i % 4;
+          var x = (i + 4) % 4;
           if (x === 0) {vm.companies1.push(res[i]);}
           else if (x === 1) {vm.companies2.push(res[i]);}
           else if (x === 2) {vm.companies3.push(res[i]);}
@@ -361,6 +371,91 @@
 
     function fail(err) {
       alert('Companies Controller XHR Failed: ' + err.data);
+    }
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .controller('EmployeesLumiledsController', controller);
+
+  controller.$inject = [
+    "$location",
+    "companyFactory",
+    "employeeFactory",
+    "regionFactory"
+  ];
+
+  function controller(
+    $location,
+    companyFactory,
+    employeeFactory,
+    regionFactory
+  ) {
+    /* jshint validthis: true */
+    var vm = this;
+    vm.regions = regionFactory.regions;
+
+    vm.employees = getEmployees();
+    vm.companies = getCompanies();
+
+    vm.new_employee = {
+      lumileds: false //initialize lumileds
+    };
+
+    vm.add = add;
+    vm.view = view;
+    //////////
+
+
+    function getEmployees() {
+      employeeFactory.all()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.employees = res;
+      }
+    }
+
+    function getCompanies() {
+      companyFactory.all()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.companies = res;
+      }
+    }
+
+    function add(isValid) {
+      if (isValid) {
+        vm.new_employee.lumileds = true;
+
+        var payload = {
+          employee: vm.new_employee,
+          location: vm.new_location
+        };
+        employeeFactory.add(payload)
+          .then(success)
+          .catch(fail);
+      }
+
+      function success() {
+        getEmployees();
+        vm.new_employee = {};
+        vm.new_location = {};
+      }
+    }
+
+    function view(data) {
+      $location.path('/employee/' + data._id);
+    }
+
+    function fail(err) {
+      alert('Employees Controller XHR Failed: ' + err.data);
     }
   }
 })();
@@ -725,79 +820,43 @@
 
   angular
     .module('app')
-    .factory('airportFactory', factory);
+    .controller('BranchesListController', controller);
 
-  factory.$inject = [
-    "$http",
-    "$log"
+  controller.$inject = [
+    "$location",
+    "branchFactory"
   ];
 
-  function factory($http, $log) {
-    var factory = {
-      all: all,
-      one: one,
-      edit: edit,
-      add: add,
-      remove: remove
-    };
+  function controller(
+    $location,
+    branchFactory
+  ) {
+    /* jshint validthis: true */
+    var vm = this;
 
-    return factory;
+    vm.branches = getBranches();
+
+    vm.view = view;
     //////////
 
-    function all() {
-      return $http.get('/airports')
+
+    function getBranches() {
+      branchFactory.all()
         .then(success)
         .catch(fail);
 
-      function success(response) {
-        return response.data;
+      function success(res) {
+        vm.branches = res;
       }
     }
 
-    function one(id) {
-      return $http.get('/airports/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+    function view(data) {
+      $location.path('/branch/' + data._id);
     }
 
-    function edit(payload, id) {
-      return $http.post('/airports/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+    function fail(err) {
+      alert('Branches List Controller XHR Failed: ' + err.data);
     }
-
-    function add(payload) {
-      return $http.post('/airports', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function remove(data) {
-      return $http.delete('/airports/' + data._id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function fail(error) {
-      $log.log('Airport Factory XHR failed: ', error.data);
-    }
-
   }
 })();
 (function () {
@@ -805,79 +864,43 @@
 
   angular
     .module('app')
-    .factory('branchFactory', factory);
+    .controller('EmployeesLumiledsListController', controller);
 
-  factory.$inject = [
-    "$http",
-    "$log"
+  controller.$inject = [
+    "$location",
+    "employeeFactory"
   ];
 
-  function factory($http, $log) {
-    var factory = {
-      all: all,
-      one: one,
-      edit: edit,
-      add: add,
-      remove: remove
-    };
+  function controller(
+    $location,
+    employeeFactory
+  ) {
+    /* jshint validthis: true */
+    var vm = this;
 
-    return factory;
+    vm.employees = getEmployees();
+
+    vm.view = view;
     //////////
 
-    function all() {
-      return $http.get('/branches')
+
+    function getEmployees() {
+      employeeFactory.getLumiledsEmployees()
         .then(success)
         .catch(fail);
 
-      function success(response) {
-        return response.data;
+      function success(res) {
+        vm.employees = res;
       }
     }
 
-    function one(id) {
-      return $http.get('/branches/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+    function view(data) {
+      $location.path('/employee/' + data._id);
     }
 
-    function edit(payload, id) {
-      return $http.post('/branches/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+    function fail(err) {
+      alert('Employees List Controller XHR Failed: ' + err.data);
     }
-
-    function add(payload) {
-      return $http.post('/branches', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function remove(data) {
-      return $http.delete('/branches/' + data._id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function fail(error) {
-      $log.log('Branch Factory XHR failed: ', error.data);
-    }
-
   }
 })();
 (function () {
@@ -885,79 +908,43 @@
 
   angular
     .module('app')
-    .factory('companyFactory', factory);
+    .controller('EmployeesListController', controller);
 
-  factory.$inject = [
-    "$http",
-    "$log"
+  controller.$inject = [
+    "$location",
+    "employeeFactory"
   ];
 
-  function factory($http, $log) {
-    var factory = {
-      add: add,
-      all: all,
-      one: one,
-      edit: edit,
-      remove: remove
-    };
+  function controller(
+    $location,
+    employeeFactory
+  ) {
+    /* jshint validthis: true */
+    var vm = this;
 
-    return factory;
+    vm.employees = getEmployees();
+
+    vm.view = view;
     //////////
 
-    function all() {
-      return $http.get('/companies')
+
+    function getEmployees() {
+      employeeFactory.all()
         .then(success)
         .catch(fail);
 
-      function success(response) {
-        return response.data;
+      function success(res) {
+        vm.employees = res;
       }
     }
 
-    function one(id) {
-      return $http.get('/companies/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+    function view(data) {
+      $location.path('/employee/' + data._id);
     }
 
-    function edit(payload, id) {
-      return $http.post('/companies/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+    function fail(err) {
+      alert('Employees List Controller XHR Failed: ' + err.data);
     }
-
-    function add(payload) {
-      return $http.post('/companies', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function remove(data) {
-      return $http.delete('/companies/' + data._id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function fail(error) {
-      $log.log('Company Factory XHR failed: ', error.data);
-    }
-
   }
 })();
 (function () {
@@ -965,90 +952,49 @@
 
   angular
     .module('app')
-    .factory('employeeFactory', factory);
+    .controller('ItinerariesListController', controller);
 
-  factory.$inject = [
-    "$http",
-    "$log"
+  controller.$inject = [
+    "$log",
+    "$location",
+    "itineraryFactory"
   ];
 
-  function factory($http, $log) {
-    var factory = {
-      add: add,
-      all: all,
-      one: one,
-      edit: edit,
-      remove: remove,
-      getLumiledsEmployees: getLumiledsEmployees
-    };
+  function controller(
+    $log,
+    $location,
+    itineraryFactory
+  ) {
+    /* jshint validthis: true */
+    var vm = this;
 
-    return factory;
+    vm.itineraries = getItineraries();
+
+    vm.view = view;
     //////////
 
-    function all() {
-      return $http.get('/employees')
+
+    function getItineraries() {
+      itineraryFactory.all()
         .then(success)
         .catch(fail);
 
-      function success(response) {
-        return response.data;
+      function success(res) {
+        vm.itineraries = res;
+        for (var i = 0; i < vm.itineraries.length; i++) {
+          vm.itineraries[i].start_date = moment(vm.itineraries[i].start_date).format("MMM Do, YYYY");
+          vm.itineraries[i].end_date = moment(vm.itineraries[i].end_date).format("MMM Do, YYYY");
+        }
       }
     }
 
-    function one(id) {
-      return $http.get('/employees/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+    function view(id) {
+      $location.path('/itinerary/' + id);
     }
 
-    function edit(payload, id) {
-      return $http.post('/employees/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+    function fail(err) {
+      $log.log('Itineraries List Controller XHR Failed: ' + err.data);
     }
-
-    function add(payload) {
-      return $http.post('/employees', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function remove(data) {
-      return $http.delete('/employees/' + data._id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function getLumiledsEmployees() {
-      return $http.get('/employees/lumileds')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function fail(error) {
-      $log.log('Employee Factory XHR failed: ', error.data);
-    }
-
   }
 })();
 (function () {
@@ -1056,404 +1002,48 @@
 
   angular
     .module('app')
-    .factory('hotelFactory', factory);
+    .controller('VisitsListController', controller);
 
-  factory.$inject = [
-    "$http",
-    "$log"
+  controller.$inject = [
+    "$log",
+    "$location",
+    "visitFactory"
   ];
 
-  function factory($http, $log) {
-    var factory = {
-      all: all,
-      one: one,
-      edit: edit,
-      add: add,
-      remove: remove
-    };
+  function controller(
+    $log,
+    $location,
+    visitFactory
+  ) {
+    /* jshint validthis: true */
+    var vm = this;
 
-    return factory;
+    vm.visits = getVisits();
+
+    vm.view = view;
     //////////
 
-    function all() {
-      return $http.get('/hotels')
+
+    function getVisits() {
+      visitFactory.all()
         .then(success)
         .catch(fail);
 
-      function success(response) {
-        return response.data;
+      function success(res) {
+        vm.visits = res;
+        for (var i = 0; i < vm.visits.length; i++) {
+          vm.visits[i].date = moment(vm.visits[i].date).format("MMM Do, YYYY");
+        }
       }
     }
 
-    function one(id) {
-      return $http.get('/hotels/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+    function view(id) {
+      $location.path('/visit/' + id);
     }
 
-    function edit(payload, id) {
-      return $http.post('/hotels/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+    function fail(err) {
+      $log.log('Visits List Controller XHR Failed: ' + err.data);
     }
-
-    function add(payload) {
-      return $http.post('/hotels', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function remove(data) {
-      return $http.delete('/hotels/' + data._id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function fail(error) {
-      $log.log('Hotel Factory XHR failed: ', error.data);
-    }
-
-  }
-})();
-(function () {
-  'use strict';
-
-  angular
-    .module('app')
-    .factory('itineraryFactory', factory);
-
-  factory.$inject = [
-    "$http",
-    "$log"
-  ];
-
-  function factory($http, $log) {
-    var factory = {
-      add: add,
-      all: all,
-      one: one,
-      edit: edit,
-      remove: remove
-    };
-
-    return factory;
-    //////////
-
-    function all() {
-      return $http.get('/itineraries')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function one(id) {
-      return $http.get('/itineraries/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function edit(payload, id) {
-      return $http.put('/itineraries/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function add(payload) {
-      return $http.post('/itineraries', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function remove(payload, id) {
-      return $http.post('/itineraries/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function fail(error) {
-      $log.log('Itinerary Factory XHR failed: ', error.data);
-    }
-
-  }
-})();
-(function () {
-	'use strict';
-
-	angular
-		.module('app')
-		.factory('multiselectFactory', factory);
-
-	factory.$inject = [];
-
-	function factory() {
-		var factory = {
-      selectProps: selectProps
-    };
-
-    function selectProps(label) {
-    	return {
-	      selectAll       : "Select all",
-	      selectNone      : "Select none",
-	      reset           : "Reset",
-	      search          : "Search...",
-	      nothingSelected : label
-	    };
-    }
-
-		return factory;
-	}
-})();
-(function () {
-	'use strict';
-
-	angular
-		.module('app')
-		.factory('pruneFactory', factory);
-
-	factory.$inject = ["$log"];
-
-	function factory($log) {
-		var factory = {
-			pruneEmpty: pruneEmpty
-		};
-
-		return factory;
-		//////////////
-
-		function pruneEmpty(obj) {
-	    return function prune(current) {
-	      _.forOwn(current, function (value, key) {
-	        if (_.isUndefined(value) || _.isNull(value) || _.isNaN(value) || (_.isString(value) && _.isEmpty(value)) || (_.isObject(value) && _.isEmpty(prune(value))) && !_.isDate(value)) {
-	          delete current[key];
-	        }
-	      });
-	      // remove any leftover undefined values from the delete 
-	      // operation on an array
-	      if (_.isArray(current)) {
-	      	_.pull(current, undefined)
-	      };
-
-	      return current;
-
-	    }(_.cloneDeep(obj));  // Do not modify the original object, create a clone instead
-	  }
-	}
-})();
-(function () {
-	'use strict';
-
-	angular
-		.module('app')
-		.factory('regionFactory', factory);
-
-	factory.$inject = [];
-
-	function factory() {
-		var factory = {
-			regions: [
-		    "Americas",
-		    "APAC",
-		    "EMEA",
-		    "Japan"
-		  ]
-		};
-
-		return factory;
-	}
-})();
-(function () {
-  'use strict';
-
-  angular
-    .module('app')
-    .factory('restaurantFactory', factory);
-
-  factory.$inject = [
-    "$http",
-    "$log"
-  ];
-
-  function factory($http, $log) {
-    var factory = {
-      all: all,
-      one: one,
-      edit: edit,
-      add: add,
-      remove: remove
-    };
-
-    return factory;
-    //////////
-
-    function all() {
-      return $http.get('/restaurants')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function one(id) {
-      return $http.get('/restaurants/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function edit(payload, id) {
-      return $http.post('/restaurants/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function add(payload) {
-      return $http.post('/restaurants', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function remove(data) {
-      return $http.delete('/restaurants/' + data._id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function fail(error) {
-      $log.log('Restaurant Factory XHR failed: ', error.data);
-    }
-
-  }
-})();
-(function () {
-  'use strict';
-
-  angular
-    .module('app')
-    .factory('visitFactory', factory);
-
-  factory.$inject = [
-    "$http",
-    "$log"
-  ];
-
-  function factory($http, $log) {
-    var factory = {
-      add: add,
-      all: all,
-      one: one,
-      edit: edit,
-      remove: remove
-    };
-
-    return factory;
-    //////////
-
-    function all() {
-      return $http.get('/visits')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function one(id) {
-      return $http.get('/visits/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function edit(payload, id) {
-      return $http.put('/visits/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function add(payload) {
-      return $http.post('/visits', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function remove(payload, id) {
-      return $http.post('/visits/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response;
-      }
-    }
-
-    function fail(error) {
-      $log.log('Visit Factory XHR failed: ', error.data);
-    }
-
   }
 })();
 (function () {
@@ -2275,43 +1865,79 @@
 
   angular
     .module('app')
-    .controller('BranchesListController', controller);
+    .factory('airportFactory', factory);
 
-  controller.$inject = [
-    "$location",
-    "branchFactory"
+  factory.$inject = [
+    "$http",
+    "$log"
   ];
 
-  function controller(
-    $location,
-    branchFactory
-  ) {
-    /* jshint validthis: true */
-    var vm = this;
+  function factory($http, $log) {
+    var factory = {
+      all: all,
+      one: one,
+      edit: edit,
+      add: add,
+      remove: remove
+    };
 
-    vm.branches = getBranches();
-
-    vm.view = view;
+    return factory;
     //////////
 
-
-    function getBranches() {
-      branchFactory.all()
+    function all() {
+      return $http.get('/airports')
         .then(success)
         .catch(fail);
 
-      function success(res) {
-        vm.branches = res;
+      function success(response) {
+        return response.data;
       }
     }
 
-    function view(data) {
-      $location.path('/branch/' + data._id);
+    function one(id) {
+      return $http.get('/airports/' + id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
     }
 
-    function fail(err) {
-      alert('Branches List Controller XHR Failed: ' + err.data);
+    function edit(payload, id) {
+      return $http.post('/airports/' + id, payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
     }
+
+    function add(payload) {
+      return $http.post('/airports', payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function remove(data) {
+      return $http.delete('/airports/' + data._id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function fail(error) {
+      $log.log('Airport Factory XHR failed: ', error.data);
+    }
+
   }
 })();
 (function () {
@@ -2319,43 +1945,79 @@
 
   angular
     .module('app')
-    .controller('EmployeesListController', controller);
+    .factory('branchFactory', factory);
 
-  controller.$inject = [
-    "$location",
-    "employeeFactory"
+  factory.$inject = [
+    "$http",
+    "$log"
   ];
 
-  function controller(
-    $location,
-    employeeFactory
-  ) {
-    /* jshint validthis: true */
-    var vm = this;
+  function factory($http, $log) {
+    var factory = {
+      all: all,
+      one: one,
+      edit: edit,
+      add: add,
+      remove: remove
+    };
 
-    vm.employees = getEmployees();
-
-    vm.view = view;
+    return factory;
     //////////
 
-
-    function getEmployees() {
-      employeeFactory.all()
+    function all() {
+      return $http.get('/branches')
         .then(success)
         .catch(fail);
 
-      function success(res) {
-        vm.employees = res;
+      function success(response) {
+        return response.data;
       }
     }
 
-    function view(data) {
-      $location.path('/employee/' + data._id);
+    function one(id) {
+      return $http.get('/branches/' + id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
     }
 
-    function fail(err) {
-      alert('Employees List Controller XHR Failed: ' + err.data);
+    function edit(payload, id) {
+      return $http.post('/branches/' + id, payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
     }
+
+    function add(payload) {
+      return $http.post('/branches', payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function remove(data) {
+      return $http.delete('/branches/' + data._id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function fail(error) {
+      $log.log('Branch Factory XHR failed: ', error.data);
+    }
+
   }
 })();
 (function () {
@@ -2363,49 +2025,79 @@
 
   angular
     .module('app')
-    .controller('ItinerariesListController', controller);
+    .factory('companyFactory', factory);
 
-  controller.$inject = [
-    "$log",
-    "$location",
-    "itineraryFactory"
+  factory.$inject = [
+    "$http",
+    "$log"
   ];
 
-  function controller(
-    $log,
-    $location,
-    itineraryFactory
-  ) {
-    /* jshint validthis: true */
-    var vm = this;
+  function factory($http, $log) {
+    var factory = {
+      add: add,
+      all: all,
+      one: one,
+      edit: edit,
+      remove: remove
+    };
 
-    vm.itineraries = getItineraries();
-
-    vm.view = view;
+    return factory;
     //////////
 
-
-    function getItineraries() {
-      itineraryFactory.all()
+    function all() {
+      return $http.get('/companies')
         .then(success)
         .catch(fail);
 
-      function success(res) {
-        vm.itineraries = res;
-        for (var i = 0; i < vm.itineraries.length; i++) {
-          vm.itineraries[i].start_date = moment(vm.itineraries[i].start_date).format("MMM Do, YYYY");
-          vm.itineraries[i].end_date = moment(vm.itineraries[i].end_date).format("MMM Do, YYYY");
-        }
+      function success(response) {
+        return response.data;
       }
     }
 
-    function view(id) {
-      $location.path('/itinerary/' + id);
+    function one(id) {
+      return $http.get('/companies/' + id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
     }
 
-    function fail(err) {
-      $log.log('Itineraries List Controller XHR Failed: ' + err.data);
+    function edit(payload, id) {
+      return $http.post('/companies/' + id, payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
     }
+
+    function add(payload) {
+      return $http.post('/companies', payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function remove(data) {
+      return $http.delete('/companies/' + data._id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function fail(error) {
+      $log.log('Company Factory XHR failed: ', error.data);
+    }
+
   }
 })();
 (function () {
@@ -2413,47 +2105,494 @@
 
   angular
     .module('app')
-    .controller('VisitsListController', controller);
+    .factory('employeeFactory', factory);
 
-  controller.$inject = [
-    "$log",
-    "$location",
-    "visitFactory"
+  factory.$inject = [
+    "$http",
+    "$log"
   ];
 
-  function controller(
-    $log,
-    $location,
-    visitFactory
-  ) {
-    /* jshint validthis: true */
-    var vm = this;
+  function factory($http, $log) {
+    var factory = {
+      add: add,
+      all: all,
+      one: one,
+      edit: edit,
+      remove: remove,
+      getLumiledsEmployees: getLumiledsEmployees
+    };
 
-    vm.visits = getVisits();
-
-    vm.view = view;
+    return factory;
     //////////
 
-
-    function getVisits() {
-      visitFactory.all()
+    function all() {
+      return $http.get('/employees')
         .then(success)
         .catch(fail);
 
-      function success(res) {
-        vm.visits = res;
-        for (var i = 0; i < vm.visits.length; i++) {
-          vm.visits[i].date = moment(vm.visits[i].date).format("MMM Do, YYYY");
-        }
+      function success(response) {
+        return response.data;
       }
     }
 
-    function view(id) {
-      $location.path('/visit/' + id);
+    function one(id) {
+      return $http.get('/employees/' + id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
     }
 
-    function fail(err) {
-      $log.log('Visits List Controller XHR Failed: ' + err.data);
+    function edit(payload, id) {
+      return $http.post('/employees/' + id, payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
     }
+
+    function add(payload) {
+      return $http.post('/employees', payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function remove(data) {
+      return $http.delete('/employees/' + data._id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function getLumiledsEmployees() {
+      return $http.get('/employees/lumileds')
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function fail(error) {
+      $log.log('Employee Factory XHR failed: ', error.data);
+    }
+
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .factory('hotelFactory', factory);
+
+  factory.$inject = [
+    "$http",
+    "$log"
+  ];
+
+  function factory($http, $log) {
+    var factory = {
+      all: all,
+      one: one,
+      edit: edit,
+      add: add,
+      remove: remove
+    };
+
+    return factory;
+    //////////
+
+    function all() {
+      return $http.get('/hotels')
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function one(id) {
+      return $http.get('/hotels/' + id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function edit(payload, id) {
+      return $http.post('/hotels/' + id, payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function add(payload) {
+      return $http.post('/hotels', payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function remove(data) {
+      return $http.delete('/hotels/' + data._id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function fail(error) {
+      $log.log('Hotel Factory XHR failed: ', error.data);
+    }
+
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .factory('itineraryFactory', factory);
+
+  factory.$inject = [
+    "$http",
+    "$log"
+  ];
+
+  function factory($http, $log) {
+    var factory = {
+      add: add,
+      all: all,
+      one: one,
+      edit: edit,
+      remove: remove
+    };
+
+    return factory;
+    //////////
+
+    function all() {
+      return $http.get('/itineraries')
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function one(id) {
+      return $http.get('/itineraries/' + id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function edit(payload, id) {
+      return $http.put('/itineraries/' + id, payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function add(payload) {
+      return $http.post('/itineraries', payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function remove(payload, id) {
+      return $http.post('/itineraries/' + id, payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function fail(error) {
+      $log.log('Itinerary Factory XHR failed: ', error.data);
+    }
+
+  }
+})();
+(function () {
+	'use strict';
+
+	angular
+		.module('app')
+		.factory('multiselectFactory', factory);
+
+	factory.$inject = [];
+
+	function factory() {
+		var factory = {
+      selectProps: selectProps
+    };
+
+    function selectProps(label) {
+    	return {
+	      selectAll       : "Select all",
+	      selectNone      : "Select none",
+	      reset           : "Reset",
+	      search          : "Search...",
+	      nothingSelected : label
+	    };
+    }
+
+		return factory;
+	}
+})();
+(function () {
+	'use strict';
+
+	angular
+		.module('app')
+		.factory('pruneFactory', factory);
+
+	factory.$inject = ["$log"];
+
+	function factory($log) {
+		var factory = {
+			pruneEmpty: pruneEmpty
+		};
+
+		return factory;
+		//////////////
+
+		function pruneEmpty(obj) {
+	    return function prune(current) {
+	      _.forOwn(current, function (value, key) {
+	        if (_.isUndefined(value) || _.isNull(value) || _.isNaN(value) || (_.isString(value) && _.isEmpty(value)) || (_.isObject(value) && _.isEmpty(prune(value))) && !_.isDate(value)) {
+	          delete current[key];
+	        }
+	      });
+	      // remove any leftover undefined values from the delete 
+	      // operation on an array
+	      if (_.isArray(current)) {
+	      	_.pull(current, undefined)
+	      };
+
+	      return current;
+
+	    }(_.cloneDeep(obj));  // Do not modify the original object, create a clone instead
+	  }
+	}
+})();
+(function () {
+	'use strict';
+
+	angular
+		.module('app')
+		.factory('regionFactory', factory);
+
+	factory.$inject = [];
+
+	function factory() {
+		var factory = {
+			regions: [
+		    "Americas",
+		    "APAC",
+		    "EMEA",
+		    "Japan"
+		  ]
+		};
+
+		return factory;
+	}
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .factory('restaurantFactory', factory);
+
+  factory.$inject = [
+    "$http",
+    "$log"
+  ];
+
+  function factory($http, $log) {
+    var factory = {
+      all: all,
+      one: one,
+      edit: edit,
+      add: add,
+      remove: remove
+    };
+
+    return factory;
+    //////////
+
+    function all() {
+      return $http.get('/restaurants')
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function one(id) {
+      return $http.get('/restaurants/' + id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function edit(payload, id) {
+      return $http.post('/restaurants/' + id, payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function add(payload) {
+      return $http.post('/restaurants', payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function remove(data) {
+      return $http.delete('/restaurants/' + data._id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function fail(error) {
+      $log.log('Restaurant Factory XHR failed: ', error.data);
+    }
+
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .factory('visitFactory', factory);
+
+  factory.$inject = [
+    "$http",
+    "$log"
+  ];
+
+  function factory($http, $log) {
+    var factory = {
+      add: add,
+      all: all,
+      one: one,
+      edit: edit,
+      remove: remove
+    };
+
+    return factory;
+    //////////
+
+    function all() {
+      return $http.get('/visits')
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function one(id) {
+      return $http.get('/visits/' + id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function edit(payload, id) {
+      return $http.put('/visits/' + id, payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function add(payload) {
+      return $http.post('/visits', payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function remove(payload, id) {
+      return $http.post('/visits/' + id, payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response;
+      }
+    }
+
+    function fail(error) {
+      $log.log('Visit Factory XHR failed: ', error.data);
+    }
+
   }
 })();

@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var BranchSchema = new mongoose.Schema({
+  notes: String,
   company: {type: Schema.Types.ObjectId, ref: "Company"},
   location: {type: Schema.Types.ObjectId, ref: "Location"},
   airports: [{type: Schema.Types.ObjectId, ref: "Airport"}],
