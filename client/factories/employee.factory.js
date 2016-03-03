@@ -17,6 +17,7 @@
       one: one,
       edit: edit,
       remove: remove,
+      addLumileds: addLumileds,
       getLumiledsEmployees: getLumiledsEmployees
     };
 
@@ -55,6 +56,16 @@
 
     function add(payload) {
       return $http.post('/employees', payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function addLumileds(payload) {
+      return $http.post('/employees/lumileds', payload)
         .then(success)
         .catch(fail);
 

@@ -1,7 +1,6 @@
 <div class="row">
 	<div class="col m12">
 		<h5 class="left">All Branches</h5>
-		<a class="btn blue darken-4 right" href="#/branches">Back</a>
 	</div>
 </div>
 <div class="row">
@@ -20,7 +19,7 @@
 			</tr>
 		</thead>
 		<tbody ng-repeat="branch in vm.branches | filter: branchFilter | orderBy: 'company.name' track by $index">
-			<tr ng-click="vm.view(branch)">
+			<tr ng-click="vm.view(branch._id, branch.company._id)">
 				<td>{{branch.company.name}}</td>
 				<td>{{branch.location.city}} Branch</td>
 				<td>{{branch.location.street}}</td>

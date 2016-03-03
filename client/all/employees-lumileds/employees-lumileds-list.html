@@ -14,6 +14,7 @@
 				<th>Name</th>
 				<th>Title</th>
 				<th>Phone</th>
+				<th>Region</th>
 			</tr>
 		</thead>
 		<tbody ng-repeat="employee in vm.employees | filter: employeeFilter | orderBy: 'company.name' track by $index">
@@ -21,6 +22,7 @@
 				<td>{{employee.name}}</td>
 				<td>{{employee.title}}</td>
 				<td>{{employee.phone}}</td>
+				<td>{{employee.location.region}}</td>
 			</tr>
 		</tbody>
 	</table>

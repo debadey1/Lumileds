@@ -19,19 +19,25 @@
 		</div>
 	</form>
 </div>
-<div class="row blue darken-4 blue-text text-darken-4 z-depth-2">-</div>
 <div class="row">
 	<div class="col m4">
 		<h5>Branches</h5>
 		<div class="collection">
-			<a href="#/branch/{{branch._id}}" class="collection-item" ng-repeat="branch in vm.company.branches | orderBy: 'name' track by $index">{{branch.location.city}} Branch</a>
+			<a href="#/company/{{vm.company_id}}/branch/{{branch._id}}" class="collection-item" ng-repeat="branch in vm.company.branches | orderBy: 'name' track by $index">{{branch.location.city}} Branch</a>
 		</div>
 	</div>
 	<div class="col m8">
 		<h5>Employees</h5>
 		<div class="collection">
-			<a href="#/employee/{{employee._id}}" class="collection-item" ng-repeat="employee in vm.company.employees | orderBy: 'name' track by $index">{{employee.name}}</a>
+			<a href="#/company/{{vm.company_id}}/employee/{{employee._id}}" class="collection-item" ng-repeat="employee in vm.company.employees | orderBy: 'name' track by $index">{{employee.name}}</a>
 		</div>
+	</div>
+</div>
+<div class="row blue darken-4 blue-text text-darken-4 z-depth-2">-</div>
+<div class="row">
+	<div class="col m12">
+		<a class="btn blue darken-4" href="#/branches/{{vm.company_id}}">Add branch</a>
+		<a class="btn blue darken-4" href="#/employees/{{vm.company_id}}">Add employee</a>
 	</div>
 </div>
 <div class="row red red-text z-depth-2">-</div>

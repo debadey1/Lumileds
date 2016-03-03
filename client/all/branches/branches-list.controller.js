@@ -33,8 +33,8 @@
       }
     }
 
-    function view(data) {
-      $location.path('/branch/' + data._id);
+    function view(branch_id, company_id) {
+      $location.path('/company/' + company_id + '/branch/' + branch_id);
     }
 
     function fail(err) {

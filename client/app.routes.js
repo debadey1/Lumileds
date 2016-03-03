@@ -37,9 +37,9 @@
           controllerAs: 'vm'
       })
 
-      .when('/employee/:id',{
-          templateUrl: 'edit/employee/employee.html',
-          controller: 'EmployeeController',
+      .when('/employee/lumileds/:id',{
+          templateUrl: 'edit/employee-lumileds/employee-lumileds.html',
+          controller: 'EmployeeLumiledsController',
           controllerAs: 'vm'
       })
       .when('/visit/:id',{
@@ -125,12 +125,17 @@
           controller: 'BranchController',
           controllerAs: 'vm'
       })
-
+      .when('/company/:company_id/employee/:id',{
+          templateUrl: 'edit/employee/employee.html',
+          controller: 'EmployeeController',
+          controllerAs: 'vm'
+      })
       .when('/itinerary/:itinerary_id/visit/:id',{
           templateUrl: 'edit/visit/visit.html',
           controller: 'VisitController',
           controllerAs: 'vm'
       })
+      
       .otherwise({
         redirectTo: '/'
       });

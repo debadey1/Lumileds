@@ -10,6 +10,7 @@ mongoose.Promise = Q.Promise;
 var exports = {
   all: all,
   create: create,
+  createLumileds: createLumileds,
   destroy: destroy,
   edit: edit,
   one: one,
@@ -31,6 +32,7 @@ function all(req, res) {
 
 function lumileds(req, res) {
   Employee.find({lumileds: true})
+    .deepPopulate(["location"])
     .exec()
     .then(function (result) {
       res.status(200).send(result);
@@ -42,6 +44,18 @@ function lumileds(req, res) {
 }
 
 function create(req, res) {
+  new Employee(req.body.employee)
+    .save()
+    .then(function (result) {
+      res.status(200).send(result);
+      return Company.findByIdAndUpdate(result.company, {$push: {employees: result._id}});
+    })
+    .catch(function (err) {
+      res.status(500).send(err);
+    });
+}
+
+function createLumileds(req, res) {
   new Location(req.body.location)
     .save()
     .then(function (result) {
@@ -62,13 +76,17 @@ function create(req, res) {
 function destroy(req, res) {
   var emp_id = req.params.id;
   var promises = [
-    Employee.findByIdAndRemove(emp_id).exec(),    
+    Employee.findByIdAndRemove(emp_id).exec(),
     Visit.findOneAndUpdate({employees:{$in:[emp_id]}}, {$pull: {employees: emp_id}}).exec()
   ];
   Q.all(promises)
     .then(function (result) {
       res.status(200).send(result[0]);
-      return Location.findByIdAndRemove(result[0].location).exec();
+      var promises = [
+        Location.findByIdAndRemove(result[0].location).exec(),
+        Company.findByIdAndUpdate(result[0].company, {$pull: {employees: result[0]._id}}).exec()
+      ]
+      return Q.all(promises);
     })
     .catch(function (err) {
       res.status(500).send(err);
@@ -91,16 +109,12 @@ function one(req, res) {
 function edit(req, res) {
   var promises = [
     Employee.findByIdAndUpdate(req.params.id, req.body.employee).exec(),
-    Location.findByIdAndUpdate(req.body.location_id, req.body.location, {new: true}).exec(),
-    Company.findByIdAndUpdate(req.body.employee.company, {$push: {employees: req.params.id}}).exec()
+    Location.findByIdAndUpdate(req.body.location_id, req.body.location, {new: true}).exec()
   ];
   Q.all(promises)
     .then(function (result) {
       res.status(200).send(result);
-      return Company.findByIdAndUpdate(result[0].company, {$pull: {employees: req.params.id}});
-    })
-    .then(function (result) {
-      // body...
+      return result;
     })
     .catch(function (err) {
       res.status(500).send(err);

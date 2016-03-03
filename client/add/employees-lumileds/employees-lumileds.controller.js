@@ -23,11 +23,6 @@
     vm.regions = regionFactory.regions;
 
     vm.employees = getEmployees();
-    vm.companies = getCompanies();
-
-    vm.new_employee = {
-      lumileds: false //initialize lumileds
-    };
 
     vm.add = add;
     vm.view = view;
@@ -35,22 +30,12 @@
 
 
     function getEmployees() {
-      employeeFactory.all()
+      employeeFactory.getLumiledsEmployees()
         .then(success)
         .catch(fail);
 
       function success(res) {
         vm.employees = res;
-      }
-    }
-
-    function getCompanies() {
-      companyFactory.all()
-        .then(success)
-        .catch(fail);
-
-      function success(res) {
-        vm.companies = res;
       }
     }
 
@@ -62,7 +47,7 @@
           employee: vm.new_employee,
           location: vm.new_location
         };
-        employeeFactory.add(payload)
+        employeeFactory.addLumileds(payload)
           .then(success)
           .catch(fail);
       }
@@ -75,7 +60,7 @@
     }
 
     function view(data) {
-      $location.path('/employee/' + data._id);
+      $location.path('/employee/lumileds/' + data._id);
     }
 
     function fail(err) {

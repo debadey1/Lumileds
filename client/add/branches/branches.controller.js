@@ -6,19 +6,19 @@
     .controller('BranchesController', controller);
 
   controller.$inject = [
+    "$log",
     "$routeParams",
     "$location",
     "branchFactory",
-    "companyFactory",
     "regionFactory",
     "pruneFactory"
   ];
 
   function controller(
+    $log,
     $routeParams,
     $location,
     branchFactory,
-    companyFactory,
     regionFactory,
     pruneFactory
   ) {
@@ -27,39 +27,15 @@
     var pruneEmpty = pruneFactory.pruneEmpty;
     vm.regions = regionFactory.regions;
 
-    vm.branch_id = $routeParams.id;
-    vm.branches = getBranches();
-    vm.companies = getCompanies();
+    vm.company_id = $routeParams.company_id;
 
     vm.add = add;
-    vm.view = view;
     //////////
-
-
-    function getBranches() {
-      branchFactory.all()
-        .then(success)
-        .catch(fail);
-
-      function success(res) {
-        vm.branches = res;
-      }
-    }
-
-    function getCompanies() {
-      companyFactory.all()
-        .then(success)
-        .catch(fail);
-
-      function success(res) {
-        vm.companies = res;
-      }
-    }
 
     function add(isValid) {
       if (isValid) {
         var payload = {
-          branch: pruneEmpty(vm.new_branch),
+          branch: {company: vm.company_id},
           branch_location: pruneEmpty(vm.branch_location)
         };
 
@@ -69,18 +45,12 @@
       }
 
       function success(res) {
-        getBranches();
-        vm.new_branch = {};
-        vm.branch_location = {};
+        $location.path('/company/' + vm.company_id);
       }
     }
 
-    function view(data) {
-      $location.path('/branch/' + data._id);
-    }
-
     function fail(err) {
-      alert('Branches Controller XHR Failed: ' + err.data);
+      $log.log('Branches Controller XHR Failed: ' + err.data);
     }
   }
 })();

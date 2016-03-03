@@ -30,6 +30,7 @@
     vm.regions = regionFactory.regions;
 
     vm.branch_id = $routeParams.id;
+    vm.company_id = $routeParams.company_id;
     vm.branch = getBranch();
     vm.companies = getCompanies();
 

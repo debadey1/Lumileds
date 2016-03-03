@@ -42,6 +42,10 @@ module.exports = function (app) {
     function (req, res){
       employees.one(req, res);
     });
+  app.post('/employees/lumileds',
+    function (req, res){
+      employees.createLumileds(req, res);
+    });
   app.post('/employees/:id',
     function (req, res){
       employees.edit(req, res);

@@ -1,18 +1,11 @@
 <div class="row">
 	<div class="col m12">
 		<h5 class="left"><span class="green-text text-accent-4">Add</span> New Branch</h5>
-		<a class="btn blue darken-4 right" href="#/branches/all">View All</a>
+		<a class="btn purple darken-4 right" href="#/branches/all">View All</a>
+		<a class="btn blue darken-4 right" href="#/company/{{vm.company_id}}">Back</a>
 	</div>
 </div>
 <form name="form" ng-submit="vm.add(form.$valid)">
- 	<div class="row">
-		<div class="input-field col m3">
-	    <select class="browser-default" ng-model='vm.new_branch.company' required>
-		    <option value="" disabled selected>Company*</option>
-	      <option ng-repeat="company in vm.companies" value="{{company._id}}">{{company.name}}</option>
-	    </select>
-	  </div>
-  </div>
   <div class="row">
 		<div class="input-field col m3">
 			<input type='text' placeholder="Address" ng-model='vm.branch_location.street'>
@@ -39,16 +32,3 @@
 		</div>
  	</div>
 </form>
-<div class="row blue darken-4 blue-text text-darken-4 z-depth-2">-</div>
-<div class="row">
-	<div class="col m9">
-		<h5>Recently Added</h5>
-	</div>
-</div>
-<div class="row">
-	<div class="col s4 m4">
-		<div class="collection">
-			<a href="" class="collection-item" ng-click="vm.view(branch)" ng-repeat="branch in vm.branches | limitTo: -10 | orderBy: '-created_at' track by $index">{{branch.company.name}} - {{branch.location.city}} Branch - {{branch.location.region}}</a>
-		</div>
-	</div>
-</div>

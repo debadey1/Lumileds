@@ -1,0 +1,64 @@
+<div class="row">
+	<div class="col m12">
+		<h5 class="left">Edit Lumileds Employee:</h5>
+		<a class="btn blue darken-4 right" href="#/employees/lumileds/all">Back</a>
+	</div>
+</div>
+<div class="row">
+	<form class="col m12">
+		<div class="row">
+		  <div class="input-field col s3 m3">
+		    <input ng-model='vm.employee.name' id="name" type="text" class="validate" required>
+		    <label class="active" for="name">Name</label>
+		  </div>
+		  <div class="input-field col s3 m3">
+		    <input ng-model='vm.employee.phone' id="phone" type="text">
+		    <label class="active" for="phone">Phone</label>
+		  </div>
+		  <div class="col m3">
+		    <label>Title</label>
+				<select class="browser-default" ng-model='vm.employee.title' required>
+		      <option>Executive</option>
+		      <option>Sales Manager</option>
+		      <option>Other</option>
+		    </select>
+			</div>
+		</div>
+		<div class="row">
+		  <div class="input-field col s3 m3">
+		    <input ng-model='vm.employee.location.street' id="street" type="text" class="validate">
+		    <label class="active" for="street">Address</label>
+		  </div>
+		  <div class="input-field col s3 m3">
+		    <input ng-model='vm.employee.location.city' id="city" type="text" class="validate">
+		    <label class="active" for="city">City</label>
+		  </div>
+		  <div class="input-field col s3 m2">
+		    <input ng-model='vm.employee.location.state' id="state" type="text" class="validate">
+		    <label class="active" for="state">State</label>
+		  </div>
+		  <div class="input-field col s3 m2">
+		    <input ng-model='vm.employee.location.country' id="country" type="text" class="validate">
+		    <label class="active" for="country">Country</label>
+		  </div>
+		  <div class="col s2 m2">
+		    <label>Region</label>
+		  	<select class="browser-default validate" ng-model='vm.employee.location.region' required>
+		      <option ng-repeat="region in vm.regions">{{region}}</option>
+		    </select>
+		  </div>
+		</div>
+		<div class="row">
+			<div class="col m12">
+				<input type='submit' value='Submit' ng-click='vm.edit()' class="btn green accent-4">
+			</div>
+		</div>
+	</form>
+</div>
+<div class="row red red-text z-depth-2">-</div>
+<div class="row">
+	<div class="col m12">
+		<h5 class="red-text">WARNING: Delete employee</h5>
+		<div ng-click="vm.remove(vm.employee)" class="btn blue-grey darken-3 red-text">Delete</div>
+	</div>
+</div>
