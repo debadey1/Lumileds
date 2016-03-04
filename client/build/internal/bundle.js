@@ -582,8 +582,10 @@
     var vm = this;
     vm.regions = regionFactory.regions;
     // vm.selectProps = multiselectFactory.selectProps("Add Attendees");
-    vm.visits = [{}];
-    vm.branchesToVisit = [];
+    vm.visits = [{}],
+    vm.branchesToVisit = [],
+    vm.execs = [],
+    vm.managers = [];
 
     vm.add = add;
     vm.removeVisit = removeVisit;
@@ -605,13 +607,24 @@
         .then(success)
         .catch(fail);
 
-      // angular.element(document).ready(function() {
-      //   angular.element('select').material_select();
-      // });
-
       function success(res) {
         vm.companies = res[0];
         vm.employees = res[1];
+
+        for (var i = 0; i < vm.employees.length; i++) {
+          switch(vm.employees[i].title) {
+            case "Executive": {
+              vm.execs.push(vm.employees[i]);
+              break;
+            }
+            case "Sales Manager": {
+              vm.managers.push(vm.employees[i]);
+              break;
+            }
+            default:
+              break;
+          }
+        }
       }
     }
 
@@ -629,6 +642,7 @@
       // if you have 0 visits, angular interprets the form to be valid
       if (isValid && vm.visits.length > 0) {
         var payload = {
+          itinerary: vm.itinerary,
           visits: vm.visits
         };
 
@@ -638,6 +652,7 @@
       }
 
       function success() {
+        vm.itinerary = {};
         vm.visits = [{}];
         getItineraries();
       }
@@ -664,6 +679,13 @@
       }
     }
 
+    function removeExec(exec) {
+      
+    }
+
+    function removeManager(manager) {
+      
+    }
     function fail(err) {
       alert('Visits Controller XHR Failed: ' + err.data);
     }

@@ -8,12 +8,13 @@
 <form name="form" ng-submit="vm.add(form.$valid)">
 	<div class="row">
 		<div class="input-field col m3">
-	    <select class="browser-default" ng-model='visit.region' required>
-		    <option value="" disabled selected>Region*</option>
+	    <select class="browser-default" ng-model='vm.itinerary.region' required>
+		    <option value="" disabled selected>Itinerary Region*</option>
 	      <option ng-repeat="region in vm.regions">{{region}}</option>
 	    </select>
 	  </div>
 	</div>
+	<h5>Add Visits to Itinerary</h5>
 	<div ng-repeat="visit in vm.visits">
 	 	<div class="row valign-wrapper">
 			<div class="input-field col m3">
@@ -36,9 +37,21 @@
 		  </div>
 	  </div>
 	  <div class="row">
-	  	<div class="col m5">
-	  		<select class="browser-default multiple" ng-model='visit.employees' multiple required>
-			    <option value="" disabled selected>Add Attendees* (Ctrl to select multiple)</option>
+	  	<div class="col m3">
+	  		<select class="browser-default" ng-model='visit.executive' required>
+			    <option value="" disabled selected>Visit Exec*</option>
+		      <option ng-repeat="exec in vm.execs" value="{{exec._id}}">{{exec.name}}</option>
+		    </select>
+	  	</div>
+	  	<div class="col m3">
+	  		<select class="browser-default" ng-model='visit.manager' required>
+			    <option value="" disabled selected>Sales Manager*</option>
+		      <option ng-repeat="manager in vm.managers" value="{{manager._id}}">{{manager.name}}</option>
+		    </select>
+	  	</div>
+	  	<div class="col m4">
+	  		<select class="browser-default multiple" ng-model='visit.employees' multiple>
+			    <option value="" disabled selected>Add Others (Ctrl to select multiple)</option>
 		      <option ng-repeat="employee in vm.employees" value="{{employee._id}}">{{employee.name}}</option>
 		    </select>
 	  	</div>
