@@ -1,24 +1,33 @@
 <div class="row">
-	<div class="col m12">
+	<div class="col m7">
 		<h5 class="left">All Itineraries</h5>
+	</div>
+	<div class="col m3">
+		<input type="text" placeholder="Search itineraries" ng-model="itineraryFilter">
+	</div>
+	<div class="col m2">
 		<a class="btn blue darken-4 right" href="#/itineraries">Back</a>
 	</div>
 </div>
 <div class="row">
-	<div class="input-field col m3 right">
-		<input type="text" placeholder="Search itineraries" ng-model="itineraryFilter">
-	</div>
+	
 	<table class="highlight">
 		<thead>
 			<tr>
 				<th>#</th>
 				<th>Duration</th>
+				<th>Region</th>
+				<th>Execs</th>
+				<th>Managers</th>
 			</tr>
 		</thead>
 		<tbody ng-repeat="itinerary in vm.itineraries | filter: itineraryFilter | orderBy: 'start_date' track by $index">
 			<tr ng-click="vm.view(itinerary._id)">
 				<td>{{$index+1}}</td>
 				<td>{{itinerary.start_date | date: format: 'mediumDate'}} - {{itinerary.end_date | date: format: 'mediumDate'}}</td>
+				<td>{{itinerary.region}}</td>
+				<td><span ng-repeat="exec in itinerary.executives">{{exec.name}}<span ng-if="!$last">, </span></span></td>
+				<td><span ng-repeat="manager in itinerary.managers">{{manager.name}}<span ng-if="!$last">, </span></span></td>
 			</tr>
 		</tbody>
 	</table>

@@ -16,6 +16,7 @@
       all: all,
       one: one,
       edit: edit,
+      changeRegion: changeRegion,
       remove: remove
     };
 
@@ -64,6 +65,16 @@
 
     function remove(payload, id) {
       return $http.post('/itineraries/' + id, payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function changeRegion(payload, id) {
+      return $http.put('/itineraries/region/' + id, payload)
         .then(success)
         .catch(fail);
 

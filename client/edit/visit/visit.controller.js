@@ -14,7 +14,6 @@
     "companyFactory",
     "employeeFactory",
     "multiselectFactory",
-    "regionFactory",
     "pruneFactory"
   ];
 
@@ -27,19 +26,19 @@
     companyFactory,
     employeeFactory,
     multiselectFactory,
-    regionFactory,
     pruneFactory
   ) {
     /* jshint validthis: true */
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
-    vm.regions = regionFactory.regions;
     vm.selectPropsAdd = multiselectFactory.selectProps("Add Employees");
     vm.selectPropsRemove = multiselectFactory.selectProps("Remove Employees");
 
     vm.visit_id = $routeParams.id;
     vm.itinerary_id = $routeParams.itinerary_id;
     vm.getCompanyBranches = getCompanyBranches;
+    vm.execs = [],
+    vm.managers = [];
 
     vm.edit = edit;
     vm.editCompany = editCompany;
@@ -69,6 +68,22 @@
       function getOthersSuccess(res) {
         vm.companies = res[0];
         vm.employees = res[1];
+
+        for (var i = 0; i < vm.employees.length; i++) {
+          switch(vm.employees[i].title) {
+            case "Executive": {
+              vm.execs.push(vm.employees[i]);
+              break;
+            }
+            case "Sales Manager": {
+              vm.managers.push(vm.employees[i]);
+              break;
+            }
+            default:
+              break;
+          }
+        }
+
         for (var i = 0; i < vm.visit.employees.length; i++) {
           for (var j = 0; j < vm.employees.length; j++) {
             if (vm.employees[j]._id === vm.visit.employees[i]._id) {

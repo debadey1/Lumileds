@@ -36,10 +36,13 @@
     // vm.selectProps = multiselectFactory.selectProps("Add Attendees");
     var itinerary_id = $routeParams.id;
 
-    vm.visits = [{}];
-    vm.branchesToVisit = [];
+    vm.visits = [{}],
+    vm.branchesToVisit = [],
+    vm.execs = [],
+    vm.managers = [];
 
     vm.edit = edit;
+    vm.changeRegion = changeRegion;
     vm.view = view;
     vm.remove = remove;
     vm.removeVisit = removeVisit;
@@ -67,6 +70,21 @@
       function success(res) {
         vm.companies = res[0];
         vm.employees = res[1];
+
+        for (var i = 0; i < vm.employees.length; i++) {
+          switch(vm.employees[i].title) {
+            case "Executive": {
+              vm.execs.push(vm.employees[i]);
+              break;
+            }
+            case "Sales Manager": {
+              vm.managers.push(vm.employees[i]);
+              break;
+            }
+            default:
+              break;
+          }
+        }
       }
     }
 
@@ -126,6 +144,20 @@
             vm.branchesToVisit[index] = vm.companies[i].branches;
           }
         }
+      }
+    }
+
+    function changeRegion() {
+      var payload = {
+        region: vm.itinerary.region
+      }
+
+      itineraryFactory.changeRegion(payload, itinerary_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        getItinerary();
       }
     }
 

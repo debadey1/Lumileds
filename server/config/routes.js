@@ -71,6 +71,10 @@ module.exports = function (app) {
     function (req, res){
       itineraries.edit(req, res);
     });
+  app.put('/itineraries/region/:id',
+    function (req, res){
+      itineraries.changeRegion(req, res);
+    });
   app.post('/itineraries',
     function (req, res){
       itineraries.create(req, res);

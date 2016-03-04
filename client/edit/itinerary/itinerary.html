@@ -10,7 +10,8 @@
 			<tr>
 				<th>Date</th>
 				<th>Location</th>
-				<th>Region</th>
+				<th>Exec</th>
+				<th>Sales Manager</th>
 				<th>Attendees</th>
 			</tr>
 		</thead>
@@ -18,53 +19,72 @@
 			<tr ng-click="vm.view(visit._id)">
 				<td>{{visit.date | date: format: 'mediumDate'}}</td>
 				<td>{{visit.company.name}} - {{visit.branch.location.city}} Branch</td>
-				<td>{{visit.region}}</td>
+				<td>{{visit.executive.name}}</td>
+				<td>{{visit.manager.name}}</td>
 				<td><span ng-repeat="e in visit.employees">{{e.name}}<span ng-if="!$last">, </span></span></td>
 			</tr>
 		</tbody>
 	</table>
 </div>
 <div class="row blue darken-4 blue-text text-darken-4 z-depth-2">-</div>
+
+<h5>Edit Itinerary Region</h5>
 <div class="row">
-	<div class="col m12">
-		<h5 class="left"><span class="green-text text-accent-4">Add</span> Visits</h5>
+	<div class="input-field col m3">
+    <select class="browser-default" ng-model='vm.itinerary.region' required>
+	    <option value="" disabled selected>Itinerary Region*</option>
+      <option ng-repeat="region in vm.regions">{{region}}</option>
+    </select>
+  </div>
+  <div class="input-field col m3">
+		<button type='submit' ng-click="vm.changeRegion()" class="btn green accent-4">Change Region</button>
 	</div>
 </div>
-
+<div class="row">
+	
+</div>
+<div class="row blue darken-4 blue-text text-darken-4 z-depth-2">-</div>
 
 <form name="form" ng-submit="vm.edit(form.$valid)">
+	<h5>Add Visits to Itinerary</h5>
 	<div ng-repeat="visit in vm.visits">
 	 	<div class="row valign-wrapper">
 			<div class="input-field col m3">
 				<input type='date' class=" validate" placeholder="Date" ng-model='visit.date' required>
 			</div>
-			<div class="input-field col m3">
-		    <select class="browser-default validate" ng-model='visit.region' required>
-			    <option value="" disabled selected>Region (Required)</option>
-		      <option ng-repeat="region in vm.regions">{{region}}</option>
-		    </select>
-		  </div>
-		  <div class="input-field col m3">
+		  <div class="col m3">
 		    <select class="browser-default validate" ng-model='visit.company' ng-change="vm.getCompanyBranches(visit.company, $index)" required>
-			    <option value="" disabled selected>Company (Required)</option>
+			    <option value="" disabled selected>Company*</option>
 		      <option ng-repeat="company in vm.companies" value="{{company._id}}">{{company.name}}</option>
 		    </select>
 		  </div>
+		  <div class="col m3">
+	  		<select class="browser-default" ng-model='visit.branch' required>
+			    <option value="" disabled selected>Branch*</option>
+		      <option ng-repeat="branch in vm.branchesToVisit[$index]" value="{{branch._id}}">{{branch.location.city}} Branch</option>
+		    </select>
+	  	</div>
 		  <div class="col m1 offset-m2">
-				<a ng-click='vm.removeVisit($index)' class="btn red darken-4 right valign">X</a>
+				<a ng-click='vm.removeVisit($index)' class="btn red darken-4 right">X</a>
 		  </div>
 	  </div>
 	  <div class="row">
-	  	<div class="col m5">
-	  		<select class="browser-default validate multiple" ng-model='visit.employees' multiple required>
-			    <option value="" disabled selected>Add Attendees (Required, Press Ctrl to select multiple)</option>
-		      <option ng-repeat="employee in vm.employees" value="{{employee._id}}">{{employee.name}}</option>
+	  	<div class="col m3">
+	  		<select class="browser-default" ng-model='visit.executive' required>
+			    <option value="" disabled selected>Visit Exec*</option>
+		      <option ng-repeat="exec in vm.execs" value="{{exec._id}}">{{exec.name}}</option>
 		    </select>
 	  	</div>
-	  	<div class="col m3 offset-m1" ng-if="visit.company">
-	  		<select class="browser-default validate" ng-model='visit.branch' required>
-			    <option value="" disabled selected>Branch (Required)</option>
-		      <option ng-repeat="branch in vm.branchesToVisit[$index]" value="{{branch._id}}">{{branch.location.city}} Branch</option>
+	  	<div class="col m3">
+	  		<select class="browser-default" ng-model='visit.manager' required>
+			    <option value="" disabled selected>Sales Manager*</option>
+		      <option ng-repeat="manager in vm.managers" value="{{manager._id}}">{{manager.name}}</option>
+		    </select>
+	  	</div>
+	  	<div class="col m4">
+	  		<select class="browser-default multiple" ng-model='visit.employees' multiple>
+			    <option value="" disabled selected>Add Others (Ctrl to select multiple)</option>
+		      <option ng-repeat="employee in vm.employees" value="{{employee._id}}">{{employee.name}}</option>
 		    </select>
 	  	</div>
 		</div>

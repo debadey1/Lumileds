@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Visit = mongoose.model('Visit');
 var Itinerary = mongoose.model('Itinerary');
+var _ = require('lodash');
 var Q = require('q');
 mongoose.Promise = Q.Promise;
 
@@ -9,11 +10,13 @@ var exports = {
   create: create,
   destroy: destroy,
   edit: edit,
+  changeRegion: changeRegion,
   one: one
 };
 
 function all(req, res) {
   Itinerary.find()
+    .deepPopulate(["executives", "managers"])
     .exec()
     .then(success)
     .catch(fail);
@@ -32,6 +35,8 @@ function create(req, res) {
   var promises = [];
   var min = visits[0].date;
   var max = visits[0].date;
+  var managers = [];
+  var executives = [];
 
   for (var i = 0; i < visits.length; i++) {
     // push into promises
@@ -45,6 +50,14 @@ function create(req, res) {
         max = visits[i].date;
       }
     }
+
+    // as well as push managers and execs into itinerary
+    if(!_.includes(managers, visits[i].manager)) {
+      managers.push(visits[i].manager);
+    }
+    if(!_.includes(executives, visits[i].executive)) {
+      executives.push(visits[i].executive);
+    }
   }
 
   Q.all(promises)
@@ -54,10 +67,14 @@ function create(req, res) {
 
   function saveItinerary(result) {
     var itinerary = {
+      region: req.body.itinerary.region,
       start_date: min,
       end_date: max,
+      managers: managers,
+      executives: executives,
       visits: []
     }
+
 
     for (var i = 0; i < result.length; i++) {
       itinerary.visits.push(result[i]._id);
@@ -94,7 +111,7 @@ function destroy(req, res) {
 
 function one(req, res) {
   Itinerary.findById(req.params.id)
-    .deepPopulate(["visits.branch.location", "visits.company", "visits.employees"])
+    .deepPopulate(["visits.branch.location", "visits.company", "visits.employees", "visits.executive", "visits.manager"])
     .exec()
     .then(success)
     .catch(fail);
@@ -165,6 +182,20 @@ function edit(req, res) {
       return result;
     }
   }
+  function success(result) {
+    res.status(200).send(result);
+    return result;
+  }
+  function fail(err) {
+    res.status(500).send(err);
+  }
+}
+
+function changeRegion(req, res) {
+  Itinerary.findByIdAndUpdate(req.params.id, {$set: req.body}).exec()
+    .then(success)
+    .catch(fail);
+
   function success(result) {
     res.status(200).send(result);
     return result;

@@ -30,11 +30,16 @@
 		<div class="input-field col m3">
 			<input type='date' class=" validate" placeholder="Start Date" ng-model='vm.visit.date' required>
 		</div>
-		<div class="input-field col m3">
-	    <select class="browser-default validate" ng-model='vm.visit.region' required>
-	      <option ng-repeat="region in vm.regions">{{region}}</option>
+		<div class="col m3">
+  		<select class="browser-default" ng-model='vm.visit.executive' required>
+	      <option ng-repeat="exec in vm.execs" value="{{exec._id}}">{{exec.name}}</option>
 	    </select>
-	  </div>
+  	</div>
+  	<div class="col m3">
+  		<select class="browser-default" ng-model='vm.visit.manager' required>
+	      <option ng-repeat="manager in vm.managers" value="{{manager._id}}">{{manager.name}}</option>
+	    </select>
+  	</div>
 	</div>
 	<div class="row">
 		<div class="col m4">

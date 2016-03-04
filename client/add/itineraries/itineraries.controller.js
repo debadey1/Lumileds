@@ -129,13 +129,6 @@
       }
     }
 
-    function removeExec(exec) {
-      
-    }
-
-    function removeManager(manager) {
-      
-    }
     function fail(err) {
       alert('Visits Controller XHR Failed: ' + err.data);
     }
