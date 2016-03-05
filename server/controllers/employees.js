@@ -19,9 +19,11 @@ var exports = {
 
 function all(req, res) {
   Employee.find()
+    .sort("name")
     .deepPopulate(["location", "company"])
     .exec()
     .then(function (result) {
+      console.log(result);
       res.status(200).send(result);
       return result;
     })
@@ -32,6 +34,7 @@ function all(req, res) {
 
 function lumileds(req, res) {
   Employee.find({lumileds: true})
+    .sort("name")
     .deepPopulate(["location"])
     .exec()
     .then(function (result) {

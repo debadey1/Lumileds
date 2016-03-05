@@ -17,7 +17,7 @@
 				<th>Region</th>
 			</tr>
 		</thead>
-		<tbody ng-repeat="employee in vm.employees | filter: employeeFilter | orderBy: 'company.name' track by $index">
+		<tbody ng-repeat="employee in vm.employees | filter: employeeFilter | orderBy: 'name' track by $index">
 			<tr ng-click="vm.view(employee)">
 				<td>{{employee.name}}</td>
 				<td>{{employee.title}}</td>

@@ -9,6 +9,7 @@
     "$routeParams",
     "$location",
     "airportFactory",
+    "branchFactory",
     "regionFactory",
     "pruneFactory"
   ];
@@ -17,6 +18,7 @@
     $routeParams,
     $location,
     airportFactory,
+    branchFactory,
     regionFactory,
     pruneFactory
   ) {
@@ -27,11 +29,11 @@
 
     vm.branch_id = $routeParams.branch_id;
     vm.airports = getAirports();
+    vm.branch = getBranch();
 
     vm.add = add;
     vm.view = view;
     //////////
-
 
     function getAirports() {
       airportFactory.all()
@@ -40,6 +42,16 @@
 
       function success(res) {
         vm.airports = res;
+      }
+    }
+
+    function getBranch() {
+      branchFactory.one(vm.branch_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.branch = res;
       }
     }
 

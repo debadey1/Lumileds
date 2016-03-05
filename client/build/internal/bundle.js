@@ -160,6 +160,7 @@
     "$routeParams",
     "$location",
     "airportFactory",
+    "branchFactory",
     "regionFactory",
     "pruneFactory"
   ];
@@ -168,6 +169,7 @@
     $routeParams,
     $location,
     airportFactory,
+    branchFactory,
     regionFactory,
     pruneFactory
   ) {
@@ -178,11 +180,11 @@
 
     vm.branch_id = $routeParams.branch_id;
     vm.airports = getAirports();
+    vm.branch = getBranch();
 
     vm.add = add;
     vm.view = view;
     //////////
-
 
     function getAirports() {
       airportFactory.all()
@@ -191,6 +193,16 @@
 
       function success(res) {
         vm.airports = res;
+      }
+    }
+
+    function getBranch() {
+      branchFactory.one(vm.branch_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.branch = res;
       }
     }
 
@@ -235,6 +247,7 @@
     "$routeParams",
     "$location",
     "branchFactory",
+    "companyFactory",
     "regionFactory",
     "pruneFactory"
   ];
@@ -244,6 +257,7 @@
     $routeParams,
     $location,
     branchFactory,
+    companyFactory,
     regionFactory,
     pruneFactory
   ) {
@@ -255,7 +269,19 @@
     vm.company_id = $routeParams.company_id;
 
     vm.add = add;
+
+    getCompany();
     //////////
+
+    function getCompany() {
+      companyFactory.one(vm.company_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.company = res;
+      }
+    }
 
     function add(isValid) {
       if (isValid) {
@@ -430,6 +456,7 @@
     "$log",
     "$location",
     "$routeParams",
+    "companyFactory",
     "employeeFactory",
     "regionFactory"
   ];
@@ -438,6 +465,7 @@
     $log,
     $location,
     $routeParams,
+    companyFactory,
     employeeFactory,
     regionFactory
   ) {
@@ -448,8 +476,20 @@
     vm.company_id = $routeParams.company_id;
 
     vm.add = add;
+
+    getCompany();
     //////////
 
+    function getCompany() {
+      companyFactory.one(vm.company_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.company = res;
+      }
+    }
+    
     function add(isValid) {
       if (isValid) {
         var payload = {
@@ -484,6 +524,7 @@
   controller.$inject = [
     "$routeParams",
     "$location",
+    "branchFactory",
     "hotelFactory",
     "regionFactory",
     "pruneFactory"
@@ -492,6 +533,7 @@
   function controller(
     $routeParams,
     $location,
+    branchFactory,
     hotelFactory,
     regionFactory,
     pruneFactory
@@ -503,6 +545,7 @@
 
     vm.branch_id = $routeParams.branch_id;
     vm.hotels = getHotels();
+    vm.branch = getBranch();
 
     vm.add = add;
     vm.view = view;
@@ -516,6 +559,16 @@
 
       function success(res) {
         vm.hotels = res;
+      }
+    }
+
+    function getBranch() {
+      branchFactory.one(vm.branch_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.branch = res;
       }
     }
 
@@ -694,6 +747,7 @@
   controller.$inject = [
     "$routeParams",
     "$location",
+    "branchFactory",
     "restaurantFactory",
     "regionFactory",
     "pruneFactory"
@@ -702,6 +756,7 @@
   function controller(
     $routeParams,
     $location,
+    branchFactory,
     restaurantFactory,
     regionFactory,
     pruneFactory
@@ -713,6 +768,7 @@
 
     vm.branch_id = $routeParams.branch_id;
     vm.restaurants = getRestaurants();
+    vm.branch = getBranch();
 
     vm.add = add;
     vm.view = view;
@@ -726,6 +782,16 @@
 
       function success(res) {
         vm.restaurants = res;
+      }
+    }
+
+    function getBranch() {
+      branchFactory.one(vm.branch_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.branch = res;
       }
     }
 

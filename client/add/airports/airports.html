@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col m12">
-		<h5 class="left"><span class="green-text text-accent-4">Add</span> New Airport</h5>
-		<a class="btn blue darken-4 right" href="#/branch/{{vm.branch_id}}">Back</a>
+		<h5 class="left"><span class="green-text text-accent-4">Add</span> New {{vm.branch.company.name}} Airport - {{vm.branch.location.city}}, {{vm.branch.location.state}} Branch</h5>
+		<a class="btn blue darken-4 right" href="#/company/{{vm.branch.company._id}}/branch/{{vm.branch_id}}">Back</a>
 		<!-- <a class="btn blue darken-4 right" href="#/airports/all">View All</a> -->
 	</div>
 </div>

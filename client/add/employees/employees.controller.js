@@ -9,6 +9,7 @@
     "$log",
     "$location",
     "$routeParams",
+    "companyFactory",
     "employeeFactory",
     "regionFactory"
   ];
@@ -17,6 +18,7 @@
     $log,
     $location,
     $routeParams,
+    companyFactory,
     employeeFactory,
     regionFactory
   ) {
@@ -27,8 +29,20 @@
     vm.company_id = $routeParams.company_id;
 
     vm.add = add;
+
+    getCompany();
     //////////
 
+    function getCompany() {
+      companyFactory.one(vm.company_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.company = res;
+      }
+    }
+    
     function add(isValid) {
       if (isValid) {
         var payload = {

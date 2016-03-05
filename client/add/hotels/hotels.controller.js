@@ -8,6 +8,7 @@
   controller.$inject = [
     "$routeParams",
     "$location",
+    "branchFactory",
     "hotelFactory",
     "regionFactory",
     "pruneFactory"
@@ -16,6 +17,7 @@
   function controller(
     $routeParams,
     $location,
+    branchFactory,
     hotelFactory,
     regionFactory,
     pruneFactory
@@ -27,6 +29,7 @@
 
     vm.branch_id = $routeParams.branch_id;
     vm.hotels = getHotels();
+    vm.branch = getBranch();
 
     vm.add = add;
     vm.view = view;
@@ -40,6 +43,16 @@
 
       function success(res) {
         vm.hotels = res;
+      }
+    }
+
+    function getBranch() {
+      branchFactory.one(vm.branch_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.branch = res;
       }
     }
 
