@@ -22,7 +22,6 @@
     regionFactory,
     pruneFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
     vm.regions = regionFactory.regions;
@@ -32,7 +31,6 @@
     vm.branch = getBranch();
 
     vm.add = add;
-    vm.view = view;
     //////////
 
 
@@ -70,14 +68,8 @@
       }
 
       function success() {
-        getHotels();
-        vm.new_hotel = {};
-        vm.new_location = {};
+        $location.path('/company/' + vm.branch.company._id + '/branch/' + vm.branch_id);
       }
-    }
-
-    function view(data) {
-      $location.path('/branch/' + vm.branch_id + '/hotel/' + data._id);
     }
 
     function fail(err) {

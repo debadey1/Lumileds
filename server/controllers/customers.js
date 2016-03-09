@@ -4,84 +4,92 @@ var Company = mongoose.model('Company');
 var Q = require('q');
 mongoose.Promise = Q.Promise;
 
-
 var exports = {
   all: all,
-  create: create,
-  destroy: destroy,
+  one: one,
   edit: edit,
-  one: one
+  create: create,
+  destroy: destroy
 };
+module.exports = exports;
+//////////
 
 function all(req, res) {
   Customer.find()
+    .sort("name")
     .deepPopulate(["company"])
     .exec()
-    .then(function (result) {
-      res.status(200).send(result);
-      return result;
-    })
-    .catch(function (err) {
-      res.status(500).send(err);
-    });
-}
+    .then(success)
+    .catch(fail);
 
-function create(req, res) {
-  new Customer(req.body)
-    .save()
-    .then(function (result) {
-      res.status(200).send(result);
-      return Company.findByIdAndUpdate(req.body.company, {$push: {customers: result._id}}).exec();
-    })
-    .catch(function (err) {
-      res.status(500).send(err);
-    });
-}
-
-function destroy(req, res) {
-  var promises = [
-    Customer.findByIdAndRemove(req.params.id).exec(),
-    Company.findOneAndUpdate({customers:{$in:[req.params.id]}}, {$pull: {customers: req.params.id}}).exec()
-  ];
-  Q.all(promises)
-    .then(function (result) {
-      res.status(200).send(result[0]);
-      return result;
-    })
-    .catch(function (err) {
-      res.status(500).send(err);
-    });
+  function success(result) {
+    res.status(200).send(result);
+    return result;
+  }
+  function fail(err) {
+    res.status(500).send(err);
+  }
 }
 
 function one(req, res) {
   Customer.findById(req.params.id)
     .deepPopulate(["company"])
     .exec()
-    .then(function (result) {
-      res.status(200).send(result);
-      return result;
-    })
-    .catch(function (err) {
-      res.status(500).send(err);
-    });
+    .then(success)
+    .catch(fail);
+
+  function success(result) {
+    res.status(200).send(result);
+    return result;
+  }
+  function fail(err) {
+    res.status(500).send(err);
+  }
 }
 
 function edit(req, res) {
-  var cust_id = req.params.id;
-  var cust = req.body.customer;
-  var promises = [
-    Customer.findByIdAndUpdate(cust_id, cust).exec(),
-    Company.findOneAndUpdate({customers:{$in:[cust_id]}}, {$pull: {customers: cust_id}}).exec(),
-    Company.findByIdAndUpdate(cust.company, {$push: {customers: cust_id}}).exec()
-  ];
-  Q.all(promises)
-    .then(function (result) {
-      res.status(200).send(result);
-      return result;
-    })
-    .catch(function (err) {
-      res.status(500).send(err);
-    });
+  Customer.findByIdAndUpdate(req.params.id, req.body.customer).exec()
+    .then(success)
+    .catch(fail);
+
+  function success(result) {
+    res.status(200).send(result);
+    return result;
+  }
+  function fail(err) {
+    res.status(500).send(err);
+  }
 }
 
-module.exports = exports;
+function create(req, res) {
+  new Customer(req.body.customer)
+    .save()
+    .then(addToCompany)
+    .catch(fail);
+
+  function addToCompany(result) {
+    res.status(200).send(result);
+    return Company.findByIdAndUpdate(result.company, {$push: {employees: result._id}});
+  }
+  function fail(err) {
+    res.status(500).send(err);
+  }
+}
+
+function destroy(req, res) {
+  Customer.findByIdAndRemove(req.params.id).exec()
+    .then(success)
+    .catch(fail);
+
+  function success(result) {
+    res.status(200).send(result);
+    return Company.findByIdAndUpdate(result.company, {$pull: {employees: result._id}}).exec();
+  }
+  function fail(err) {
+    res.status(500).send(err);
+  }
+}
+
+function changeCompany(req, res) {
+  // future need?
+}

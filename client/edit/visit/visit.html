@@ -18,6 +18,18 @@
 	      <option ng-repeat="branch in vm.branchesToVisit" value="{{branch._id}}">{{branch.location.city}} Branch</option>
 	    </select>
 		</div>
+		<div class="input-field col m3">
+  		<select class="browser-default" ng-model='vm.new_airport' required>
+		    <option value="" disabled>{{vm.visit.airport.name}}</option>
+	      <option ng-repeat="airport in vm.airportsToVisit[$index]" value="{{airport._id}}">{{airport.name}}</option>
+	    </select>
+  	</div>
+  	<div class="input-field col m3">
+  		<select class="browser-default" ng-model='vm.new_hotel' required>
+		    <option value="" disabled>{{vm.visit.hotel.name}}</option>
+	      <option ng-repeat="hotel in vm.hotelsToVisit[$index]" value="{{hotel._id}}">{{hotel.name}}</option>
+	    </select>
+  	</div>
 	</div>
 	<div class="row">
 		<div class="input-field col m12">
@@ -31,7 +43,7 @@
 			<input type='date' class=" validate" placeholder="Start Date" ng-model='vm.visit.date' required>
 		</div>
 		<div class="col m3">
-  		<select class="browser-default" ng-model='vm.visit.executive' required>
+  		<select class="browser-default multiple" ng-model='vm.visit.executive' multiple required>
 	      <option ng-repeat="exec in vm.execs" value="{{exec._id}}">{{exec.name}}</option>
 	    </select>
   	</div>

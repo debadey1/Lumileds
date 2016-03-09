@@ -16,7 +16,6 @@
     $location,
     itineraryFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
 
     vm.itineraries = getItineraries();

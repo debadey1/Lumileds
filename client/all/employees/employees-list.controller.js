@@ -14,7 +14,6 @@
     $location,
     employeeFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
 
     vm.employees = getEmployees();
@@ -34,7 +33,7 @@
     }
 
     function view(data) {
-      $location.path('/employee/' + data._id);
+      $location.path('/employee/lumileds/' + data._id);
     }
 
     function fail(err) {

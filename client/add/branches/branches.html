@@ -2,7 +2,7 @@
 	<div class="col m12">
 		<h5 class="left"><span class="green-text text-accent-4">Add</span> New {{vm.company.name}} Branch</h5>
 		<a class="btn purple darken-4 right" href="#/branches/all">View All</a>
-		<a class="btn blue darken-4 right" href="#/company/{{vm.company_id}}">Back</a>
+		<a class="btn blue darken-4 right" href="#/company/{{vm.company_id}}">View Company</a>
 	</div>
 </div>
 <form name="form" ng-submit="vm.add(form.$valid)">
@@ -25,6 +25,12 @@
 	      <option ng-repeat="region in vm.regions">{{region}}</option>
 	    </select>
 	  </div>
+  </div>
+  <div class="row">
+    <div class="input-field col s6 m6">
+      <textarea id="textarea" class="materialize-textarea" ng-model='vm.new_branch.notes'></textarea>
+      <label for="textarea">Notes</label>
+    </div>
   </div>
 	<div class="row">
 		<div class="input-field col m12">

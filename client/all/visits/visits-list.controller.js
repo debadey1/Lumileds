@@ -16,7 +16,6 @@
     $location,
     visitFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
 
     vm.visits = getVisits();

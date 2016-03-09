@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 var RestaurantSchema = new mongoose.Schema({
 	name: String,
 	phone: String,
+	notes: String,
 	location: {type: Schema.Types.ObjectId, ref: "Location"},
   created_at: {type: Date, default: Date.now}
 });

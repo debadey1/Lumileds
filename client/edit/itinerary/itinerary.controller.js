@@ -10,12 +10,12 @@
     "$log",
     "$location",
     "$routeParams",
-    "visitFactory",
     "itineraryFactory",
     "companyFactory",
     "employeeFactory",
-    // "multiselectFactory",
+    "branchFactory",
     "regionFactory"
+    // "multiselectFactory",
   ];
 
   function controller(
@@ -23,30 +23,31 @@
     $log,
     $location,
     $routeParams,
-    visitFactory,
     itineraryFactory,
     companyFactory,
     employeeFactory,
-    // multiselectFactory,
+    branchFactory,
     regionFactory
+    // multiselectFactory,
   ) {
-    /* jshint validthis: true */
     var vm = this;
     vm.regions = regionFactory.regions;
+    vm.itinerary_id = $routeParams.id;
     // vm.selectProps = multiselectFactory.selectProps("Add Attendees");
-    var itinerary_id = $routeParams.id;
 
     vm.visits = [{}],
     vm.branchesToVisit = [],
+    vm.airportsToVisit = [],
+    vm.hotelsToVisit = [],
     vm.execs = [],
     vm.managers = [];
 
     vm.edit = edit;
     vm.changeRegion = changeRegion;
-    vm.view = view;
     vm.remove = remove;
     vm.removeVisit = removeVisit;
     vm.getCompanyBranches = getCompanyBranches;
+    vm.getBranchAmenities = getBranchAmenities;
 
     initialize();
     //////////
@@ -56,16 +57,12 @@
 
       var promises = [
         companyFactory.all(),
-        employeeFactory.getLumiledsEmployees()
+        employeeFactory.all()
       ];
 
       $q.all(promises)
         .then(success)
         .catch(fail);
-
-      // angular.element(document).ready(function() {
-      //   angular.element('select').material_select();
-      // });
 
       function success(res) {
         vm.companies = res[0];
@@ -89,7 +86,7 @@
     }
 
     function getItinerary() {
-      itineraryFactory.one(itinerary_id)
+      itineraryFactory.one(vm.itinerary_id)
         .then(success)
         .catch(fail);
 
@@ -98,12 +95,8 @@
       }
     }
 
-    function view(id) {
-      $location.path('/itinerary/'+ itinerary_id + '/visit/' + id);
-    }
-
     function remove(data) {
-      itineraryFactory.remove(data, itinerary_id)
+      itineraryFactory.remove(data, vm.itinerary_id)
         .then(success)
         .catch(fail);
 
@@ -119,14 +112,13 @@
           visits: vm.visits
         };
 
-        itineraryFactory.edit(payload, itinerary_id)
+        itineraryFactory.edit(payload, vm.itinerary_id)
           .then(success)
           .catch(fail);
       }
 
       function success() {
-        vm.visits = [{}];
-        getItinerary();
+        $location.path('/itinerary/' + vm.itinerary_id);
       }
     }
 
@@ -137,6 +129,11 @@
 
     // gets branches for the dropdown of each visit after a user selects a company
     function getCompanyBranches(company_id, index) {
+      // reset branch, airport, and hotel
+      delete vm.visits[index].branch;
+      delete vm.visits[index].airport;
+      delete vm.visits[index].hotel;
+
       vm.branchesToVisit[index] = [];
       for (var i = 0; i < vm.companies.length; i++) {
         if (company_id === vm.companies[i]._id) {
@@ -152,12 +149,27 @@
         region: vm.itinerary.region
       }
 
-      itineraryFactory.changeRegion(payload, itinerary_id)
+      itineraryFactory.changeRegion(payload, vm.itinerary_id)
         .then(success)
         .catch(fail);
 
       function success(res) {
         getItinerary();
+      }
+    }
+
+    function getBranchAmenities(branch_id, index) {
+      // reset airport and hotel
+      delete vm.visits[index].airport;
+      delete vm.visits[index].hotel;
+
+      branchFactory.one(branch_id)
+        .then(success)
+        .catch(fail);
+
+      function success(result) {
+        vm.airportsToVisit[index] = result.airports;
+        vm.hotelsToVisit[index] = result.hotels;
       }
     }
 

@@ -6,26 +6,29 @@
     .controller('EmployeeController', controller);
 
   controller.$inject = [
+    "$q",
     "$log",
     "$location",
     "$routeParams",
     "employeeFactory",
-    "pruneFactory"
+    "pruneFactory",
+    "regionFactory"
   ];
 
   function controller(
+    $q,
     $log,
     $location,
     $routeParams,
     employeeFactory,
-    pruneFactory
+    pruneFactory,
+    regionFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
+    vm.regions = regionFactory.regions;
 
     vm.employee_id = $routeParams.id;
-    vm.company_id = $routeParams.company_id;
     vm.employee = getEmployee();
 
     vm.edit = edit;
@@ -45,8 +48,13 @@
 
 
     function edit() {
+      var location = vm.employee.location;
+      delete vm.employee.location;
+      
       var payload = {
-        employee: pruneEmpty(vm.employee)
+        employee: pruneEmpty(vm.employee),
+        location_id: location._id,
+        location: pruneEmpty(location)
       };
       
       employeeFactory.edit(payload, vm.employee_id)
@@ -59,17 +67,17 @@
     }
 
     function remove(data) {
-      employeeFactory.remove(data)
+      employeeFactory.remove(data._id)
         .then(success)
         .catch(fail);
 
       function success() {
-        $location.path("/company/" + vm.company_id);
+        $location.path("/employees/lumileds");
       }
     }
 
     function fail(err) {
-      $log.log('Employee Controller XHR Failed: ' + err.data);
+      alert('Employee Controller XHR Failed: ' + err.data);
     }
   }
 })();

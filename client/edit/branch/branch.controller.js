@@ -24,7 +24,6 @@
     regionFactory,
     pruneFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
     vm.regions = regionFactory.regions;
@@ -36,6 +35,7 @@
 
     vm.edit = edit;
     vm.view = view;
+    vm.changeCompany = changeCompany;
     vm.remove = remove;
     //////////
 
@@ -46,6 +46,7 @@
 
       function success(res) {
         vm.branch = res;
+        vm.company_id = vm.branch.company._id;
       }
     }
 
@@ -62,8 +63,6 @@
     function edit() {
       var location = vm.branch.location;
       delete vm.branch.location;
-
-      vm.branch.company = vm.new_company;
 
       var payload = {
         branch: pruneEmpty(vm.branch),
@@ -94,8 +93,24 @@
       $location.path(path);
     }
 
+    function changeCompany() {
+      var payload = {
+        branch: {
+          company: vm.new_company
+        }
+      }
+      
+      branchFactory.changeCompany(payload, vm.branch_id)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        getBranch();
+      }
+    }
+
     function fail(err) {
-      alert('Branch Controller XHR Failed: ' + err.data);
+      $log.log('Branch Controller XHR Failed: ' + err.data);
     }
   }
 })();

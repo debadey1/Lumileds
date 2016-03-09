@@ -24,7 +24,6 @@
     regionFactory,
     pruneFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
     vm.regions = regionFactory.regions;
@@ -49,7 +48,10 @@
     function add(isValid) {
       if (isValid) {
         var payload = {
-          branch: {company: vm.company_id},
+          branch: {
+            company: vm.company_id,
+            notes: vm.new_branch.notes
+          },
           branch_location: pruneEmpty(vm.branch_location)
         };
 

@@ -27,7 +27,7 @@
 		    </select>
 		  </div>
 		  <div class="col m3">
-	  		<select class="browser-default" ng-model='visit.branch' required>
+	  		<select class="browser-default" ng-model='visit.branch' ng-change="vm.getBranchAmenities(visit.branch, $index)" required>
 			    <option value="" disabled selected>Branch*</option>
 		      <option ng-repeat="branch in vm.branchesToVisit[$index]" value="{{branch._id}}">{{branch.location.city}} Branch</option>
 		    </select>
@@ -38,8 +38,22 @@
 	  </div>
 	  <div class="row">
 	  	<div class="col m3">
-	  		<select class="browser-default" ng-model='visit.executive' required>
-			    <option value="" disabled selected>Executive*</option>
+	  		<select class="browser-default" ng-model='visit.airport' required>
+			    <option value="" disabled selected>Airport*</option>
+		      <option ng-repeat="airport in vm.airportsToVisit[$index]" value="{{airport._id}}">{{airport.name}}</option>
+		    </select>
+	  	</div>
+	  	<div class="col m3">
+	  		<select class="browser-default" ng-model='visit.hotel' required>
+			    <option value="" disabled selected>Hotel*</option>
+		      <option ng-repeat="hotel in vm.hotelsToVisit[$index]" value="{{hotel._id}}">{{hotel.name}}</option>
+		    </select>
+	  	</div>
+	  </div>
+	  <div class="row">
+	  	<div class="col m3">
+	  		<select class="browser-default multiple" ng-model='visit.executives' multiple required>
+			    <option value="" disabled selected>Executives*</option>
 		      <option ng-repeat="exec in vm.execs" value="{{exec._id}}">{{exec.name}}</option>
 		    </select>
 	  	</div>

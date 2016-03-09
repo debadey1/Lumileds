@@ -3,13 +3,13 @@
 
   angular
     .module('app')
-    .controller('CompanyController', controller);
+    .controller('CustomerController', controller);
 
   controller.$inject = [
     "$log",
     "$location",
     "$routeParams",
-    "companyFactory",
+    "customerFactory",
     "pruneFactory"
   ];
 
@@ -17,55 +17,58 @@
     $log,
     $location,
     $routeParams,
-    companyFactory,
+    customerFactory,
     pruneFactory
   ) {
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
 
-    vm.company_id = $routeParams.id;
-    vm.company = getCompany();
+    vm.customer_id = $routeParams.id;
+    vm.company_id = $routeParams.company_id;
+    vm.customer = getCustomer();
 
     vm.edit = edit;
     vm.remove = remove;
     //////////
 
-    function getCompany() {
-      companyFactory.one(vm.company_id)
+    function getCustomer() {
+      customerFactory.one(vm.customer_id)
         .then(success)
         .catch(fail);
 
       function success(res) {
-        vm.company = res;
+        vm.customer = res;
+        return res;
       }
     }
 
+
     function edit() {
       var payload = {
-        company: pruneEmpty(vm.company)
+        customer: pruneEmpty(vm.customer)
       };
-      companyFactory.edit(payload, vm.company_id)
+      
+      customerFactory.edit(payload, vm.customer_id)
         .then(success)
         .catch(fail);
 
-      function success() {
-        getCompany();
-        vm.new_company = {};
+      function success(res) {
+        getCustomer();
       }
     }
 
     function remove(data) {
-      companyFactory.remove(data)
+      customerFactory.remove(data._id)
         .then(success)
         .catch(fail);
 
       function success() {
-        $location.path("/companies");
+        $location.path("/company/" + vm.company_id);
       }
     }
 
     function fail(err) {
-      alert('Company Controller XHR Failed: ' + err.data);
+      $log.log('Customer Controller XHR Failed: ' + err.data);
     }
   }
 })();

@@ -1,12 +1,12 @@
-var companies = require('../controllers/companies.js');
 var employees = require('../controllers/employees.js');
-var visits = require('../controllers/visits.js');
-var itineraries = require('../controllers/itineraries.js');
+var companies = require('../controllers/companies.js');
 var customers = require('../controllers/customers.js');
 var branches = require('../controllers/branches.js');
 var airports = require('../controllers/airports.js');
 var hotels = require('../controllers/hotels.js');
 var restaurants = require('../controllers/restaurants.js');
+var itineraries = require('../controllers/itineraries.js');
+var visits = require('../controllers/visits.js');
 
 module.exports = function (app) {
   app.get('/companies',
@@ -34,19 +34,11 @@ module.exports = function (app) {
     function (req, res){
       employees.all(req, res);
     });
-  app.get('/employees/lumileds',
-    function (req, res){
-      employees.lumileds(req, res);
-    });
   app.get('/employees/:id',
     function (req, res){
       employees.one(req, res);
     });
-  app.post('/employees/lumileds',
-    function (req, res){
-      employees.createLumileds(req, res);
-    });
-  app.post('/employees/:id',
+  app.put('/employees/:id',
     function (req, res){
       employees.edit(req, res);
     });
@@ -54,9 +46,30 @@ module.exports = function (app) {
     function (req, res){
       employees.create(req, res);
     });
-  app.delete('/employees/:id',
+  app.post('/employees/:id',
     function (req, res){
       employees.destroy(req, res);
+    });
+
+  app.get('/customers',
+    function (req, res){
+      customers.all(req, res);
+    });
+  app.get('/customers/:id',
+    function (req, res){
+      customers.one(req, res);
+    });
+  app.put('/customers/:id',
+    function (req, res){
+      customers.edit(req, res);
+    });
+  app.post('/customers',
+    function (req, res){
+      customers.create(req, res);
+    });
+  app.post('/customers/:id',
+    function (req, res){
+      customers.destroy(req, res);
     });
 
   app.get('/itineraries',
@@ -137,6 +150,10 @@ module.exports = function (app) {
   app.post('/branches/:id',
     function (req, res){
       branches.edit(req, res);
+    });
+  app.put('/branches/company/:id',
+    function (req, res){
+      branches.changeCompany(req, res);
     });
   app.post('/branches',
     function (req, res){

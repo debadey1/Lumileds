@@ -5,8 +5,7 @@ var EmployeeSchema = new mongoose.Schema({
   phone: String,
   email: String,
   title: String,
-  lumileds: Boolean,
-  company: {type: Schema.Types.ObjectId, ref: "Company"},
+  itineraries: [{type: Schema.Types.ObjectId, ref: "Itinerary"}],
   location: {type: Schema.Types.ObjectId, ref: "Location"},
   created_at: {type: Date, default: Date.now}
 });

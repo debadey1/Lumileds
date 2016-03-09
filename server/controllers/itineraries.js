@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Visit = mongoose.model('Visit');
 var Itinerary = mongoose.model('Itinerary');
+var Employee = mongoose.model('Employee');
 var _ = require('lodash');
 var Q = require('q');
 mongoose.Promise = Q.Promise;
@@ -55,14 +56,16 @@ function create(req, res) {
     if(!_.includes(managers, visits[i].manager)) {
       managers.push(visits[i].manager);
     }
-    if(!_.includes(executives, visits[i].executive)) {
-      executives.push(visits[i].executive);
+    for (var j = 0; j < visits[i].executives.length; j++) {
+      if(!_.includes(executives, visits[i].executives[j])) {
+        executives.push(visits[i].executives[j]);
+      }
     }
   }
 
   Q.all(promises)
     .then(saveItinerary)
-    .then(success)
+    .then(addItineraryToExecs)
     .catch(fail);
 
   function saveItinerary(result) {
@@ -75,18 +78,23 @@ function create(req, res) {
       visits: []
     }
 
-
     for (var i = 0; i < result.length; i++) {
       itinerary.visits.push(result[i]._id);
     }
 
     return new Itinerary(itinerary).save();
   }
-  function success(result) {
+  function addItineraryToExecs(result) {
     res.status(200).send(result);
+
+    var promises = [];
+    for (var i = 0; i < executives.length; i++) {
+      promises.push(Employee.findByIdAndUpdate(executives[i], {$push: {itineraries: result._id}}).exec());
+    }
+    return Q.all(promises);
   }
   function fail(err) {
-    res.status(500).send(err);
+    console.log(err);
   }
 }
 
@@ -102,6 +110,9 @@ function destroy(req, res) {
     for (var i = 0; i < result.visits.length; i++) {
       promises.push(Visit.findByIdAndRemove(result.visits[i]).exec());
     }
+    for (var i = 0; i < result.executives.length; i++) {
+      promises.push(Employee.findByIdAndUpdate(result.executives[i], {$pull: {itineraries: result._id}}).exec()); 
+    }
     return Q.all(promises);
   }
   function fail(err) {
@@ -111,7 +122,7 @@ function destroy(req, res) {
 
 function one(req, res) {
   Itinerary.findById(req.params.id)
-    .deepPopulate(["visits.branch.location", "visits.company", "visits.employees", "visits.executive", "visits.manager"])
+    .deepPopulate(["visits.branch.location", "visits.company", "visits.employees", "visits.executives.name", "visits.manager.name", "visits.airport", "visits.hotel"])
     .exec()
     .then(success)
     .catch(fail);

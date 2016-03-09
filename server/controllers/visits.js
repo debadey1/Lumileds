@@ -15,7 +15,7 @@ var exports = {
 
 function all(req, res) {
   Visit.find()
-    .deepPopulate(["company", "branch.location", "employees", "manager", "executive"])
+    .deepPopulate(["company", "branch.location", "employees", "manager", "executives"])
     .exec()
     .then(function (result) {
       res.status(200).send(result);
@@ -75,7 +75,7 @@ function destroy(req, res) {
 
 function one(req, res) {
   Visit.findById(req.params.id)
-    .deepPopulate(["company", "employees", "branch.location"])
+    .deepPopulate(["company", "employees", "branch.location", "airport", "hotel"])
     .exec()
     .then(function (result) {
       res.status(200).send(result);

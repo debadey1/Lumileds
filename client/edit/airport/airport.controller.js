@@ -9,6 +9,7 @@
     "$log",
     "$location",
     "$routeParams",
+    "branchFactory",
     "airportFactory",
     "regionFactory",
     "pruneFactory"
@@ -18,11 +19,11 @@
     $log,
     $location,
     $routeParams,
+    branchFactory,
     airportFactory,
     regionFactory,
     pruneFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
     vm.regions = regionFactory.regions;
@@ -30,6 +31,7 @@
     vm.branch_id = $routeParams.branch_id;
     vm.airport_id = $routeParams.id;
     vm.airport = getAirport();
+    vm.branch = getBranch();
 
     vm.edit = edit;
     vm.remove = remove;
@@ -42,6 +44,16 @@
 
       function success(res) {
         vm.airport = res;
+      }
+    }
+
+    function getBranch() {
+      branchFactory.one(vm.branch_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.branch = res;
       }
     }
 

@@ -3,7 +3,7 @@
 
   angular
     .module('app')
-    .factory('branchFactory', factory);
+    .factory('customerFactory', factory);
 
   factory.$inject = [
     "$http",
@@ -15,7 +15,6 @@
       all: all,
       one: one,
       edit: edit,
-      changeCompany: changeCompany,
       add: add,
       remove: remove
     };
@@ -24,7 +23,7 @@
     //////////
 
     function all() {
-      return $http.get('/branches')
+      return $http.get('/customers')
         .then(success)
         .catch(fail);
 
@@ -34,7 +33,7 @@
     }
 
     function one(id) {
-      return $http.get('/branches/' + id)
+      return $http.get('/customers/' + id)
         .then(success)
         .catch(fail);
 
@@ -44,17 +43,7 @@
     }
 
     function edit(payload, id) {
-      return $http.post('/branches/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function changeCompany(payload, id) {
-      return $http.put('/branches/company/' + id, payload)
+      return $http.put('/customers/' + id, payload)
         .then(success)
         .catch(fail);
 
@@ -64,7 +53,7 @@
     }
 
     function add(payload) {
-      return $http.post('/branches', payload)
+      return $http.post('/customers', payload)
         .then(success)
         .catch(fail);
 
@@ -73,8 +62,8 @@
       }
     }
 
-    function remove(data) {
-      return $http.delete('/branches/' + data._id)
+    function remove(id) {
+      return $http.post('/customers/' + id)
         .then(success)
         .catch(fail);
 
@@ -84,7 +73,7 @@
     }
 
     function fail(error) {
-      $log.log('Branch Factory XHR failed: ', error.data);
+      $log.log('Customer Factory XHR failed: ', error.data);
     }
 
   }

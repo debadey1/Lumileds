@@ -13,8 +13,9 @@
     "itineraryFactory",
     "companyFactory",
     "employeeFactory",
-    // "multiselectFactory",
+    "branchFactory",
     "regionFactory"
+    // "multiselectFactory",
   ];
 
   function controller(
@@ -25,15 +26,17 @@
     itineraryFactory,
     companyFactory,
     employeeFactory,
-    // multiselectFactory,
+    branchFactory,
     regionFactory
+    // multiselectFactory,
   ) {
-    /* jshint validthis: true */
     var vm = this;
     vm.regions = regionFactory.regions;
     // vm.selectProps = multiselectFactory.selectProps("Add Attendees");
     vm.visits = [{}],
     vm.branchesToVisit = [],
+    vm.airportsToVisit = [],
+    vm.hotelsToVisit = [],
     vm.execs = [],
     vm.managers = [];
 
@@ -41,6 +44,7 @@
     vm.removeVisit = removeVisit;
     vm.view = view;
     vm.getCompanyBranches = getCompanyBranches;
+    vm.getBranchAmenities = getBranchAmenities;
 
     initialize();
     //////////
@@ -50,7 +54,7 @@
 
       var promises = [
         companyFactory.all(),
-        employeeFactory.getLumiledsEmployees()
+        employeeFactory.all()
       ];
 
       $q.all(promises)
@@ -119,6 +123,11 @@
 
     // gets branches for the dropdown of each visit after a user selects a company
     function getCompanyBranches(company_id, index) {
+      // reset branch, airport, and hotel
+      delete vm.visits[index].branch;
+      delete vm.visits[index].airport;
+      delete vm.visits[index].hotel;
+
       vm.branchesToVisit[index] = [];
       for (var i = 0; i < vm.companies.length; i++) {
         if (company_id === vm.companies[i]._id) {
@@ -126,6 +135,21 @@
             vm.branchesToVisit[index] = vm.companies[i].branches;
           }
         }
+      }
+    }
+
+    function getBranchAmenities(branch_id, index) {
+      // reset airport and hotel
+      delete vm.visits[index].airport;
+      delete vm.visits[index].hotel;
+
+      branchFactory.one(branch_id)
+        .then(success)
+        .catch(fail);
+
+      function success(result) {
+        vm.airportsToVisit[index] = result.airports;
+        vm.hotelsToVisit[index] = result.hotels;
       }
     }
 

@@ -6,64 +6,64 @@
     .controller('EmployeesController', controller);
 
   controller.$inject = [
-    "$log",
     "$location",
-    "$routeParams",
     "companyFactory",
     "employeeFactory",
     "regionFactory"
   ];
 
   function controller(
-    $log,
     $location,
-    $routeParams,
     companyFactory,
     employeeFactory,
     regionFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
     vm.regions = regionFactory.regions;
 
-    vm.company_id = $routeParams.company_id;
+    vm.employees = getEmployees();
 
     vm.add = add;
-
-    getCompany();
+    vm.view = view;
     //////////
 
-    function getCompany() {
-      companyFactory.one(vm.company_id)
+
+    function getEmployees() {
+      employeeFactory.all()
         .then(success)
         .catch(fail);
 
       function success(res) {
-        vm.company = res;
+        vm.employees = res;
       }
     }
-    
+
     function add(isValid) {
       if (isValid) {
+        vm.new_employee.lumileds = true;
+
         var payload = {
           employee: vm.new_employee,
           location: vm.new_location
         };
-
-        payload.employee.company = vm.company_id;
-
         employeeFactory.add(payload)
           .then(success)
           .catch(fail);
       }
 
       function success() {
-        $location.path('/company/' + vm.company_id);
+        getEmployees();
+        vm.new_employee = {};
+        vm.new_location = {};
       }
     }
 
+    function view(data) {
+      $location.path('/employee/lumileds/' + data._id);
+    }
+
     function fail(err) {
-      $log.log('Employees Controller XHR Failed: ' + err.data);
+      alert('Employees Controller XHR Failed: ' + err.data);
     }
   }
 })();

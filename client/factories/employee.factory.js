@@ -12,13 +12,11 @@
 
   function factory($http, $log) {
     var factory = {
-      add: add,
       all: all,
       one: one,
       edit: edit,
-      remove: remove,
-      addLumileds: addLumileds,
-      getLumiledsEmployees: getLumiledsEmployees
+      add: add,
+      remove: remove
     };
 
     return factory;
@@ -45,7 +43,7 @@
     }
 
     function edit(payload, id) {
-      return $http.post('/employees/' + id, payload)
+      return $http.put('/employees/' + id, payload)
         .then(success)
         .catch(fail);
 
@@ -64,28 +62,8 @@
       }
     }
 
-    function addLumileds(payload) {
-      return $http.post('/employees/lumileds', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function remove(data) {
-      return $http.delete('/employees/' + data._id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function getLumiledsEmployees() {
-      return $http.get('/employees/lumileds')
+    function remove(id) {
+      return $http.post('/employees/' + id)
         .then(success)
         .catch(fail);
 

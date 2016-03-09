@@ -28,7 +28,6 @@
     multiselectFactory,
     pruneFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
     vm.selectPropsAdd = multiselectFactory.selectProps("Add Employees");
@@ -59,7 +58,7 @@
 
         var promises = [
           companyFactory.all(),
-          employeeFactory.getLumiledsEmployees()
+          employeeFactory.all()
         ];
 
         return $q.all(promises);

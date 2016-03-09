@@ -19,61 +19,16 @@
 
   function routes($routeProvider) {
     $routeProvider
-      .when('/',{
+
+      // itineraries
+      .when('/', {
           templateUrl: 'add/itineraries/itineraries.html',
           controller: 'ItinerariesController',
           controllerAs: 'vm'
       })
-      .when('/employees/lumileds',{
-          templateUrl: 'add/employees-lumileds/employees-lumileds.html',
-          controller: 'EmployeesLumiledsController',
-          controllerAs: 'vm'
-      })
-      .when('/itineraries',{
+      .when('/itineraries', {
           templateUrl: 'add/itineraries/itineraries.html',
           controller: 'ItinerariesController',
-          controllerAs: 'vm'
-      })
-      .when('/companies',{
-          templateUrl: 'add/companies/companies.html',
-          controller: 'CompaniesController',
-          controllerAs: 'vm'
-      })
-      .when('/branches',{
-          templateUrl: 'all/branches/branches-list.html',
-          controller: 'BranchesListController',
-          controllerAs: 'vm'
-      })
-
-      .when('/employee/lumileds/:id',{
-          templateUrl: 'edit/employee-lumileds/employee-lumileds.html',
-          controller: 'EmployeeLumiledsController',
-          controllerAs: 'vm'
-      })
-      .when('/visit/:id',{
-          templateUrl: 'edit/visit/visit.html',
-          controller: 'VisitController',
-          controllerAs: 'vm'
-      })
-      .when('/company/:id',{
-          templateUrl: 'edit/company/company.html',
-          controller: 'CompanyController',
-          controllerAs: 'vm'
-      })
-      .when('/itinerary/:id',{
-          templateUrl: 'edit/itinerary/itinerary.html',
-          controller: 'ItineraryController',
-          controllerAs: 'vm'
-      })
-
-      .when('/employees/all',{
-          templateUrl: 'all/employees/employees-list.html',
-          controller: 'EmployeesListController',
-          controllerAs: 'vm'
-      })
-      .when('/employees/lumileds/all',{
-          templateUrl: 'all/employees-lumileds/employees-lumileds-list.html',
-          controller: 'EmployeesLumiledsListController',
           controllerAs: 'vm'
       })
       .when('/itineraries/all',{
@@ -81,25 +36,79 @@
           controller: 'ItinerariesListController',
           controllerAs: 'vm'
       })
+      .when('/itinerary/:id',{
+          templateUrl: 'view/itinerary-view/itinerary-view.html',
+          controller: 'ItineraryViewController',
+          controllerAs: 'vm'
+      })
+      .when('/itinerary/:id/edit',{
+          templateUrl: 'edit/itinerary/itinerary.html',
+          controller: 'ItineraryController',
+          controllerAs: 'vm'
+      })
+
+      // visits
+      .when('/visit/:id', {
+          templateUrl: 'edit/visit/visit.html',
+          controller: 'VisitController',
+          controllerAs: 'vm'
+      })
       .when('/visits/all',{
           templateUrl: 'all/visits/visits-list.html',
           controller: 'VisitsListController',
           controllerAs: 'vm'
       })
+      .when('/itinerary/:itinerary_id/visit/:id',{
+          templateUrl: 'edit/visit/visit.html',
+          controller: 'VisitController',
+          controllerAs: 'vm'
+      })
 
-      .when('/airports/:branch_id',{
-          templateUrl: 'add/airports/airports.html',
-          controller: 'AirportsController',
+      // companies
+      .when('/companies', {
+          templateUrl: 'add/companies/companies.html',
+          controller: 'CompaniesController',
           controllerAs: 'vm'
       })
-      .when('/hotels/:branch_id',{
-          templateUrl: 'add/hotels/hotels.html',
-          controller: 'HotelsController',
+      .when('/company/:id',{
+          templateUrl: 'edit/company/company.html',
+          controller: 'CompanyController',
           controllerAs: 'vm'
       })
-      .when('/restaurants/:branch_id',{
-          templateUrl: 'add/restaurants/restaurants.html',
-          controller: 'RestaurantsController',
+
+      // employees
+      .when('/employees/lumileds', {
+          templateUrl: 'add/employees/employees.html',
+          controller: 'EmployeesController',
+          controllerAs: 'vm'
+      })
+      .when('/employee/lumileds/:id', {
+          templateUrl: 'edit/employee/employee.html',
+          controller: 'EmployeeController',
+          controllerAs: 'vm'
+      })
+      .when('/employees/lumileds/all',{
+          templateUrl: 'all/employees/employees-list.html',
+          controller: 'EmployeesListController',
+          controllerAs: 'vm'
+      })
+      
+      // customers
+      .when('/employees/:company_id',{
+          templateUrl: 'add/customers/customers.html',
+          controller: 'CustomersController',
+          controllerAs: 'vm'
+      })
+      .when('/company/:company_id/employee/:id',{
+          templateUrl: 'edit/customer/customer.html',
+          controller: 'CustomerController',
+          controllerAs: 'vm'
+      })
+      
+      // branches
+      .when('/branches', {
+          templateUrl: 'all/branches/branches-list.html',
+          controller: 'BranchesListController',
           controllerAs: 'vm'
       })
       .when('/branches/:company_id',{
@@ -107,15 +116,28 @@
           controller: 'BranchesController',
           controllerAs: 'vm'
       })
-      .when('/employees/:company_id',{
-          templateUrl: 'add/employees/employees.html',
-          controller: 'EmployeesController',
+      .when('/company/:company_id/branch/:id',{
+          templateUrl: 'edit/branch/branch.html',
+          controller: 'BranchController',
           controllerAs: 'vm'
       })
 
+      // airports
+      .when('/airports/:branch_id',{
+          templateUrl: 'add/airports/airports.html',
+          controller: 'AirportsController',
+          controllerAs: 'vm'
+      })
       .when('/branch/:branch_id/airport/:id',{
           templateUrl: 'edit/airport/airport.html',
           controller: 'AirportController',
+          controllerAs: 'vm'
+      })
+
+      // hotels
+      .when('/hotels/:branch_id',{
+          templateUrl: 'add/hotels/hotels.html',
+          controller: 'HotelsController',
           controllerAs: 'vm'
       })
       .when('/branch/:branch_id/hotel/:id',{
@@ -123,24 +145,16 @@
           controller: 'HotelController',
           controllerAs: 'vm'
       })
+
+      // restaurants
+      .when('/restaurants/:branch_id',{
+          templateUrl: 'add/restaurants/restaurants.html',
+          controller: 'RestaurantsController',
+          controllerAs: 'vm'
+      })
       .when('/branch/:branch_id/restaurant/:id',{
           templateUrl: 'edit/restaurant/restaurant.html',
           controller: 'RestaurantController',
-          controllerAs: 'vm'
-      })
-      .when('/company/:company_id/branch/:id',{
-          templateUrl: 'edit/branch/branch.html',
-          controller: 'BranchController',
-          controllerAs: 'vm'
-      })
-      .when('/company/:company_id/employee/:id',{
-          templateUrl: 'edit/employee/employee.html',
-          controller: 'EmployeeController',
-          controllerAs: 'vm'
-      })
-      .when('/itinerary/:itinerary_id/visit/:id',{
-          templateUrl: 'edit/visit/visit.html',
-          controller: 'VisitController',
           controllerAs: 'vm'
       })
       
@@ -173,7 +187,6 @@
     regionFactory,
     pruneFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
     vm.regions = regionFactory.regions;
@@ -183,7 +196,6 @@
     vm.branch = getBranch();
 
     vm.add = add;
-    vm.view = view;
     //////////
 
     function getAirports() {
@@ -220,14 +232,8 @@
       }
 
       function success() {
-        getAirports();
-        vm.new_airport = {};
-        vm.new_location = {};
+        $location.path('/company/' + vm.branch.company._id + '/branch/' + vm.branch_id);
       }
-    }
-
-    function view(data) {
-      $location.path('/branch/' + vm.branch_id + '/airport/' + data._id);
     }
 
     function fail(err) {
@@ -261,7 +267,6 @@
     regionFactory,
     pruneFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
     vm.regions = regionFactory.regions;
@@ -286,7 +291,10 @@
     function add(isValid) {
       if (isValid) {
         var payload = {
-          branch: {company: vm.company_id},
+          branch: {
+            company: vm.company_id,
+            notes: vm.new_branch.notes
+          },
           branch_location: pruneEmpty(vm.branch_location)
         };
 
@@ -323,7 +331,6 @@
     $location,
     companyFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
 
     vm.companies = getCompanies();
@@ -380,7 +387,57 @@
 
   angular
     .module('app')
-    .controller('EmployeesLumiledsController', controller);
+    .controller('CustomersController', controller);
+
+  controller.$inject = [
+    "$log",
+    "$location",
+    "$routeParams",
+    "customerFactory"
+  ];
+
+  function controller(
+    $log,
+    $location,
+    $routeParams,
+    customerFactory
+  ) {
+    var vm = this;
+
+    vm.company_id = $routeParams.company_id;
+
+    vm.add = add;
+    //////////
+    
+    function add(isValid) {
+      if (isValid) {
+        var payload = {
+          customer: vm.new_customer
+        };
+
+        payload.customer.company = vm.company_id;
+
+        customerFactory.add(payload)
+          .then(success)
+          .catch(fail);
+      }
+
+      function success() {
+        $location.path('/company/' + vm.company_id);
+      }
+    }
+
+    function fail(err) {
+      $log.log('Employees Controller XHR Failed: ' + err.data);
+    }
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .controller('EmployeesController', controller);
 
   controller.$inject = [
     "$location",
@@ -395,7 +452,6 @@
     employeeFactory,
     regionFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
     vm.regions = regionFactory.regions;
 
@@ -407,7 +463,7 @@
 
 
     function getEmployees() {
-      employeeFactory.getLumiledsEmployees()
+      employeeFactory.all()
         .then(success)
         .catch(fail);
 
@@ -424,7 +480,7 @@
           employee: vm.new_employee,
           location: vm.new_location
         };
-        employeeFactory.addLumileds(payload)
+        employeeFactory.add(payload)
           .then(success)
           .catch(fail);
       }
@@ -442,75 +498,6 @@
 
     function fail(err) {
       alert('Employees Controller XHR Failed: ' + err.data);
-    }
-  }
-})();
-(function () {
-  'use strict';
-
-  angular
-    .module('app')
-    .controller('EmployeesController', controller);
-
-  controller.$inject = [
-    "$log",
-    "$location",
-    "$routeParams",
-    "companyFactory",
-    "employeeFactory",
-    "regionFactory"
-  ];
-
-  function controller(
-    $log,
-    $location,
-    $routeParams,
-    companyFactory,
-    employeeFactory,
-    regionFactory
-  ) {
-    /* jshint validthis: true */
-    var vm = this;
-    vm.regions = regionFactory.regions;
-
-    vm.company_id = $routeParams.company_id;
-
-    vm.add = add;
-
-    getCompany();
-    //////////
-
-    function getCompany() {
-      companyFactory.one(vm.company_id)
-        .then(success)
-        .catch(fail);
-
-      function success(res) {
-        vm.company = res;
-      }
-    }
-    
-    function add(isValid) {
-      if (isValid) {
-        var payload = {
-          employee: vm.new_employee,
-          location: vm.new_location
-        };
-
-        payload.employee.company = vm.company_id;
-
-        employeeFactory.add(payload)
-          .then(success)
-          .catch(fail);
-      }
-
-      function success() {
-        $location.path('/company/' + vm.company_id);
-      }
-    }
-
-    function fail(err) {
-      $log.log('Employees Controller XHR Failed: ' + err.data);
     }
   }
 })();
@@ -538,7 +525,6 @@
     regionFactory,
     pruneFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
     vm.regions = regionFactory.regions;
@@ -548,7 +534,6 @@
     vm.branch = getBranch();
 
     vm.add = add;
-    vm.view = view;
     //////////
 
 
@@ -586,14 +571,8 @@
       }
 
       function success() {
-        getHotels();
-        vm.new_hotel = {};
-        vm.new_location = {};
+        $location.path('/company/' + vm.branch.company._id + '/branch/' + vm.branch_id);
       }
-    }
-
-    function view(data) {
-      $location.path('/branch/' + vm.branch_id + '/hotel/' + data._id);
     }
 
     function fail(err) {
@@ -616,8 +595,9 @@
     "itineraryFactory",
     "companyFactory",
     "employeeFactory",
-    // "multiselectFactory",
+    "branchFactory",
     "regionFactory"
+    // "multiselectFactory",
   ];
 
   function controller(
@@ -628,15 +608,17 @@
     itineraryFactory,
     companyFactory,
     employeeFactory,
-    // multiselectFactory,
+    branchFactory,
     regionFactory
+    // multiselectFactory,
   ) {
-    /* jshint validthis: true */
     var vm = this;
     vm.regions = regionFactory.regions;
     // vm.selectProps = multiselectFactory.selectProps("Add Attendees");
     vm.visits = [{}],
     vm.branchesToVisit = [],
+    vm.airportsToVisit = [],
+    vm.hotelsToVisit = [],
     vm.execs = [],
     vm.managers = [];
 
@@ -644,6 +626,7 @@
     vm.removeVisit = removeVisit;
     vm.view = view;
     vm.getCompanyBranches = getCompanyBranches;
+    vm.getBranchAmenities = getBranchAmenities;
 
     initialize();
     //////////
@@ -653,7 +636,7 @@
 
       var promises = [
         companyFactory.all(),
-        employeeFactory.getLumiledsEmployees()
+        employeeFactory.all()
       ];
 
       $q.all(promises)
@@ -722,6 +705,11 @@
 
     // gets branches for the dropdown of each visit after a user selects a company
     function getCompanyBranches(company_id, index) {
+      // reset branch, airport, and hotel
+      delete vm.visits[index].branch;
+      delete vm.visits[index].airport;
+      delete vm.visits[index].hotel;
+
       vm.branchesToVisit[index] = [];
       for (var i = 0; i < vm.companies.length; i++) {
         if (company_id === vm.companies[i]._id) {
@@ -729,6 +717,21 @@
             vm.branchesToVisit[index] = vm.companies[i].branches;
           }
         }
+      }
+    }
+
+    function getBranchAmenities(branch_id, index) {
+      // reset airport and hotel
+      delete vm.visits[index].airport;
+      delete vm.visits[index].hotel;
+
+      branchFactory.one(branch_id)
+        .then(success)
+        .catch(fail);
+
+      function success(result) {
+        vm.airportsToVisit[index] = result.airports;
+        vm.hotelsToVisit[index] = result.hotels;
       }
     }
 
@@ -761,7 +764,6 @@
     regionFactory,
     pruneFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
     vm.regions = regionFactory.regions;
@@ -771,7 +773,6 @@
     vm.branch = getBranch();
 
     vm.add = add;
-    vm.view = view;
     //////////
 
 
@@ -809,14 +810,8 @@
       }
 
       function success() {
-        getRestaurants();
-        vm.new_restaurant = {};
-        vm.new_location = {};
+        $location.path('/company/' + vm.branch.company._id + '/branch/' + vm.branch_id);
       }
-    }
-
-    function view(data) {
-      $location.path('/branch/' + vm.branch_id + '/restaurant/' + data._id);
     }
 
     function fail(err) {
@@ -840,7 +835,6 @@
     $location,
     branchFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
 
     vm.branches = getBranches();
@@ -873,50 +867,6 @@
 
   angular
     .module('app')
-    .controller('EmployeesLumiledsListController', controller);
-
-  controller.$inject = [
-    "$location",
-    "employeeFactory"
-  ];
-
-  function controller(
-    $location,
-    employeeFactory
-  ) {
-    /* jshint validthis: true */
-    var vm = this;
-
-    vm.employees = getEmployees();
-
-    vm.view = view;
-    //////////
-
-
-    function getEmployees() {
-      employeeFactory.getLumiledsEmployees()
-        .then(success)
-        .catch(fail);
-
-      function success(res) {
-        vm.employees = res;
-      }
-    }
-
-    function view(data) {
-      $location.path('/employee/lumileds/' + data._id);
-    }
-
-    function fail(err) {
-      alert('Employees List Controller XHR Failed: ' + err.data);
-    }
-  }
-})();
-(function () {
-  'use strict';
-
-  angular
-    .module('app')
     .controller('EmployeesListController', controller);
 
   controller.$inject = [
@@ -928,7 +878,6 @@
     $location,
     employeeFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
 
     vm.employees = getEmployees();
@@ -948,7 +897,7 @@
     }
 
     function view(data) {
-      $location.path('/employee/' + data._id);
+      $location.path('/employee/lumileds/' + data._id);
     }
 
     function fail(err) {
@@ -974,7 +923,6 @@
     $location,
     itineraryFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
 
     vm.itineraries = getItineraries();
@@ -1024,7 +972,6 @@
     $location,
     visitFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
 
     vm.visits = getVisits();
@@ -1066,6 +1013,7 @@
     "$log",
     "$location",
     "$routeParams",
+    "branchFactory",
     "airportFactory",
     "regionFactory",
     "pruneFactory"
@@ -1075,11 +1023,11 @@
     $log,
     $location,
     $routeParams,
+    branchFactory,
     airportFactory,
     regionFactory,
     pruneFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
     vm.regions = regionFactory.regions;
@@ -1087,6 +1035,7 @@
     vm.branch_id = $routeParams.branch_id;
     vm.airport_id = $routeParams.id;
     vm.airport = getAirport();
+    vm.branch = getBranch();
 
     vm.edit = edit;
     vm.remove = remove;
@@ -1099,6 +1048,16 @@
 
       function success(res) {
         vm.airport = res;
+      }
+    }
+
+    function getBranch() {
+      branchFactory.one(vm.branch_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.branch = res;
       }
     }
 
@@ -1162,7 +1121,6 @@
     regionFactory,
     pruneFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
     vm.regions = regionFactory.regions;
@@ -1174,6 +1132,7 @@
 
     vm.edit = edit;
     vm.view = view;
+    vm.changeCompany = changeCompany;
     vm.remove = remove;
     //////////
 
@@ -1184,6 +1143,7 @@
 
       function success(res) {
         vm.branch = res;
+        vm.company_id = vm.branch.company._id;
       }
     }
 
@@ -1200,8 +1160,6 @@
     function edit() {
       var location = vm.branch.location;
       delete vm.branch.location;
-
-      vm.branch.company = vm.new_company;
 
       var payload = {
         branch: pruneEmpty(vm.branch),
@@ -1232,8 +1190,24 @@
       $location.path(path);
     }
 
+    function changeCompany() {
+      var payload = {
+        branch: {
+          company: vm.new_company
+        }
+      }
+      
+      branchFactory.changeCompany(payload, vm.branch_id)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        getBranch();
+      }
+    }
+
     function fail(err) {
-      alert('Branch Controller XHR Failed: ' + err.data);
+      $log.log('Branch Controller XHR Failed: ' + err.data);
     }
   }
 })();
@@ -1259,7 +1233,6 @@
     companyFactory,
     pruneFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
 
@@ -1314,7 +1287,81 @@
 
   angular
     .module('app')
-    .controller('EmployeeLumiledsController', controller);
+    .controller('CustomerController', controller);
+
+  controller.$inject = [
+    "$log",
+    "$location",
+    "$routeParams",
+    "customerFactory",
+    "pruneFactory"
+  ];
+
+  function controller(
+    $log,
+    $location,
+    $routeParams,
+    customerFactory,
+    pruneFactory
+  ) {
+    var vm = this;
+    var pruneEmpty = pruneFactory.pruneEmpty;
+
+    vm.customer_id = $routeParams.id;
+    vm.company_id = $routeParams.company_id;
+    vm.customer = getCustomer();
+
+    vm.edit = edit;
+    vm.remove = remove;
+    //////////
+
+    function getCustomer() {
+      customerFactory.one(vm.customer_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.customer = res;
+        return res;
+      }
+    }
+
+
+    function edit() {
+      var payload = {
+        customer: pruneEmpty(vm.customer)
+      };
+      
+      customerFactory.edit(payload, vm.customer_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        getCustomer();
+      }
+    }
+
+    function remove(data) {
+      customerFactory.remove(data._id)
+        .then(success)
+        .catch(fail);
+
+      function success() {
+        $location.path("/company/" + vm.company_id);
+      }
+    }
+
+    function fail(err) {
+      $log.log('Customer Controller XHR Failed: ' + err.data);
+    }
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .controller('EmployeeController', controller);
 
   controller.$inject = [
     "$q",
@@ -1335,7 +1382,6 @@
     pruneFactory,
     regionFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
     vm.regions = regionFactory.regions;
@@ -1354,7 +1400,6 @@
 
       function success(res) {
         vm.employee = res;
-
         return res;
       }
     }
@@ -1380,7 +1425,7 @@
     }
 
     function remove(data) {
-      employeeFactory.remove(data)
+      employeeFactory.remove(data._id)
         .then(success)
         .catch(fail);
 
@@ -1399,87 +1444,13 @@
 
   angular
     .module('app')
-    .controller('EmployeeController', controller);
-
-  controller.$inject = [
-    "$log",
-    "$location",
-    "$routeParams",
-    "employeeFactory",
-    "pruneFactory"
-  ];
-
-  function controller(
-    $log,
-    $location,
-    $routeParams,
-    employeeFactory,
-    pruneFactory
-  ) {
-    /* jshint validthis: true */
-    var vm = this;
-    var pruneEmpty = pruneFactory.pruneEmpty;
-
-    vm.employee_id = $routeParams.id;
-    vm.company_id = $routeParams.company_id;
-    vm.employee = getEmployee();
-
-    vm.edit = edit;
-    vm.remove = remove;
-    //////////
-
-    function getEmployee() {
-      employeeFactory.one(vm.employee_id)
-        .then(success)
-        .catch(fail);
-
-      function success(res) {
-        vm.employee = res;
-        return res;
-      }
-    }
-
-
-    function edit() {
-      var payload = {
-        employee: pruneEmpty(vm.employee)
-      };
-      
-      employeeFactory.edit(payload, vm.employee_id)
-        .then(success)
-        .catch(fail);
-
-      function success(res) {
-        getEmployee();
-      }
-    }
-
-    function remove(data) {
-      employeeFactory.remove(data)
-        .then(success)
-        .catch(fail);
-
-      function success() {
-        $location.path("/company/" + vm.company_id);
-      }
-    }
-
-    function fail(err) {
-      $log.log('Employee Controller XHR Failed: ' + err.data);
-    }
-  }
-})();
-(function () {
-  'use strict';
-
-  angular
-    .module('app')
     .controller('HotelController', controller);
 
   controller.$inject = [
     "$log",
     "$location",
     "$routeParams",
+    "branchFactory",
     "hotelFactory",
     "regionFactory",
     "pruneFactory"
@@ -1489,11 +1460,11 @@
     $log,
     $location,
     $routeParams,
+    branchFactory,
     hotelFactory,
     regionFactory,
     pruneFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
     vm.regions = regionFactory.regions;
@@ -1501,6 +1472,7 @@
     vm.branch_id = $routeParams.branch_id;
     vm.hotel_id = $routeParams.id;
     vm.hotel = getHotel();
+    vm.branch = getBranch();
 
     vm.edit = edit;
     vm.remove = remove;
@@ -1513,6 +1485,16 @@
 
       function success(res) {
         vm.hotel = res;
+      }
+    }
+
+    function getBranch() {
+      branchFactory.one(vm.branch_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.branch = res;
       }
     }
 
@@ -1562,12 +1544,12 @@
     "$log",
     "$location",
     "$routeParams",
-    "visitFactory",
     "itineraryFactory",
     "companyFactory",
     "employeeFactory",
-    // "multiselectFactory",
+    "branchFactory",
     "regionFactory"
+    // "multiselectFactory",
   ];
 
   function controller(
@@ -1575,30 +1557,31 @@
     $log,
     $location,
     $routeParams,
-    visitFactory,
     itineraryFactory,
     companyFactory,
     employeeFactory,
-    // multiselectFactory,
+    branchFactory,
     regionFactory
+    // multiselectFactory,
   ) {
-    /* jshint validthis: true */
     var vm = this;
     vm.regions = regionFactory.regions;
+    vm.itinerary_id = $routeParams.id;
     // vm.selectProps = multiselectFactory.selectProps("Add Attendees");
-    var itinerary_id = $routeParams.id;
 
     vm.visits = [{}],
     vm.branchesToVisit = [],
+    vm.airportsToVisit = [],
+    vm.hotelsToVisit = [],
     vm.execs = [],
     vm.managers = [];
 
     vm.edit = edit;
     vm.changeRegion = changeRegion;
-    vm.view = view;
     vm.remove = remove;
     vm.removeVisit = removeVisit;
     vm.getCompanyBranches = getCompanyBranches;
+    vm.getBranchAmenities = getBranchAmenities;
 
     initialize();
     //////////
@@ -1608,16 +1591,12 @@
 
       var promises = [
         companyFactory.all(),
-        employeeFactory.getLumiledsEmployees()
+        employeeFactory.all()
       ];
 
       $q.all(promises)
         .then(success)
         .catch(fail);
-
-      // angular.element(document).ready(function() {
-      //   angular.element('select').material_select();
-      // });
 
       function success(res) {
         vm.companies = res[0];
@@ -1641,7 +1620,7 @@
     }
 
     function getItinerary() {
-      itineraryFactory.one(itinerary_id)
+      itineraryFactory.one(vm.itinerary_id)
         .then(success)
         .catch(fail);
 
@@ -1650,12 +1629,8 @@
       }
     }
 
-    function view(id) {
-      $location.path('/itinerary/'+ itinerary_id + '/visit/' + id);
-    }
-
     function remove(data) {
-      itineraryFactory.remove(data, itinerary_id)
+      itineraryFactory.remove(data, vm.itinerary_id)
         .then(success)
         .catch(fail);
 
@@ -1671,14 +1646,13 @@
           visits: vm.visits
         };
 
-        itineraryFactory.edit(payload, itinerary_id)
+        itineraryFactory.edit(payload, vm.itinerary_id)
           .then(success)
           .catch(fail);
       }
 
       function success() {
-        vm.visits = [{}];
-        getItinerary();
+        $location.path('/itinerary/' + vm.itinerary_id);
       }
     }
 
@@ -1689,6 +1663,11 @@
 
     // gets branches for the dropdown of each visit after a user selects a company
     function getCompanyBranches(company_id, index) {
+      // reset branch, airport, and hotel
+      delete vm.visits[index].branch;
+      delete vm.visits[index].airport;
+      delete vm.visits[index].hotel;
+
       vm.branchesToVisit[index] = [];
       for (var i = 0; i < vm.companies.length; i++) {
         if (company_id === vm.companies[i]._id) {
@@ -1704,12 +1683,27 @@
         region: vm.itinerary.region
       }
 
-      itineraryFactory.changeRegion(payload, itinerary_id)
+      itineraryFactory.changeRegion(payload, vm.itinerary_id)
         .then(success)
         .catch(fail);
 
       function success(res) {
         getItinerary();
+      }
+    }
+
+    function getBranchAmenities(branch_id, index) {
+      // reset airport and hotel
+      delete vm.visits[index].airport;
+      delete vm.visits[index].hotel;
+
+      branchFactory.one(branch_id)
+        .then(success)
+        .catch(fail);
+
+      function success(result) {
+        vm.airportsToVisit[index] = result.airports;
+        vm.hotelsToVisit[index] = result.hotels;
       }
     }
 
@@ -1729,6 +1723,7 @@
     "$log",
     "$location",
     "$routeParams",
+    "branchFactory",
     "restaurantFactory",
     "regionFactory",
     "pruneFactory"
@@ -1738,11 +1733,11 @@
     $log,
     $location,
     $routeParams,
+    branchFactory,
     restaurantFactory,
     regionFactory,
     pruneFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
     vm.regions = regionFactory.regions;
@@ -1750,6 +1745,7 @@
     vm.branch_id = $routeParams.branch_id;
     vm.restaurant_id = $routeParams.id;
     vm.restaurant = getRestaurant();
+    vm.branch = getBranch();
 
     vm.edit = edit;
     vm.remove = remove;
@@ -1762,6 +1758,16 @@
 
       function success(res) {
         vm.restaurant = res;
+      }
+    }
+
+    function getBranch() {
+      branchFactory.one(vm.branch_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.branch = res;
       }
     }
 
@@ -1829,7 +1835,6 @@
     multiselectFactory,
     pruneFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
     vm.selectPropsAdd = multiselectFactory.selectProps("Add Employees");
@@ -1860,7 +1865,7 @@
 
         var promises = [
           companyFactory.all(),
-          employeeFactory.getLumiledsEmployees()
+          employeeFactory.all()
         ];
 
         return $q.all(promises);
@@ -2070,6 +2075,7 @@
       all: all,
       one: one,
       edit: edit,
+      changeCompany: changeCompany,
       add: add,
       remove: remove
     };
@@ -2099,6 +2105,16 @@
 
     function edit(payload, id) {
       return $http.post('/branches/' + id, payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function changeCompany(payload, id) {
+      return $http.put('/branches/company/' + id, payload)
         .then(success)
         .catch(fail);
 
@@ -2218,6 +2234,86 @@
 
   angular
     .module('app')
+    .factory('customerFactory', factory);
+
+  factory.$inject = [
+    "$http",
+    "$log"
+  ];
+
+  function factory($http, $log) {
+    var factory = {
+      all: all,
+      one: one,
+      edit: edit,
+      add: add,
+      remove: remove
+    };
+
+    return factory;
+    //////////
+
+    function all() {
+      return $http.get('/customers')
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function one(id) {
+      return $http.get('/customers/' + id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function edit(payload, id) {
+      return $http.put('/customers/' + id, payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function add(payload) {
+      return $http.post('/customers', payload)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function remove(id) {
+      return $http.post('/customers/' + id)
+        .then(success)
+        .catch(fail);
+
+      function success(response) {
+        return response.data;
+      }
+    }
+
+    function fail(error) {
+      $log.log('Customer Factory XHR failed: ', error.data);
+    }
+
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
     .factory('employeeFactory', factory);
 
   factory.$inject = [
@@ -2227,13 +2323,11 @@
 
   function factory($http, $log) {
     var factory = {
-      add: add,
       all: all,
       one: one,
       edit: edit,
-      remove: remove,
-      addLumileds: addLumileds,
-      getLumiledsEmployees: getLumiledsEmployees
+      add: add,
+      remove: remove
     };
 
     return factory;
@@ -2260,7 +2354,7 @@
     }
 
     function edit(payload, id) {
-      return $http.post('/employees/' + id, payload)
+      return $http.put('/employees/' + id, payload)
         .then(success)
         .catch(fail);
 
@@ -2279,28 +2373,8 @@
       }
     }
 
-    function addLumileds(payload) {
-      return $http.post('/employees/lumileds', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function remove(data) {
-      return $http.delete('/employees/' + data._id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
-    }
-
-    function getLumiledsEmployees() {
-      return $http.get('/employees/lumileds')
+    function remove(id) {
+      return $http.post('/employees/' + id)
         .then(success)
         .catch(fail);
 
@@ -2729,5 +2803,61 @@
       $log.log('Visit Factory XHR failed: ', error.data);
     }
 
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .controller('ItineraryViewController', controller);
+
+  controller.$inject = [
+    "$log",
+    "$location",
+    "$routeParams",
+    "itineraryFactory"
+  ];
+
+  function controller(
+    $log,
+    $location,
+    $routeParams,
+    itineraryFactory
+  ) {
+    var vm = this;
+    vm.itinerary_id = $routeParams.id;
+
+    vm.edit = edit;
+    vm.view = view;
+
+    initialize();
+    //////////
+
+    function initialize() {
+      getItinerary();
+    }
+
+    function getItinerary() {
+      itineraryFactory.one(vm.itinerary_id)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.itinerary = res;
+      }
+    }
+
+    function edit() {
+      $location.path('/itinerary/' + vm.itinerary_id + '/edit');
+    }
+
+    function view(id) {
+      $location.path('/itinerary/'+ vm.itinerary_id + '/visit/' + id);
+    }
+
+    function fail(err) {
+      alert('Itinerary View Controller XHR Failed: ' + err.data);
+    }
   }
 })();

@@ -3,8 +3,10 @@ var Schema = mongoose.Schema;
 var VisitSchema = new mongoose.Schema({
 	date: Date,
 	company: {type: Schema.Types.ObjectId, ref: "Company"},
+	hotel: {type: Schema.Types.ObjectId, ref: "Hotel"},
+	airport: {type: Schema.Types.ObjectId, ref: "Airport"},
 	branch: {type: Schema.Types.ObjectId, ref: "Branch"},
-	executive: {type: Schema.Types.ObjectId, ref: "Employee"},
+	executives: [{type: Schema.Types.ObjectId, ref: "Employee"}],
 	manager: {type: Schema.Types.ObjectId, ref: "Employee"},
 	employees: [{type: Schema.Types.ObjectId, ref: "Employee"}],
   created_at: {type: Date, default: Date.now}

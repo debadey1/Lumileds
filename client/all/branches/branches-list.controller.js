@@ -14,7 +14,6 @@
     $location,
     branchFactory
   ) {
-    /* jshint validthis: true */
     var vm = this;
 
     vm.branches = getBranches();

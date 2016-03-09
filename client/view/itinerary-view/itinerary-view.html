@@ -1,0 +1,33 @@
+<div class="row">
+	<div class="col m12">
+		<h5 class="left">Itinerary: {{vm.itinerary.start_date | date: format: 'mediumDate'}} - {{vm.itinerary.end_date | date: format: 'mediumDate'}} - {{vm.itinerary.region}}</h5>
+		<a class="btn blue darken-4 right" href="#/itineraries/all">All Itineraries</a>
+		<a class="btn purple darken-4 right" ng-click="vm.edit()">Edit</a>
+	</div>
+</div>
+<div class="row">
+	<table class=" highlight">
+		<thead>
+			<tr>
+				<th>Date</th>
+				<th>Location</th>
+				<th>Executives</th>
+				<th>Sales Manager</th>
+				<th>Attendees</th>
+			</tr>
+		</thead>
+		<tbody ng-repeat="visit in vm.itinerary.visits | orderBy: 'date' track by $index">
+			<tr ng-click="vm.view(visit._id)">
+				<td>{{visit.date | date: format: 'mediumDate'}}</td>
+				<td>
+					{{visit.company.name}} - {{visit.branch.location.city}} Branch
+					<div>Airport: {{visit.airport.name}}</div>
+					<div>Hotel: {{visit.hotel.name}}</div>
+				</td>
+				<td><span ng-repeat="exec in visit.executives">{{exec.name}}<span ng-if="!$last">, </span></td>
+				<td>{{visit.manager.name}}</td>
+				<td><span ng-repeat="e in visit.employees">{{e.name}}<span ng-if="!$last">, </span></span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>

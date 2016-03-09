@@ -4,6 +4,8 @@
   "description": "stuff",
   "scripts": {
     "q": "nodemon server.js",
+    "dev": "pm2 start mongod && nodemon server.js",
+    "off": "pm2 stop all && pm2 delete all",
     "start": "pm2 start mongod && pm2 start server.js",
     "stop": "mongodump --db lumileds && pm2 stop all && pm2 delete all",
     "restart": "pm2 stop all && pm2 restart all"
