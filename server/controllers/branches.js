@@ -131,7 +131,7 @@ function edit(req, res) {
 function changeCompany(req, res) {
   var promises = [
     Branch.findByIdAndUpdate(req.params.id, req.body.branch).exec(),
-    Company.findByIdAndUpdate(req.body.company, {$push: {branches: req.params.id}})
+    Company.findByIdAndUpdate(req.body.branch.company, {$push: {branches: req.params.id}})
   ]
 
   Q.all(promises)

@@ -75,7 +75,7 @@ function destroy(req, res) {
 
 function one(req, res) {
   Visit.findById(req.params.id)
-    .deepPopulate(["company", "employees", "branch.location", "airport", "hotel"])
+    .deepPopulate(["company", "employees", "branch.location", "airport", "hotel", "manager", "executives"])
     .exec()
     .then(function (result) {
       res.status(200).send(result);
@@ -91,51 +91,68 @@ function edit(req, res) {
   var visit = req.body.visit;
 
   var promises = [
-    Visit.findByIdAndUpdate(visit_id, visit).exec(),
-    Visit.findByIdAndUpdate(visit_id, {$pullAll: {employees: req.body.remove_employees}}).exec(),
-    Visit.findByIdAndUpdate(visit_id, {$pushAll: {employees: req.body.add_employees}}).exec(),
-    Itinerary.findOne({visits:{$in:[visit_id]}}).deepPopulate("visits").exec()
+    Visit.findByIdAndUpdate(visit_id, visit).exec()
   ];
+
+  if (visit.date) {
+    promises.push(Itinerary.findOne({visits:{$in:[visit_id]}}).deepPopulate("visits").exec());
+  }
+  if (req.body.remove_employees) {
+    promises.push(Visit.findByIdAndUpdate(visit_id, {$pullAll: {employees: req.body.remove_employees}}).exec());
+  }
+  if (req.body.add_employees) {
+    promises.push(Visit.findByIdAndUpdate(visit_id, {$pushAll: {employees: req.body.add_employees}}).exec());
+  }
+  if (req.body.remove_execs) {
+    promises.push(Visit.findByIdAndUpdate(visit_id, {$pullAll: {executives: req.body.remove_execs}}).exec());
+  }
+  if (req.body.add_execs) {
+    promises.push(Visit.findByIdAndUpdate(visit_id, {$pushAll: {executives: req.body.add_execs}}).exec());
+  }
+
   Q.all(promises)
-    .then(success)
+    .then(changeDates)
     .catch(fail);
 
-  function success(result) {
-    var newDate = new Date(visit.date).getTime();
-    var oldDate = result[0].date.getTime();
-    var itinerary = result[3];
-    var itineraryStart = itinerary.start_date.getTime();
-    var itineraryEnd = itinerary.end_date.getTime();
+  function changeDates(result) {
     var update = {};
 
-    if (itinerary.visits.length === 1) {
-      update.end_date = newDate;
-      update.start_date = newDate;
-    } else if (oldDate === itineraryStart) {
-      if (newDate > itineraryEnd) {
+    if (visit.date) {
+      var newDate = new Date(visit.date).getTime();
+      var oldDate = result[0].date.getTime();
+      var itinerary = result[1];
+      var itineraryStart = itinerary.start_date.getTime();
+      var itineraryEnd = itinerary.end_date.getTime();
+
+      if (itinerary.visits.length === 1) {
         update.end_date = newDate;
-        update.start_date = getMinDate(itinerary.visits);
-      } else if (newDate < itineraryStart) {
         update.start_date = newDate;
+      } else if (oldDate === itineraryStart) {
+        if (newDate > itineraryEnd) {
+          update.end_date = newDate;
+          update.start_date = getMinDate(itinerary.visits);
+        } else if (newDate < itineraryStart) {
+          update.start_date = newDate;
+        } else {
+          update.start_date = getMinDate(itinerary.visits);
+        }
+      } else if (oldDate === itineraryEnd) {
+        if (newDate > itineraryEnd) {
+          update.end_date = newDate;
+        } else if (newDate < itineraryStart) {
+          update.start_date = newDate;
+          update.end_date = getMaxDate(itinerary.visits);
+        } else {
+          update.end_date = getMaxDate(itinerary.visits);
+        }
       } else {
-        update.start_date = getMinDate(itinerary.visits);
-      }
-    } else if (oldDate === itineraryEnd) {
-      if (newDate > itineraryEnd) {
-        update.end_date = newDate;
-      } else if (newDate < itineraryStart) {
-        update.start_date = newDate;
-        update.end_date = getMaxDate(itinerary.visits);
-      } else {
-        update.end_date = getMaxDate(itinerary.visits);
-      }
-    } else {
-      if (newDate > itineraryEnd) {
-        update.end_date = newDate;
-      } else if (newDate < itineraryStart) {
-        update.start_date = newDate;
-      } else {
-        return result;
+        if (newDate > itineraryEnd) {
+          update.end_date = newDate;
+        } else if (newDate < itineraryStart) {
+          update.start_date = newDate;
+        } else {
+          return result;
+        }
       }
     }
     res.status(200).send(result);
@@ -143,6 +160,7 @@ function edit(req, res) {
     return Itinerary.findByIdAndUpdate(itinerary._id, {$set: update}).exec();
   }
   function fail(err) {
+    console.log(err);
     res.status(500).send(err);
   }
 }

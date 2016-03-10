@@ -48,7 +48,8 @@
 		</div>
   	<div class="col m3">
 	    <label class="active">Sales Manager</label>
-  		<select class="browser-default" ng-model='vm.visit.manager' required>
+  		<select class="browser-default" ng-model='vm.new_manager'>
+		    <option value="" disabled>{{vm.visit.manager.name}}</option>
 	      <option ng-repeat="manager in vm.managers" value="{{manager._id}}">{{manager.name}}</option>
 	    </select>
   	</div>
@@ -73,7 +74,7 @@
 			<div
 			    isteven-multi-select
 			    input-model="vm.visit.executives"
-			    output-model="vm.remove_employees"
+			    output-model="vm.remove_execs"
 			    output-properties="_id"
 			    button-label="name"
 			    item-label="name"

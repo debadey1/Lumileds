@@ -176,6 +176,7 @@
     "airportFactory",
     "branchFactory",
     "regionFactory",
+    "toastrFactory",
     "pruneFactory"
   ];
 
@@ -185,6 +186,7 @@
     airportFactory,
     branchFactory,
     regionFactory,
+    toastrFactory,
     pruneFactory
   ) {
     var vm = this;
@@ -323,13 +325,15 @@
   controller.$inject = [
     "$log",
     "$location",
-    "companyFactory"
+    "companyFactory",
+    "toastrFactory"
   ];
 
   function controller(
     $log,
     $location,
-    companyFactory
+    companyFactory,
+    toastrFactory
   ) {
     var vm = this;
 
@@ -370,6 +374,7 @@
       function success() {
         getCompanies();
         vm.new_company = {};
+        toastrFactory.success("Added company!");
       }
     }
 
@@ -378,7 +383,8 @@
     }
 
     function fail(err) {
-      alert('Companies Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Companies Controller XHR Failed: ', err);
     }
   }
 })();
@@ -1016,6 +1022,7 @@
     "branchFactory",
     "airportFactory",
     "regionFactory",
+    "toastrFactory",
     "pruneFactory"
   ];
 
@@ -1026,6 +1033,7 @@
     branchFactory,
     airportFactory,
     regionFactory,
+    toastrFactory,
     pruneFactory
   ) {
     var vm = this;
@@ -1077,6 +1085,7 @@
 
       function success() {
         getAirport();
+        toastrFactory.success("Edit success!");
       }
     }
 
@@ -1109,6 +1118,7 @@
     "branchFactory",
     "companyFactory",
     "regionFactory",
+    "toastrFactory",
     "pruneFactory"
   ];
 
@@ -1119,6 +1129,7 @@
     branchFactory,
     companyFactory,
     regionFactory,
+    toastrFactory,
     pruneFactory
   ) {
     var vm = this;
@@ -1173,6 +1184,7 @@
 
       function success() {
         getBranch();
+        toastrFactory.success("Edit success!");
       }
     }
 
@@ -1203,6 +1215,7 @@
 
       function success() {
         getBranch();
+        toastrFactory.success("Edit success!");
       }
     }
 
@@ -1223,6 +1236,7 @@
     "$location",
     "$routeParams",
     "companyFactory",
+    "toastrFactory",
     "pruneFactory"
   ];
 
@@ -1231,6 +1245,7 @@
     $location,
     $routeParams,
     companyFactory,
+    toastrFactory,
     pruneFactory
   ) {
     var vm = this;
@@ -1264,6 +1279,7 @@
       function success() {
         getCompany();
         vm.new_company = {};
+        toastrFactory.success("Edit success!");
       }
     }
 
@@ -1294,6 +1310,7 @@
     "$location",
     "$routeParams",
     "customerFactory",
+    "toastrFactory",
     "pruneFactory"
   ];
 
@@ -1302,6 +1319,7 @@
     $location,
     $routeParams,
     customerFactory,
+    toastrFactory,
     pruneFactory
   ) {
     var vm = this;
@@ -1338,6 +1356,7 @@
 
       function success(res) {
         getCustomer();
+        toastrFactory.success("Edit success!");
       }
     }
 
@@ -1370,6 +1389,7 @@
     "$routeParams",
     "employeeFactory",
     "pruneFactory",
+    "toastrFactory",
     "regionFactory"
   ];
 
@@ -1380,6 +1400,7 @@
     $routeParams,
     employeeFactory,
     pruneFactory,
+    toastrFactory,
     regionFactory
   ) {
     var vm = this;
@@ -1421,6 +1442,7 @@
 
       function success(res) {
         getEmployee();
+        toastrFactory.success("Edit success!");
       }
     }
 
@@ -1453,6 +1475,7 @@
     "branchFactory",
     "hotelFactory",
     "regionFactory",
+    "toastrFactory",
     "pruneFactory"
   ];
 
@@ -1463,6 +1486,7 @@
     branchFactory,
     hotelFactory,
     regionFactory,
+    toastrFactory,
     pruneFactory
   ) {
     var vm = this;
@@ -1514,6 +1538,7 @@
 
       function success() {
         getHotel();
+        toastrFactory.success("Edit success!");
       }
     }
 
@@ -1548,6 +1573,7 @@
     "companyFactory",
     "employeeFactory",
     "branchFactory",
+    "toastrFactory",
     "regionFactory"
     // "multiselectFactory",
   ];
@@ -1561,6 +1587,7 @@
     companyFactory,
     employeeFactory,
     branchFactory,
+    toastrFactory,
     regionFactory
     // multiselectFactory,
   ) {
@@ -1652,6 +1679,7 @@
       }
 
       function success() {
+        toastrFactory.success("Edit success!");
         $location.path('/itinerary/' + vm.itinerary_id);
       }
     }
@@ -1688,6 +1716,7 @@
         .catch(fail);
 
       function success(res) {
+        toastrFactory.success("Edit success!");
         getItinerary();
       }
     }
@@ -1726,6 +1755,7 @@
     "branchFactory",
     "restaurantFactory",
     "regionFactory",
+    "toastrFactory",
     "pruneFactory"
   ];
 
@@ -1736,6 +1766,7 @@
     branchFactory,
     restaurantFactory,
     regionFactory,
+    toastrFactory,
     pruneFactory
   ) {
     var vm = this;
@@ -1787,6 +1818,7 @@
 
       function success() {
         getRestaurant();
+        toastrFactory.success("Edit success!");
       }
     }
 
@@ -1822,6 +1854,7 @@
     "companyFactory",
     "employeeFactory",
     "multiselectFactory",
+    "toastrFactory",
     "pruneFactory"
   ];
 
@@ -1835,13 +1868,14 @@
     companyFactory,
     employeeFactory,
     multiselectFactory,
+    toastrFactory,
     pruneFactory
   ) {
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
     vm.selectPropsAdd = multiselectFactory.selectProps("Add Employees");
-    vm.selectExecsAdd = multiselectFactory.selectProps("Add Executives");
     vm.selectPropsRemove = multiselectFactory.selectProps("Remove Employees");
+    vm.selectExecsAdd = multiselectFactory.selectProps("Add Executives");
     vm.selectExecsRemove = multiselectFactory.selectProps("Remove Executives");
 
     vm.visit_id = $routeParams.id;
@@ -1851,6 +1885,7 @@
     vm.airportsToVisit = [],
     vm.hotelsToVisit = [],
     vm.execs = [],
+    vm.employees = [],
     vm.managers = [];
 
     vm.edit = edit;
@@ -1882,25 +1917,26 @@
 
       function getOthersSuccess(res) {
 
-        // NEXTUP
         vm.companies = res[0];
-        vm.employees = res[1];
+        var temp_employees = res[1];
 
-        for (var i = 0; i < vm.employees.length; i++) {
-          switch(vm.employees[i].title) {
+        for (var i = 0; i < temp_employees.length; i++) {
+          switch(temp_employees[i].title) {
             case "Executive": {
-              vm.execs.push(vm.employees[i]);
+              vm.execs.push(temp_employees[i]);
               break;
             }
             case "Sales Manager": {
-              vm.managers.push(vm.employees[i]);
+              vm.managers.push(temp_employees[i]);
               break;
             }
             default:
+              vm.employees.push(temp_employees[i]);
               break;
           }
         }
 
+        // sort employees into attendees and non-attendees
         for (var i = 0; i < vm.visit.employees.length; i++) {
           for (var j = 0; j < vm.employees.length; j++) {
             if (vm.employees[j]._id === vm.visit.employees[i]._id) {
@@ -1909,11 +1945,11 @@
           }
         }
 
-        // split execs
-        for (var i = 0; i < vm.visit.employees.length; i++) {
-          for (var j = 0; j < vm.employees.length; j++) {
-            if (vm.employees[j]._id === vm.visit.employees[i]._id) {
-              vm.employees.splice(j, 1);
+        // sort execs into attendees and non-attendees
+        for (var i = 0; i < vm.visit.executives.length; i++) {
+          for (var j = 0; j < vm.execs.length; j++) {
+            if (vm.execs[j]._id === vm.visit.executives[i]._id) {
+              vm.execs.splice(j, 1);
             }
           }
         }
@@ -1939,11 +1975,13 @@
 
         function success() {
           initialize();
+          toastrFactory.success("Edit success!");
         }
       }
     }
 
     function edit() {
+      // push employees to add and remove to be updated
       if (vm.add_employees.length > 0) {
         for (var i = 0; i < vm.add_employees.length; i++) {
           vm.add_employees[i] = vm.add_employees[i]._id;
@@ -1955,10 +1993,26 @@
         }
       }
 
+      // push execs to add and remove to be updated
+      if (vm.add_execs.length > 0) {
+        for (var i = 0; i < vm.add_execs.length; i++) {
+          vm.add_execs[i] = vm.add_execs[i]._id;
+        }
+      }
+      if (vm.remove_execs.length > 0) {
+        for (var i = 0; i < vm.remove_execs.length; i++) {
+          vm.remove_execs[i] = vm.remove_execs[i]._id;
+        }
+      }
+
+      vm.visit.manager = vm.new_manager; // set manager here due to problems with select fields
+
       var payload = {
         visit: pruneEmpty(vm.visit),
         add_employees: pruneEmpty(vm.add_employees),
-        remove_employees: pruneEmpty(vm.remove_employees)
+        remove_employees: pruneEmpty(vm.remove_employees),
+        add_execs: pruneEmpty(vm.add_execs),
+        remove_execs: pruneEmpty(vm.remove_execs)
       };
 
       visitFactory.edit(payload, vm.visit_id)
@@ -1967,6 +2021,7 @@
 
       function success() {
         initialize();
+        toastrFactory.success("Edit success!");
       }
     }
 
@@ -2197,10 +2252,11 @@
 
   factory.$inject = [
     "$http",
-    "$log"
+    "$log",
+    "toastrFactory"
   ];
 
-  function factory($http, $log) {
+  function factory($http, $log, toastrFactory) {
     var factory = {
       add: add,
       all: all,
@@ -2243,13 +2299,7 @@
     }
 
     function add(payload) {
-      return $http.post('/companies', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/companies', payload);
     }
 
     function remove(data) {
@@ -2762,6 +2812,32 @@
       $log.log('Restaurant Factory XHR failed: ', error.data);
     }
 
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .factory('toastrFactory', factory);
+
+  factory.$inject = [];
+
+  function factory() {
+    var factory = {
+      success: success,
+      error: error
+    };
+
+    return factory;
+
+    function success(text) {
+      toastr.success(null, text);
+    }
+
+    function error(text) {
+      toastr.error(null, text);
+    }
   }
 })();
 (function () {

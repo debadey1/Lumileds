@@ -12,6 +12,7 @@
     "$routeParams",
     "employeeFactory",
     "pruneFactory",
+    "toastrFactory",
     "regionFactory"
   ];
 
@@ -22,6 +23,7 @@
     $routeParams,
     employeeFactory,
     pruneFactory,
+    toastrFactory,
     regionFactory
   ) {
     var vm = this;
@@ -63,6 +65,7 @@
 
       function success(res) {
         getEmployee();
+        toastrFactory.success("Edit success!");
       }
     }
 

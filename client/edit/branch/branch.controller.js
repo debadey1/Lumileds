@@ -12,6 +12,7 @@
     "branchFactory",
     "companyFactory",
     "regionFactory",
+    "toastrFactory",
     "pruneFactory"
   ];
 
@@ -22,6 +23,7 @@
     branchFactory,
     companyFactory,
     regionFactory,
+    toastrFactory,
     pruneFactory
   ) {
     var vm = this;
@@ -76,6 +78,7 @@
 
       function success() {
         getBranch();
+        toastrFactory.success("Edit success!");
       }
     }
 
@@ -106,6 +109,7 @@
 
       function success() {
         getBranch();
+        toastrFactory.success("Edit success!");
       }
     }
 

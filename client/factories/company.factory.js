@@ -7,10 +7,11 @@
 
   factory.$inject = [
     "$http",
-    "$log"
+    "$log",
+    "toastrFactory"
   ];
 
-  function factory($http, $log) {
+  function factory($http, $log, toastrFactory) {
     var factory = {
       add: add,
       all: all,
@@ -53,13 +54,7 @@
     }
 
     function add(payload) {
-      return $http.post('/companies', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/companies', payload);
     }
 
     function remove(data) {

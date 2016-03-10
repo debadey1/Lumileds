@@ -10,6 +10,7 @@
     "$location",
     "$routeParams",
     "companyFactory",
+    "toastrFactory",
     "pruneFactory"
   ];
 
@@ -18,6 +19,7 @@
     $location,
     $routeParams,
     companyFactory,
+    toastrFactory,
     pruneFactory
   ) {
     var vm = this;
@@ -51,6 +53,7 @@
       function success() {
         getCompany();
         vm.new_company = {};
+        toastrFactory.success("Edit success!");
       }
     }
 

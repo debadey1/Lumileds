@@ -14,6 +14,7 @@
     "companyFactory",
     "employeeFactory",
     "branchFactory",
+    "toastrFactory",
     "regionFactory"
     // "multiselectFactory",
   ];
@@ -27,6 +28,7 @@
     companyFactory,
     employeeFactory,
     branchFactory,
+    toastrFactory,
     regionFactory
     // multiselectFactory,
   ) {
@@ -118,6 +120,7 @@
       }
 
       function success() {
+        toastrFactory.success("Edit success!");
         $location.path('/itinerary/' + vm.itinerary_id);
       }
     }
@@ -154,6 +157,7 @@
         .catch(fail);
 
       function success(res) {
+        toastrFactory.success("Edit success!");
         getItinerary();
       }
     }

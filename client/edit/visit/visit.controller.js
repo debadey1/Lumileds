@@ -15,6 +15,7 @@
     "companyFactory",
     "employeeFactory",
     "multiselectFactory",
+    "toastrFactory",
     "pruneFactory"
   ];
 
@@ -28,13 +29,14 @@
     companyFactory,
     employeeFactory,
     multiselectFactory,
+    toastrFactory,
     pruneFactory
   ) {
     var vm = this;
     var pruneEmpty = pruneFactory.pruneEmpty;
     vm.selectPropsAdd = multiselectFactory.selectProps("Add Employees");
-    vm.selectExecsAdd = multiselectFactory.selectProps("Add Executives");
     vm.selectPropsRemove = multiselectFactory.selectProps("Remove Employees");
+    vm.selectExecsAdd = multiselectFactory.selectProps("Add Executives");
     vm.selectExecsRemove = multiselectFactory.selectProps("Remove Executives");
 
     vm.visit_id = $routeParams.id;
@@ -44,6 +46,7 @@
     vm.airportsToVisit = [],
     vm.hotelsToVisit = [],
     vm.execs = [],
+    vm.employees = [],
     vm.managers = [];
 
     vm.edit = edit;
@@ -75,25 +78,26 @@
 
       function getOthersSuccess(res) {
 
-        // NEXTUP
         vm.companies = res[0];
-        vm.employees = res[1];
+        var temp_employees = res[1];
 
-        for (var i = 0; i < vm.employees.length; i++) {
-          switch(vm.employees[i].title) {
+        for (var i = 0; i < temp_employees.length; i++) {
+          switch(temp_employees[i].title) {
             case "Executive": {
-              vm.execs.push(vm.employees[i]);
+              vm.execs.push(temp_employees[i]);
               break;
             }
             case "Sales Manager": {
-              vm.managers.push(vm.employees[i]);
+              vm.managers.push(temp_employees[i]);
               break;
             }
             default:
+              vm.employees.push(temp_employees[i]);
               break;
           }
         }
 
+        // sort employees into attendees and non-attendees
         for (var i = 0; i < vm.visit.employees.length; i++) {
           for (var j = 0; j < vm.employees.length; j++) {
             if (vm.employees[j]._id === vm.visit.employees[i]._id) {
@@ -102,11 +106,11 @@
           }
         }
 
-        // split execs
-        for (var i = 0; i < vm.visit.employees.length; i++) {
-          for (var j = 0; j < vm.employees.length; j++) {
-            if (vm.employees[j]._id === vm.visit.employees[i]._id) {
-              vm.employees.splice(j, 1);
+        // sort execs into attendees and non-attendees
+        for (var i = 0; i < vm.visit.executives.length; i++) {
+          for (var j = 0; j < vm.execs.length; j++) {
+            if (vm.execs[j]._id === vm.visit.executives[i]._id) {
+              vm.execs.splice(j, 1);
             }
           }
         }
@@ -132,11 +136,13 @@
 
         function success() {
           initialize();
+          toastrFactory.success("Edit success!");
         }
       }
     }
 
     function edit() {
+      // push employees to add and remove to be updated
       if (vm.add_employees.length > 0) {
         for (var i = 0; i < vm.add_employees.length; i++) {
           vm.add_employees[i] = vm.add_employees[i]._id;
@@ -148,10 +154,26 @@
         }
       }
 
+      // push execs to add and remove to be updated
+      if (vm.add_execs.length > 0) {
+        for (var i = 0; i < vm.add_execs.length; i++) {
+          vm.add_execs[i] = vm.add_execs[i]._id;
+        }
+      }
+      if (vm.remove_execs.length > 0) {
+        for (var i = 0; i < vm.remove_execs.length; i++) {
+          vm.remove_execs[i] = vm.remove_execs[i]._id;
+        }
+      }
+
+      vm.visit.manager = vm.new_manager; // set manager here due to problems with select fields
+
       var payload = {
         visit: pruneEmpty(vm.visit),
         add_employees: pruneEmpty(vm.add_employees),
-        remove_employees: pruneEmpty(vm.remove_employees)
+        remove_employees: pruneEmpty(vm.remove_employees),
+        add_execs: pruneEmpty(vm.add_execs),
+        remove_execs: pruneEmpty(vm.remove_execs)
       };
 
       visitFactory.edit(payload, vm.visit_id)
@@ -160,6 +182,7 @@
 
       function success() {
         initialize();
+        toastrFactory.success("Edit success!");
       }
     }
 

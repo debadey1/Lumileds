@@ -8,13 +8,15 @@
   controller.$inject = [
     "$log",
     "$location",
-    "companyFactory"
+    "companyFactory",
+    "toastrFactory"
   ];
 
   function controller(
     $log,
     $location,
-    companyFactory
+    companyFactory,
+    toastrFactory
   ) {
     var vm = this;
 
@@ -55,6 +57,7 @@
       function success() {
         getCompanies();
         vm.new_company = {};
+        toastrFactory.success("Added company!");
       }
     }
 
@@ -63,7 +66,8 @@
     }
 
     function fail(err) {
-      alert('Companies Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Companies Controller XHR Failed: ', err);
     }
   }
 })();

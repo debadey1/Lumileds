@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Location = mongoose.model('Location');
 var Employee = mongoose.model('Employee');
+var Visit = mongoose.model('Visit');
+var Itinerary = mongoose.model('Itinerary');
 var Q = require('q');
 mongoose.Promise = Q.Promise;
 
@@ -90,12 +92,37 @@ function create(req, res) {
 function destroy(req, res) {
   Employee.findByIdAndRemove(req.params.id)
     .exec()
-    .then(removeLocation)
+    .then(removeRefs)
     .catch(fail);
 
-  function removeLocation(result) {
+  function removeRefs(result) {
     res.status(200).send(result);
-    return Location.findByIdAndRemove(result.location).exec();
+
+    var promises = [
+      Location.findByIdAndRemove(result.location).exec()
+    ];
+
+    switch(result.title) {
+      case "Executive": {
+        promises.push(
+          Visit.update({executives: result._id}, {$pull: {executives: result._id}}, {multi: true}).exec(),
+          Itinerary.update({executives: result._id}, {$pull: {executives: result._id}}, {multi: true}).exec()
+        );
+        break;
+      }
+      case "Sales Manager": {
+        promises.push(
+          Visit.update({manager: result._id}, {$pull: {manager: result._id}}, {multi: true}).exec(),
+          Itinerary.update({managers: result._id}, {$pull: {manager: result._id}}, {multi: true}).exec()
+        );
+        break;
+      }
+      default:
+        promises.push(Visit.update({employees: result._id}, {$pull: {employees: result._id}}, {multi: true}).exec());
+        break;
+    }
+
+    return Q.all(promises);
   }
   function fail(err) {
     res.status(500).send(err);

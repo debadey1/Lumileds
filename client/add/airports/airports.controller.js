@@ -11,6 +11,7 @@
     "airportFactory",
     "branchFactory",
     "regionFactory",
+    "toastrFactory",
     "pruneFactory"
   ];
 
@@ -20,6 +21,7 @@
     airportFactory,
     branchFactory,
     regionFactory,
+    toastrFactory,
     pruneFactory
   ) {
     var vm = this;

@@ -10,6 +10,7 @@
     "$location",
     "$routeParams",
     "customerFactory",
+    "toastrFactory",
     "pruneFactory"
   ];
 
@@ -18,6 +19,7 @@
     $location,
     $routeParams,
     customerFactory,
+    toastrFactory,
     pruneFactory
   ) {
     var vm = this;
@@ -54,6 +56,7 @@
 
       function success(res) {
         getCustomer();
+        toastrFactory.success("Edit success!");
       }
     }
 
