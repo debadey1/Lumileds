@@ -4,8 +4,6 @@ var ItinerarySchema = new mongoose.Schema({
 	start_date: Date,
 	end_date: Date,
 	region: String,
-	managers: [{type: Schema.Types.ObjectId, ref: "Employee"}],
-	executives: [{type: Schema.Types.ObjectId, ref: "Employee"}],
 	visits: [{type: Schema.Types.ObjectId, ref: "Visit"}],
   created_at: {type: Date, default: Date.now}
 });

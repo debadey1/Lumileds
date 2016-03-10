@@ -31,7 +31,7 @@ function create(req, res) {
     .save()
     .then(function (result) {
       res.status(200).send(result);
-      return Employee.update({_id:{$in:result.employees}}, {$push: {visits: result._id}}, {multi: true}).exec();
+      // return Employee.update({_id:{$in:result.employees}}, {$push: {visits: result._id}}, {multi: true}).exec();
     })
     .catch(function (err) {
       res.status(500).send(err);

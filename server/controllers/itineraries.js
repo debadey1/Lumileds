@@ -17,13 +17,32 @@ var exports = {
 
 function all(req, res) {
   Itinerary.find()
-    .deepPopulate(["executives", "managers"])
+    .deepPopulate(["visits.managers", "visits.executives"])
     .exec()
     .then(success)
     .catch(fail);
 
   function success(result) {
-    res.status(200).send(result);
+    console.log("hi");
+    var managers = [];
+    var execs = [];
+    console.log(result);
+
+    // push all visit's managers and execs into a single array
+    for (var i = 0; i < result.length; i++) {
+      for (var j = 0; j < result[i].visits.length; j++) {
+        result[i].visits[j]
+      }
+      managers = _.concat(managers, result.visits[i].managers);
+      execs = _.concat(execs, result.visits[i].executives);
+    }
+
+    // package data into result
+    var data = result;
+    data.managers = _.uniq(managers);
+    data.execs = _.uniq(execs);
+
+    res.status(200).send(data);
     return result;
   }
   function fail(err) {
