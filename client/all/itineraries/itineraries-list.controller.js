@@ -30,7 +30,9 @@
         .catch(fail);
 
       function success(res) {
-        vm.itineraries = res;
+        vm.itineraries = res.data;
+
+        // set dates to be formatted as strings, so that it's searchable via angular
         for (var i = 0; i < vm.itineraries.length; i++) {
           vm.itineraries[i].start_date = moment(vm.itineraries[i].start_date).format("MMM Do, YYYY");
           vm.itineraries[i].end_date = moment(vm.itineraries[i].end_date).format("MMM Do, YYYY");

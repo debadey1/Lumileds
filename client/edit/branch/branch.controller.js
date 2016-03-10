@@ -47,7 +47,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.branch = res;
+        vm.branch = res.data;
         vm.company_id = vm.branch.company._id;
       }
     }
@@ -58,7 +58,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.companies = res;
+        vm.companies = res.data;
       }
     }
 
@@ -77,8 +77,8 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Branch successfully edited.");
         getBranch();
-        toastrFactory.success("Edit success!");
       }
     }
 
@@ -88,6 +88,7 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Branch successfully removed.");
         $location.path("/branches");
       }
     }
@@ -108,12 +109,13 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Branch successfully edited.");
         getBranch();
-        toastrFactory.success("Edit success!");
       }
     }
 
     function fail(err) {
+      toastrFactory.error(err.data.errors.name.message);
       $log.log('Branch Controller XHR Failed: ' + err.data);
     }
   }

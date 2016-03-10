@@ -6,11 +6,13 @@
     .controller('BranchesListController', controller);
 
   controller.$inject = [
+    "$log",
     "$location",
     "branchFactory"
   ];
 
   function controller(
+    $log,
     $location,
     branchFactory
   ) {
@@ -28,7 +30,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.branches = res;
+        vm.branches = res.data;
       }
     }
 
@@ -37,7 +39,7 @@
     }
 
     function fail(err) {
-      alert('Branches List Controller XHR Failed: ' + err.data);
+      $log.log('Branches List Controller XHR Failed: ' + err.data);
     }
   }
 })();

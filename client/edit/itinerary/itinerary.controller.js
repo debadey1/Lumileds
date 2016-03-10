@@ -67,8 +67,10 @@
         .catch(fail);
 
       function success(res) {
-        vm.companies = res[0];
-        vm.employees = res[1];
+        var data = res.data;
+
+        vm.companies = data[0];
+        vm.employees = data[1];
 
         for (var i = 0; i < vm.employees.length; i++) {
           switch(vm.employees[i].title) {
@@ -93,7 +95,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.itinerary = res;
+        vm.itinerary = res.data;
       }
     }
 
@@ -103,6 +105,7 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Itinerary successfully removed.");
         $location.path("/itineraries");
       }
     }
@@ -120,7 +123,7 @@
       }
 
       function success() {
-        toastrFactory.success("Edit success!");
+        toastrFactory.success("Itinerary successfully edited.");
         $location.path('/itinerary/' + vm.itinerary_id);
       }
     }
@@ -157,7 +160,7 @@
         .catch(fail);
 
       function success(res) {
-        toastrFactory.success("Edit success!");
+        toastrFactory.success("Itinerary successfully edited.");
         getItinerary();
       }
     }
@@ -172,13 +175,14 @@
         .catch(fail);
 
       function success(result) {
-        vm.airportsToVisit[index] = result.airports;
-        vm.hotelsToVisit[index] = result.hotels;
+        vm.airportsToVisit[index] = result.data.airports;
+        vm.hotelsToVisit[index] = result.data.hotels;
       }
     }
 
     function fail(err) {
-      alert('Itinerary Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Itinerary Controller XHR Failed: ' + err.data);
     }
   }
 })();

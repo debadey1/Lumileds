@@ -23,58 +23,23 @@
     //////////
 
     function all() {
-      return $http.get('/visits')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/visits');
     }
 
     function one(id) {
-      return $http.get('/visits/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/visits/' + id);
     }
 
     function edit(payload, id) {
-      return $http.put('/visits/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.put('/visits/' + id, payload);
     }
 
     function add(payload) {
-      return $http.post('/visits', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/visits', payload);
     }
 
     function remove(payload, id) {
-      return $http.post('/visits/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response;
-      }
+      return $http.post('/visits/' + id, payload);
     }
-
-    function fail(error) {
-      $log.log('Visit Factory XHR failed: ', error.data);
-    }
-
   }
 })();

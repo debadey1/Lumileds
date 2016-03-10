@@ -24,68 +24,27 @@
     //////////
 
     function all() {
-      return $http.get('/itineraries')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/itineraries');
     }
 
     function one(id) {
-      return $http.get('/itineraries/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/itineraries/' + id);
     }
 
     function edit(payload, id) {
-      return $http.put('/itineraries/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.put('/itineraries/' + id, payload);
     }
 
     function add(payload) {
-      return $http.post('/itineraries', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/itineraries', payload);
     }
 
     function remove(payload, id) {
-      return $http.post('/itineraries/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/itineraries/' + id, payload);
     }
 
     function changeRegion(payload, id) {
-      return $http.put('/itineraries/region/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.put('/itineraries/region/' + id, payload);
     }
-
-    function fail(error) {
-      $log.log('Itinerary Factory XHR failed: ', error.data);
-    }
-
   }
 })();

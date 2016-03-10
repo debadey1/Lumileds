@@ -39,8 +39,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.customer = res;
-        return res;
+        vm.customer = res.data;
       }
     }
 
@@ -55,8 +54,8 @@
         .catch(fail);
 
       function success(res) {
+        toastrFactory.success("Customer successfully edited.");
         getCustomer();
-        toastrFactory.success("Edit success!");
       }
     }
 
@@ -66,11 +65,13 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Customer successfully removed.");
         $location.path("/company/" + vm.company_id);
       }
     }
 
     function fail(err) {
+      toastrFactory.error(err.data.errors.name.message);
       $log.log('Customer Controller XHR Failed: ' + err.data);
     }
   }

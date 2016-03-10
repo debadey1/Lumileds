@@ -6,11 +6,13 @@
     .controller('EmployeesListController', controller);
 
   controller.$inject = [
+    "$log",
     "$location",
     "employeeFactory"
   ];
 
   function controller(
+    $log,
     $location,
     employeeFactory
   ) {
@@ -28,7 +30,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.employees = res;
+        vm.employees = res.data;
       }
     }
 
@@ -37,7 +39,7 @@
     }
 
     function fail(err) {
-      alert('Employees List Controller XHR Failed: ' + err.data);
+      $log.log('Employees List Controller XHR Failed: ' + err.data);
     }
   }
 })();

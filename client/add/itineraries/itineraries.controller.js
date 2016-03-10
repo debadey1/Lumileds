@@ -14,6 +14,7 @@
     "companyFactory",
     "employeeFactory",
     "branchFactory",
+    "toastrFactory",
     "regionFactory"
     // "multiselectFactory",
   ];
@@ -27,6 +28,7 @@
     companyFactory,
     employeeFactory,
     branchFactory,
+    toastrFactory,
     regionFactory
     // multiselectFactory,
   ) {
@@ -62,8 +64,9 @@
         .catch(fail);
 
       function success(res) {
-        vm.companies = res[0];
-        vm.employees = res[1];
+        var data = res.data
+        vm.companies = data[0];
+        vm.employees = data[1];
 
         for (var i = 0; i < vm.employees.length; i++) {
           switch(vm.employees[i].title) {
@@ -88,7 +91,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.itineraries = res;
+        vm.itineraries = res.data;
       }
     }
 
@@ -106,6 +109,7 @@
       }
 
       function success() {
+        toastrFactory.success("Added itinerary!");
         vm.itinerary = {};
         vm.visits = [{}];
         getItineraries();
@@ -154,7 +158,8 @@
     }
 
     function fail(err) {
-      alert('Visits Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Visits Controller XHR Failed: ' + err.data);
     }
   }
 })();

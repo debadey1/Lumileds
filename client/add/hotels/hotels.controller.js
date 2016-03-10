@@ -8,18 +8,22 @@
   controller.$inject = [
     "$routeParams",
     "$location",
+    "$log",
     "branchFactory",
     "hotelFactory",
     "regionFactory",
+    "toastrFactory",
     "pruneFactory"
   ];
 
   function controller(
     $routeParams,
     $location,
+    $log,
     branchFactory,
     hotelFactory,
     regionFactory,
+    toastrFactory,
     pruneFactory
   ) {
     var vm = this;
@@ -40,7 +44,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.hotels = res;
+        vm.hotels = res.data;
       }
     }
 
@@ -50,7 +54,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.branch = res;
+        vm.branch = res.data;
       }
     }
 
@@ -68,12 +72,14 @@
       }
 
       function success() {
+        toastrFactory.success("Added hotel!");
         $location.path('/company/' + vm.branch.company._id + '/branch/' + vm.branch_id);
       }
     }
 
     function fail(err) {
-      alert('Hotels Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Hotels Controller XHR Failed: ' + err.data);
     }
   }
 })();

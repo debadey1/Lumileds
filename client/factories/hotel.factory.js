@@ -23,58 +23,23 @@
     //////////
 
     function all() {
-      return $http.get('/hotels')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/hotels');
     }
 
     function one(id) {
-      return $http.get('/hotels/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/hotels/' + id);
     }
 
     function edit(payload, id) {
-      return $http.post('/hotels/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/hotels/' + id, payload);
     }
 
     function add(payload) {
-      return $http.post('/hotels', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/hotels', payload);
     }
 
     function remove(data) {
-      return $http.delete('/hotels/' + data._id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.delete('/hotels/' + data._id);
     }
-
-    function fail(error) {
-      $log.log('Hotel Factory XHR failed: ', error.data);
-    }
-
   }
 })();

@@ -7,11 +7,10 @@
 
   factory.$inject = [
     "$http",
-    "$log",
-    "toastrFactory"
+    "$log"
   ];
 
-  function factory($http, $log, toastrFactory) {
+  function factory($http, $log) {
     var factory = {
       add: add,
       all: all,
@@ -24,33 +23,15 @@
     //////////
 
     function all() {
-      return $http.get('/companies')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/companies');
     }
 
     function one(id) {
-      return $http.get('/companies/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/companies/' + id);
     }
 
     function edit(payload, id) {
-      return $http.post('/companies/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/companies/' + id, payload);
     }
 
     function add(payload) {
@@ -58,18 +39,7 @@
     }
 
     function remove(data) {
-      return $http.delete('/companies/' + data._id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.delete('/companies/' + data._id);
     }
-
-    function fail(error) {
-      $log.log('Company Factory XHR failed: ', error.data);
-    }
-
   }
 })();

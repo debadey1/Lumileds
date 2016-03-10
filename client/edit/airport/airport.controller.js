@@ -45,7 +45,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.airport = res;
+        vm.airport = res.data;
       }
     }
 
@@ -55,7 +55,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.branch = res;
+        vm.branch = res.data;
       }
     }
 
@@ -74,8 +74,8 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Airport successfully edited.");
         getAirport();
-        toastrFactory.success("Edit success!");
       }
     }
 
@@ -85,12 +85,14 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Airport successfully removed.");
         $location.path("/branch/" + vm.branch_id);
       }
     }
 
     function fail(err) {
-      alert('Airport Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Airport Controller XHR Failed: ' + err.data);
     }
   }
 })();

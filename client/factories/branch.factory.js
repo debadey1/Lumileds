@@ -24,68 +24,27 @@
     //////////
 
     function all() {
-      return $http.get('/branches')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/branches');
     }
 
     function one(id) {
-      return $http.get('/branches/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/branches/' + id);
     }
 
     function edit(payload, id) {
-      return $http.post('/branches/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/branches/' + id, payload);
     }
 
     function changeCompany(payload, id) {
-      return $http.put('/branches/company/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.put('/branches/company/' + id, payload);
     }
 
     function add(payload) {
-      return $http.post('/branches', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/branches', payload);
     }
 
     function remove(data) {
-      return $http.delete('/branches/' + data._id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.delete('/branches/' + data._id);
     }
-
-    function fail(error) {
-      $log.log('Branch Factory XHR failed: ', error.data);
-    }
-
   }
 })();

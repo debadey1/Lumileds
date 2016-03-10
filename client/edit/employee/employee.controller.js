@@ -43,8 +43,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.employee = res;
-        return res;
+        vm.employee = res.data;
       }
     }
 
@@ -64,8 +63,8 @@
         .catch(fail);
 
       function success(res) {
+        toastrFactory.success("Employee successfully edited.");
         getEmployee();
-        toastrFactory.success("Edit success!");
       }
     }
 
@@ -75,12 +74,14 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Employee successfully removed.");
         $location.path("/employees/lumileds");
       }
     }
 
     function fail(err) {
-      alert('Employee Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Employee Controller XHR Failed: ' + err.data);
     }
   }
 })();

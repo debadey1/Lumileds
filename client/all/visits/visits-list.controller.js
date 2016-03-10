@@ -30,7 +30,9 @@
         .catch(fail);
 
       function success(res) {
-        vm.visits = res;
+        vm.visits = res.data;
+
+        // set dates to be formatted as strings, so that it's searchable via angular
         for (var i = 0; i < vm.visits.length; i++) {
           vm.visits[i].date = moment(vm.visits[i].date).format("MMM Do, YYYY");
         }

@@ -38,7 +38,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.company = res;
+        vm.company = res.data;
       }
     }
 
@@ -51,9 +51,9 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Company successfully edited.");
         getCompany();
         vm.new_company = {};
-        toastrFactory.success("Edit success!");
       }
     }
 
@@ -63,12 +63,14 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Company successfully removed.");
         $location.path("/companies");
       }
     }
 
     function fail(err) {
-      alert('Company Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Company Controller XHR Failed: ' + err.data);
     }
   }
 })();

@@ -41,7 +41,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.airports = res;
+        vm.airports = res.data;
       }
     }
 
@@ -51,7 +51,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.branch = res;
+        vm.branch = res.data;
       }
     }
 
@@ -69,12 +69,14 @@
       }
 
       function success() {
+        toastrFactory.success("Added airport!");
         $location.path('/company/' + vm.branch.company._id + '/branch/' + vm.branch_id);
       }
     }
 
     function fail(err) {
-      alert('Airports Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Airports Controller XHR Failed: ' + err.data);
     }
   }
 })();

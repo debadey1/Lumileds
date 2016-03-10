@@ -23,58 +23,23 @@
     //////////
 
     function all() {
-      return $http.get('/restaurants')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/restaurants');
     }
 
     function one(id) {
-      return $http.get('/restaurants/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/restaurants/' + id);
     }
 
     function edit(payload, id) {
-      return $http.post('/restaurants/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/restaurants/' + id, payload);
     }
 
     function add(payload) {
-      return $http.post('/restaurants', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/restaurants', payload);
     }
 
     function remove(data) {
-      return $http.delete('/restaurants/' + data._id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.delete('/restaurants/' + data._id);
     }
-
-    function fail(error) {
-      $log.log('Restaurant Factory XHR failed: ', error.data);
-    }
-
   }
 })();

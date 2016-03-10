@@ -32,13 +32,15 @@
         .catch(fail);
 
       function success(res) {
+        var data = res.data;
+
         vm.companies1 = [], vm.companies2 = [], vm.companies3 = [], vm.companies4 = [];
-        for (var i = 0; i < res.length; i++) {
+        for (var i = 0; i < data.length; i++) {
           var x = (i + 4) % 4;
-          if (x === 0) {vm.companies1.push(res[i]);}
-          else if (x === 1) {vm.companies2.push(res[i]);}
-          else if (x === 2) {vm.companies3.push(res[i]);}
-          else if (x === 3) {vm.companies4.push(res[i]);}
+          if (x === 0) {vm.companies1.push(data[i]);}
+          else if (x === 1) {vm.companies2.push(data[i]);}
+          else if (x === 2) {vm.companies3.push(data[i]);}
+          else if (x === 3) {vm.companies4.push(data[i]);}
         }
       }
     }
@@ -54,7 +56,7 @@
           .catch(fail);
       }
 
-      function success() {
+      function success(res) {
         getCompanies();
         vm.new_company = {};
         toastrFactory.success("Added company!");

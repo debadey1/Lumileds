@@ -37,7 +37,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.itinerary = res;
+        vm.itinerary = res.data;
       }
     }
 
@@ -50,7 +50,7 @@
     }
 
     function fail(err) {
-      alert('Itinerary View Controller XHR Failed: ' + err.data);
+      $log.log('Itinerary View Controller XHR Failed: ' + err.data);
     }
   }
 })();

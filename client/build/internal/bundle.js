@@ -206,7 +206,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.airports = res;
+        vm.airports = res.data;
       }
     }
 
@@ -216,7 +216,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.branch = res;
+        vm.branch = res.data;
       }
     }
 
@@ -234,12 +234,14 @@
       }
 
       function success() {
+        toastrFactory.success("Added airport!");
         $location.path('/company/' + vm.branch.company._id + '/branch/' + vm.branch_id);
       }
     }
 
     function fail(err) {
-      alert('Airports Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Airports Controller XHR Failed: ' + err.data);
     }
   }
 })();
@@ -257,6 +259,7 @@
     "branchFactory",
     "companyFactory",
     "regionFactory",
+    "toastrFactory",
     "pruneFactory"
   ];
 
@@ -267,6 +270,7 @@
     branchFactory,
     companyFactory,
     regionFactory,
+    toastrFactory,
     pruneFactory
   ) {
     var vm = this;
@@ -286,7 +290,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.company = res;
+        vm.company = res.data;
       }
     }
 
@@ -306,11 +310,13 @@
       }
 
       function success(res) {
+        toastrFactory.success("Added branch!");
         $location.path('/company/' + vm.company_id);
       }
     }
 
     function fail(err) {
+      toastrFactory.error(err.data.errors.name.message);
       $log.log('Branches Controller XHR Failed: ' + err.data);
     }
   }
@@ -349,13 +355,15 @@
         .catch(fail);
 
       function success(res) {
+        var data = res.data;
+
         vm.companies1 = [], vm.companies2 = [], vm.companies3 = [], vm.companies4 = [];
-        for (var i = 0; i < res.length; i++) {
+        for (var i = 0; i < data.length; i++) {
           var x = (i + 4) % 4;
-          if (x === 0) {vm.companies1.push(res[i]);}
-          else if (x === 1) {vm.companies2.push(res[i]);}
-          else if (x === 2) {vm.companies3.push(res[i]);}
-          else if (x === 3) {vm.companies4.push(res[i]);}
+          if (x === 0) {vm.companies1.push(data[i]);}
+          else if (x === 1) {vm.companies2.push(data[i]);}
+          else if (x === 2) {vm.companies3.push(data[i]);}
+          else if (x === 3) {vm.companies4.push(data[i]);}
         }
       }
     }
@@ -371,7 +379,7 @@
           .catch(fail);
       }
 
-      function success() {
+      function success(res) {
         getCompanies();
         vm.new_company = {};
         toastrFactory.success("Added company!");
@@ -399,14 +407,16 @@
     "$log",
     "$location",
     "$routeParams",
-    "customerFactory"
+    "customerFactory",
+    "toastrFactory"
   ];
 
   function controller(
     $log,
     $location,
     $routeParams,
-    customerFactory
+    customerFactory,
+    toastrFactory
   ) {
     var vm = this;
 
@@ -429,11 +439,13 @@
       }
 
       function success() {
+        toastrFactory.success("Added company employee!");
         $location.path('/company/' + vm.company_id);
       }
     }
 
     function fail(err) {
+      toastrFactory.error(err.data.errors.name.message);
       $log.log('Employees Controller XHR Failed: ' + err.data);
     }
   }
@@ -446,16 +458,20 @@
     .controller('EmployeesController', controller);
 
   controller.$inject = [
+    "$log",
     "$location",
     "companyFactory",
     "employeeFactory",
+    "toastrFactory",
     "regionFactory"
   ];
 
   function controller(
+    $log,
     $location,
     companyFactory,
     employeeFactory,
+    toastrFactory,
     regionFactory
   ) {
     var vm = this;
@@ -474,7 +490,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.employees = res;
+        vm.employees = res.data;
       }
     }
 
@@ -492,6 +508,7 @@
       }
 
       function success() {
+        toastrFactory.success("Added Lumileds employee!");
         getEmployees();
         vm.new_employee = {};
         vm.new_location = {};
@@ -503,7 +520,8 @@
     }
 
     function fail(err) {
-      alert('Employees Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Employees Controller XHR Failed: ' + err.data);
     }
   }
 })();
@@ -517,18 +535,22 @@
   controller.$inject = [
     "$routeParams",
     "$location",
+    "$log",
     "branchFactory",
     "hotelFactory",
     "regionFactory",
+    "toastrFactory",
     "pruneFactory"
   ];
 
   function controller(
     $routeParams,
     $location,
+    $log,
     branchFactory,
     hotelFactory,
     regionFactory,
+    toastrFactory,
     pruneFactory
   ) {
     var vm = this;
@@ -549,7 +571,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.hotels = res;
+        vm.hotels = res.data;
       }
     }
 
@@ -559,7 +581,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.branch = res;
+        vm.branch = res.data;
       }
     }
 
@@ -577,12 +599,14 @@
       }
 
       function success() {
+        toastrFactory.success("Added hotel!");
         $location.path('/company/' + vm.branch.company._id + '/branch/' + vm.branch_id);
       }
     }
 
     function fail(err) {
-      alert('Hotels Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Hotels Controller XHR Failed: ' + err.data);
     }
   }
 })();
@@ -602,6 +626,7 @@
     "companyFactory",
     "employeeFactory",
     "branchFactory",
+    "toastrFactory",
     "regionFactory"
     // "multiselectFactory",
   ];
@@ -615,6 +640,7 @@
     companyFactory,
     employeeFactory,
     branchFactory,
+    toastrFactory,
     regionFactory
     // multiselectFactory,
   ) {
@@ -650,8 +676,9 @@
         .catch(fail);
 
       function success(res) {
-        vm.companies = res[0];
-        vm.employees = res[1];
+        var data = res.data
+        vm.companies = data[0];
+        vm.employees = data[1];
 
         for (var i = 0; i < vm.employees.length; i++) {
           switch(vm.employees[i].title) {
@@ -676,7 +703,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.itineraries = res;
+        vm.itineraries = res.data;
       }
     }
 
@@ -694,6 +721,7 @@
       }
 
       function success() {
+        toastrFactory.success("Added itinerary!");
         vm.itinerary = {};
         vm.visits = [{}];
         getItineraries();
@@ -742,7 +770,8 @@
     }
 
     function fail(err) {
-      alert('Visits Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Visits Controller XHR Failed: ' + err.data);
     }
   }
 })();
@@ -759,6 +788,7 @@
     "branchFactory",
     "restaurantFactory",
     "regionFactory",
+    "toastrFactory",
     "pruneFactory"
   ];
 
@@ -768,6 +798,7 @@
     branchFactory,
     restaurantFactory,
     regionFactory,
+    toastrFactory,
     pruneFactory
   ) {
     var vm = this;
@@ -788,7 +819,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.restaurants = res;
+        vm.restaurants = res.data;
       }
     }
 
@@ -798,7 +829,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.branch = res;
+        vm.branch = res.data;
       }
     }
 
@@ -816,12 +847,14 @@
       }
 
       function success() {
+        toastrFactory.success("Added restaurant!");
         $location.path('/company/' + vm.branch.company._id + '/branch/' + vm.branch_id);
       }
     }
 
     function fail(err) {
-      alert('Restaurants Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Restaurants Controller XHR Failed: ' + err.data);
     }
   }
 })();
@@ -833,11 +866,13 @@
     .controller('BranchesListController', controller);
 
   controller.$inject = [
+    "$log",
     "$location",
     "branchFactory"
   ];
 
   function controller(
+    $log,
     $location,
     branchFactory
   ) {
@@ -855,7 +890,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.branches = res;
+        vm.branches = res.data;
       }
     }
 
@@ -864,7 +899,7 @@
     }
 
     function fail(err) {
-      alert('Branches List Controller XHR Failed: ' + err.data);
+      $log.log('Branches List Controller XHR Failed: ' + err.data);
     }
   }
 })();
@@ -876,11 +911,13 @@
     .controller('EmployeesListController', controller);
 
   controller.$inject = [
+    "$log",
     "$location",
     "employeeFactory"
   ];
 
   function controller(
+    $log,
     $location,
     employeeFactory
   ) {
@@ -898,7 +935,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.employees = res;
+        vm.employees = res.data;
       }
     }
 
@@ -907,7 +944,7 @@
     }
 
     function fail(err) {
-      alert('Employees List Controller XHR Failed: ' + err.data);
+      $log.log('Employees List Controller XHR Failed: ' + err.data);
     }
   }
 })();
@@ -943,7 +980,9 @@
         .catch(fail);
 
       function success(res) {
-        vm.itineraries = res;
+        vm.itineraries = res.data;
+
+        // set dates to be formatted as strings, so that it's searchable via angular
         for (var i = 0; i < vm.itineraries.length; i++) {
           vm.itineraries[i].start_date = moment(vm.itineraries[i].start_date).format("MMM Do, YYYY");
           vm.itineraries[i].end_date = moment(vm.itineraries[i].end_date).format("MMM Do, YYYY");
@@ -992,7 +1031,9 @@
         .catch(fail);
 
       function success(res) {
-        vm.visits = res;
+        vm.visits = res.data;
+
+        // set dates to be formatted as strings, so that it's searchable via angular
         for (var i = 0; i < vm.visits.length; i++) {
           vm.visits[i].date = moment(vm.visits[i].date).format("MMM Do, YYYY");
         }
@@ -1055,7 +1096,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.airport = res;
+        vm.airport = res.data;
       }
     }
 
@@ -1065,7 +1106,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.branch = res;
+        vm.branch = res.data;
       }
     }
 
@@ -1084,8 +1125,8 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Airport successfully edited.");
         getAirport();
-        toastrFactory.success("Edit success!");
       }
     }
 
@@ -1095,12 +1136,14 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Airport successfully removed.");
         $location.path("/branch/" + vm.branch_id);
       }
     }
 
     function fail(err) {
-      alert('Airport Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Airport Controller XHR Failed: ' + err.data);
     }
   }
 })();
@@ -1153,7 +1196,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.branch = res;
+        vm.branch = res.data;
         vm.company_id = vm.branch.company._id;
       }
     }
@@ -1164,7 +1207,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.companies = res;
+        vm.companies = res.data;
       }
     }
 
@@ -1183,8 +1226,8 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Branch successfully edited.");
         getBranch();
-        toastrFactory.success("Edit success!");
       }
     }
 
@@ -1194,6 +1237,7 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Branch successfully removed.");
         $location.path("/branches");
       }
     }
@@ -1214,12 +1258,13 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Branch successfully edited.");
         getBranch();
-        toastrFactory.success("Edit success!");
       }
     }
 
     function fail(err) {
+      toastrFactory.error(err.data.errors.name.message);
       $log.log('Branch Controller XHR Failed: ' + err.data);
     }
   }
@@ -1264,7 +1309,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.company = res;
+        vm.company = res.data;
       }
     }
 
@@ -1277,9 +1322,9 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Company successfully edited.");
         getCompany();
         vm.new_company = {};
-        toastrFactory.success("Edit success!");
       }
     }
 
@@ -1289,12 +1334,14 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Company successfully removed.");
         $location.path("/companies");
       }
     }
 
     function fail(err) {
-      alert('Company Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Company Controller XHR Failed: ' + err.data);
     }
   }
 })();
@@ -1339,8 +1386,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.customer = res;
-        return res;
+        vm.customer = res.data;
       }
     }
 
@@ -1355,8 +1401,8 @@
         .catch(fail);
 
       function success(res) {
+        toastrFactory.success("Customer successfully edited.");
         getCustomer();
-        toastrFactory.success("Edit success!");
       }
     }
 
@@ -1366,11 +1412,13 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Customer successfully removed.");
         $location.path("/company/" + vm.company_id);
       }
     }
 
     function fail(err) {
+      toastrFactory.error(err.data.errors.name.message);
       $log.log('Customer Controller XHR Failed: ' + err.data);
     }
   }
@@ -1420,8 +1468,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.employee = res;
-        return res;
+        vm.employee = res.data;
       }
     }
 
@@ -1441,8 +1488,8 @@
         .catch(fail);
 
       function success(res) {
+        toastrFactory.success("Employee successfully edited.");
         getEmployee();
-        toastrFactory.success("Edit success!");
       }
     }
 
@@ -1452,12 +1499,14 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Employee successfully removed.");
         $location.path("/employees/lumileds");
       }
     }
 
     function fail(err) {
-      alert('Employee Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Employee Controller XHR Failed: ' + err.data);
     }
   }
 })();
@@ -1508,7 +1557,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.hotel = res;
+        vm.hotel = res.data;
       }
     }
 
@@ -1518,7 +1567,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.branch = res;
+        vm.branch = res.data;
       }
     }
 
@@ -1537,8 +1586,8 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Hotel successfully edited.");
         getHotel();
-        toastrFactory.success("Edit success!");
       }
     }
 
@@ -1548,12 +1597,14 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Hotel successfully removed.");
         $location.path("/branch/" + vm.branch_id);
       }
     }
 
     function fail(err) {
-      alert('Hotel Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Hotel Controller XHR Failed: ' + err.data);
     }
   }
 })();
@@ -1626,8 +1677,10 @@
         .catch(fail);
 
       function success(res) {
-        vm.companies = res[0];
-        vm.employees = res[1];
+        var data = res.data;
+
+        vm.companies = data[0];
+        vm.employees = data[1];
 
         for (var i = 0; i < vm.employees.length; i++) {
           switch(vm.employees[i].title) {
@@ -1652,7 +1705,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.itinerary = res;
+        vm.itinerary = res.data;
       }
     }
 
@@ -1662,6 +1715,7 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Itinerary successfully removed.");
         $location.path("/itineraries");
       }
     }
@@ -1679,7 +1733,7 @@
       }
 
       function success() {
-        toastrFactory.success("Edit success!");
+        toastrFactory.success("Itinerary successfully edited.");
         $location.path('/itinerary/' + vm.itinerary_id);
       }
     }
@@ -1716,7 +1770,7 @@
         .catch(fail);
 
       function success(res) {
-        toastrFactory.success("Edit success!");
+        toastrFactory.success("Itinerary successfully edited.");
         getItinerary();
       }
     }
@@ -1731,13 +1785,14 @@
         .catch(fail);
 
       function success(result) {
-        vm.airportsToVisit[index] = result.airports;
-        vm.hotelsToVisit[index] = result.hotels;
+        vm.airportsToVisit[index] = result.data.airports;
+        vm.hotelsToVisit[index] = result.data.hotels;
       }
     }
 
     function fail(err) {
-      alert('Itinerary Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Itinerary Controller XHR Failed: ' + err.data);
     }
   }
 })();
@@ -1788,7 +1843,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.restaurant = res;
+        vm.restaurant = res.data;
       }
     }
 
@@ -1798,7 +1853,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.branch = res;
+        vm.branch = res.data;
       }
     }
 
@@ -1817,8 +1872,8 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Restaurant successfully edited.");
         getRestaurant();
-        toastrFactory.success("Edit success!");
       }
     }
 
@@ -1828,12 +1883,14 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Restaurant successfully removed.");
         $location.path("/branch/" + vm.branch_id);
       }
     }
 
     function fail(err) {
-      alert('Restaurant Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Restaurant Controller XHR Failed: ' + err.data);
     }
   }
 })();
@@ -1904,7 +1961,7 @@
         .catch(fail);
 
       function getVisitSuccess(res) {
-        vm.visit = res;
+        vm.visit = res.data;
         vm.visit.date = new Date(vm.visit.date);
 
         var promises = [
@@ -1916,9 +1973,10 @@
       }
 
       function getOthersSuccess(res) {
+        var data = res.data;
 
-        vm.companies = res[0];
-        var temp_employees = res[1];
+        vm.companies = data[0];
+        var temp_employees = data[1];
 
         for (var i = 0; i < temp_employees.length; i++) {
           switch(temp_employees[i].title) {
@@ -1974,8 +2032,8 @@
           .catch(fail);
 
         function success() {
+          toastrFactory.success("Visit successfully edited.");
           initialize();
-          toastrFactory.success("Edit success!");
         }
       }
     }
@@ -2020,8 +2078,8 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Visit successfully edited.");
         initialize();
-        toastrFactory.success("Edit success!");
       }
     }
 
@@ -2031,6 +2089,7 @@
         .catch(fail);
 
       function success(res) {
+        toastrFactory.success("Visit successfully removed.");
         if (res.status === 204) {
           $location.path("/itineraries");
         } else {
@@ -2062,12 +2121,13 @@
         .catch(fail);
 
       function success(result) {
-        vm.airportsToVisit = result.airports;
-        vm.hotelsToVisit = result.hotels;
+        vm.airportsToVisit = result.data.airports;
+        vm.hotelsToVisit = result.data.hotels;
       }
     }
 
     function fail(err) {
+      toastrFactory.error(err.data.errors.name.message);
       $log.log('Visit Controller XHR Failed: ' + err.data);
     }
   }
@@ -2097,59 +2157,24 @@
     //////////
 
     function all() {
-      return $http.get('/airports')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/airports');
     }
 
     function one(id) {
-      return $http.get('/airports/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/airports/' + id);
     }
 
     function edit(payload, id) {
-      return $http.post('/airports/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/airports/' + id, payload);
     }
 
     function add(payload) {
-      return $http.post('/airports', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/airports', payload);
     }
 
     function remove(data) {
-      return $http.delete('/airports/' + data._id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.delete('/airports/' + data._id);
     }
-
-    function fail(error) {
-      $log.log('Airport Factory XHR failed: ', error.data);
-    }
-
   }
 })();
 (function () {
@@ -2178,69 +2203,28 @@
     //////////
 
     function all() {
-      return $http.get('/branches')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/branches');
     }
 
     function one(id) {
-      return $http.get('/branches/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/branches/' + id);
     }
 
     function edit(payload, id) {
-      return $http.post('/branches/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/branches/' + id, payload);
     }
 
     function changeCompany(payload, id) {
-      return $http.put('/branches/company/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.put('/branches/company/' + id, payload);
     }
 
     function add(payload) {
-      return $http.post('/branches', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/branches', payload);
     }
 
     function remove(data) {
-      return $http.delete('/branches/' + data._id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.delete('/branches/' + data._id);
     }
-
-    function fail(error) {
-      $log.log('Branch Factory XHR failed: ', error.data);
-    }
-
   }
 })();
 (function () {
@@ -2252,11 +2236,10 @@
 
   factory.$inject = [
     "$http",
-    "$log",
-    "toastrFactory"
+    "$log"
   ];
 
-  function factory($http, $log, toastrFactory) {
+  function factory($http, $log) {
     var factory = {
       add: add,
       all: all,
@@ -2269,33 +2252,15 @@
     //////////
 
     function all() {
-      return $http.get('/companies')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/companies');
     }
 
     function one(id) {
-      return $http.get('/companies/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/companies/' + id);
     }
 
     function edit(payload, id) {
-      return $http.post('/companies/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/companies/' + id, payload);
     }
 
     function add(payload) {
@@ -2303,19 +2268,8 @@
     }
 
     function remove(data) {
-      return $http.delete('/companies/' + data._id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.delete('/companies/' + data._id);
     }
-
-    function fail(error) {
-      $log.log('Company Factory XHR failed: ', error.data);
-    }
-
   }
 })();
 (function () {
@@ -2343,59 +2297,24 @@
     //////////
 
     function all() {
-      return $http.get('/customers')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/customers');
     }
 
     function one(id) {
-      return $http.get('/customers/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/customers/' + id);
     }
 
     function edit(payload, id) {
-      return $http.put('/customers/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.put('/customers/' + id, payload);
     }
 
     function add(payload) {
-      return $http.post('/customers', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/customers', payload);
     }
 
     function remove(id) {
-      return $http.post('/customers/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/customers/' + id);
     }
-
-    function fail(error) {
-      $log.log('Customer Factory XHR failed: ', error.data);
-    }
-
   }
 })();
 (function () {
@@ -2423,59 +2342,24 @@
     //////////
 
     function all() {
-      return $http.get('/employees')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/employees');
     }
 
     function one(id) {
-      return $http.get('/employees/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/employees/' + id);
     }
 
     function edit(payload, id) {
-      return $http.put('/employees/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.put('/employees/' + id, payload);
     }
 
     function add(payload) {
-      return $http.post('/employees', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/employees', payload);
     }
 
     function remove(id) {
-      return $http.post('/employees/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/employees/' + id);
     }
-
-    function fail(error) {
-      $log.log('Employee Factory XHR failed: ', error.data);
-    }
-
   }
 })();
 (function () {
@@ -2503,59 +2387,24 @@
     //////////
 
     function all() {
-      return $http.get('/hotels')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/hotels');
     }
 
     function one(id) {
-      return $http.get('/hotels/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/hotels/' + id);
     }
 
     function edit(payload, id) {
-      return $http.post('/hotels/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/hotels/' + id, payload);
     }
 
     function add(payload) {
-      return $http.post('/hotels', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/hotels', payload);
     }
 
     function remove(data) {
-      return $http.delete('/hotels/' + data._id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.delete('/hotels/' + data._id);
     }
-
-    function fail(error) {
-      $log.log('Hotel Factory XHR failed: ', error.data);
-    }
-
   }
 })();
 (function () {
@@ -2584,69 +2433,28 @@
     //////////
 
     function all() {
-      return $http.get('/itineraries')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/itineraries');
     }
 
     function one(id) {
-      return $http.get('/itineraries/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/itineraries/' + id);
     }
 
     function edit(payload, id) {
-      return $http.put('/itineraries/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.put('/itineraries/' + id, payload);
     }
 
     function add(payload) {
-      return $http.post('/itineraries', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/itineraries', payload);
     }
 
     function remove(payload, id) {
-      return $http.post('/itineraries/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/itineraries/' + id, payload);
     }
 
     function changeRegion(payload, id) {
-      return $http.put('/itineraries/region/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.put('/itineraries/region/' + id, payload);
     }
-
-    function fail(error) {
-      $log.log('Itinerary Factory XHR failed: ', error.data);
-    }
-
   }
 })();
 (function () {
@@ -2759,59 +2567,24 @@
     //////////
 
     function all() {
-      return $http.get('/restaurants')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/restaurants');
     }
 
     function one(id) {
-      return $http.get('/restaurants/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/restaurants/' + id);
     }
 
     function edit(payload, id) {
-      return $http.post('/restaurants/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/restaurants/' + id, payload);
     }
 
     function add(payload) {
-      return $http.post('/restaurants', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/restaurants', payload);
     }
 
     function remove(data) {
-      return $http.delete('/restaurants/' + data._id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.delete('/restaurants/' + data._id);
     }
-
-    function fail(error) {
-      $log.log('Restaurant Factory XHR failed: ', error.data);
-    }
-
   }
 })();
 (function () {
@@ -2865,59 +2638,24 @@
     //////////
 
     function all() {
-      return $http.get('/visits')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/visits');
     }
 
     function one(id) {
-      return $http.get('/visits/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/visits/' + id);
     }
 
     function edit(payload, id) {
-      return $http.put('/visits/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.put('/visits/' + id, payload);
     }
 
     function add(payload) {
-      return $http.post('/visits', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/visits', payload);
     }
 
     function remove(payload, id) {
-      return $http.post('/visits/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response;
-      }
+      return $http.post('/visits/' + id, payload);
     }
-
-    function fail(error) {
-      $log.log('Visit Factory XHR failed: ', error.data);
-    }
-
   }
 })();
 (function () {
@@ -2959,7 +2697,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.itinerary = res;
+        vm.itinerary = res.data;
       }
     }
 
@@ -2972,7 +2710,7 @@
     }
 
     function fail(err) {
-      alert('Itinerary View Controller XHR Failed: ' + err.data);
+      $log.log('Itinerary View Controller XHR Failed: ' + err.data);
     }
   }
 })();

@@ -65,7 +65,7 @@
         .catch(fail);
 
       function getVisitSuccess(res) {
-        vm.visit = res;
+        vm.visit = res.data;
         vm.visit.date = new Date(vm.visit.date);
 
         var promises = [
@@ -77,9 +77,10 @@
       }
 
       function getOthersSuccess(res) {
+        var data = res.data;
 
-        vm.companies = res[0];
-        var temp_employees = res[1];
+        vm.companies = data[0];
+        var temp_employees = data[1];
 
         for (var i = 0; i < temp_employees.length; i++) {
           switch(temp_employees[i].title) {
@@ -135,8 +136,8 @@
           .catch(fail);
 
         function success() {
+          toastrFactory.success("Visit successfully edited.");
           initialize();
-          toastrFactory.success("Edit success!");
         }
       }
     }
@@ -181,8 +182,8 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Visit successfully edited.");
         initialize();
-        toastrFactory.success("Edit success!");
       }
     }
 
@@ -192,6 +193,7 @@
         .catch(fail);
 
       function success(res) {
+        toastrFactory.success("Visit successfully removed.");
         if (res.status === 204) {
           $location.path("/itineraries");
         } else {
@@ -223,12 +225,13 @@
         .catch(fail);
 
       function success(result) {
-        vm.airportsToVisit = result.airports;
-        vm.hotelsToVisit = result.hotels;
+        vm.airportsToVisit = result.data.airports;
+        vm.hotelsToVisit = result.data.hotels;
       }
     }
 
     function fail(err) {
+      toastrFactory.error(err.data.errors.name.message);
       $log.log('Visit Controller XHR Failed: ' + err.data);
     }
   }

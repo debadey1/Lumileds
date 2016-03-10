@@ -9,14 +9,16 @@
     "$log",
     "$location",
     "$routeParams",
-    "customerFactory"
+    "customerFactory",
+    "toastrFactory"
   ];
 
   function controller(
     $log,
     $location,
     $routeParams,
-    customerFactory
+    customerFactory,
+    toastrFactory
   ) {
     var vm = this;
 
@@ -39,11 +41,13 @@
       }
 
       function success() {
+        toastrFactory.success("Added company employee!");
         $location.path('/company/' + vm.company_id);
       }
     }
 
     function fail(err) {
+      toastrFactory.error(err.data.errors.name.message);
       $log.log('Employees Controller XHR Failed: ' + err.data);
     }
   }

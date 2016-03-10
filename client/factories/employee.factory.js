@@ -23,58 +23,23 @@
     //////////
 
     function all() {
-      return $http.get('/employees')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/employees');
     }
 
     function one(id) {
-      return $http.get('/employees/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/employees/' + id);
     }
 
     function edit(payload, id) {
-      return $http.put('/employees/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.put('/employees/' + id, payload);
     }
 
     function add(payload) {
-      return $http.post('/employees', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/employees', payload);
     }
 
     function remove(id) {
-      return $http.post('/employees/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/employees/' + id);
     }
-
-    function fail(error) {
-      $log.log('Employee Factory XHR failed: ', error.data);
-    }
-
   }
 })();

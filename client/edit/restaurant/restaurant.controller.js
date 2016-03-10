@@ -45,7 +45,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.restaurant = res;
+        vm.restaurant = res.data;
       }
     }
 
@@ -55,7 +55,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.branch = res;
+        vm.branch = res.data;
       }
     }
 
@@ -74,8 +74,8 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Restaurant successfully edited.");
         getRestaurant();
-        toastrFactory.success("Edit success!");
       }
     }
 
@@ -85,12 +85,14 @@
         .catch(fail);
 
       function success() {
+        toastrFactory.success("Restaurant successfully removed.");
         $location.path("/branch/" + vm.branch_id);
       }
     }
 
     function fail(err) {
-      alert('Restaurant Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Restaurant Controller XHR Failed: ' + err.data);
     }
   }
 })();

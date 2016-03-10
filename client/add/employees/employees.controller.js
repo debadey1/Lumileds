@@ -6,16 +6,20 @@
     .controller('EmployeesController', controller);
 
   controller.$inject = [
+    "$log",
     "$location",
     "companyFactory",
     "employeeFactory",
+    "toastrFactory",
     "regionFactory"
   ];
 
   function controller(
+    $log,
     $location,
     companyFactory,
     employeeFactory,
+    toastrFactory,
     regionFactory
   ) {
     var vm = this;
@@ -34,7 +38,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.employees = res;
+        vm.employees = res.data;
       }
     }
 
@@ -52,6 +56,7 @@
       }
 
       function success() {
+        toastrFactory.success("Added Lumileds employee!");
         getEmployees();
         vm.new_employee = {};
         vm.new_location = {};
@@ -63,7 +68,8 @@
     }
 
     function fail(err) {
-      alert('Employees Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Employees Controller XHR Failed: ' + err.data);
     }
   }
 })();

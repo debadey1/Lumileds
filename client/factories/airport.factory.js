@@ -23,58 +23,23 @@
     //////////
 
     function all() {
-      return $http.get('/airports')
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/airports');
     }
 
     function one(id) {
-      return $http.get('/airports/' + id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.get('/airports/' + id);
     }
 
     function edit(payload, id) {
-      return $http.post('/airports/' + id, payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/airports/' + id, payload);
     }
 
     function add(payload) {
-      return $http.post('/airports', payload)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.post('/airports', payload);
     }
 
     function remove(data) {
-      return $http.delete('/airports/' + data._id)
-        .then(success)
-        .catch(fail);
-
-      function success(response) {
-        return response.data;
-      }
+      return $http.delete('/airports/' + data._id);
     }
-
-    function fail(error) {
-      $log.log('Airport Factory XHR failed: ', error.data);
-    }
-
   }
 })();

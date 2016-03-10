@@ -12,6 +12,7 @@
     "branchFactory",
     "companyFactory",
     "regionFactory",
+    "toastrFactory",
     "pruneFactory"
   ];
 
@@ -22,6 +23,7 @@
     branchFactory,
     companyFactory,
     regionFactory,
+    toastrFactory,
     pruneFactory
   ) {
     var vm = this;
@@ -41,7 +43,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.company = res;
+        vm.company = res.data;
       }
     }
 
@@ -61,11 +63,13 @@
       }
 
       function success(res) {
+        toastrFactory.success("Added branch!");
         $location.path('/company/' + vm.company_id);
       }
     }
 
     function fail(err) {
+      toastrFactory.error(err.data.errors.name.message);
       $log.log('Branches Controller XHR Failed: ' + err.data);
     }
   }

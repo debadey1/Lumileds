@@ -11,6 +11,7 @@
     "branchFactory",
     "restaurantFactory",
     "regionFactory",
+    "toastrFactory",
     "pruneFactory"
   ];
 
@@ -20,6 +21,7 @@
     branchFactory,
     restaurantFactory,
     regionFactory,
+    toastrFactory,
     pruneFactory
   ) {
     var vm = this;
@@ -40,7 +42,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.restaurants = res;
+        vm.restaurants = res.data;
       }
     }
 
@@ -50,7 +52,7 @@
         .catch(fail);
 
       function success(res) {
-        vm.branch = res;
+        vm.branch = res.data;
       }
     }
 
@@ -68,12 +70,14 @@
       }
 
       function success() {
+        toastrFactory.success("Added restaurant!");
         $location.path('/company/' + vm.branch.company._id + '/branch/' + vm.branch_id);
       }
     }
 
     function fail(err) {
-      alert('Restaurants Controller XHR Failed: ' + err.data);
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Restaurants Controller XHR Failed: ' + err.data);
     }
   }
 })();
