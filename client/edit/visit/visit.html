@@ -7,33 +7,37 @@
 <form name="companyForm" ng-submit="vm.editCompany(companyForm.$valid)">
 	<div class="row valign-wrapper">
 	  <div class="input-field col m3">
+	    <label class="active">Company</label>
 	    <select class="browser-default validate" ng-model='vm.new_company' ng-change="vm.getCompanyBranches(vm.new_company)" required>
 		    <option value="" disabled>{{vm.visit.company.name}}</option>
 	      <option ng-repeat="company in vm.companies" value="{{company._id}}">{{company.name}}</option>
 	    </select>
 	  </div>
 	  <div class="input-field col m3">
-			<select class="browser-default validate" ng-model='vm.new_branch' required>
+	    <label class="active">Branch</label>
+			<select class="browser-default validate" ng-model='vm.new_branch' ng-change="vm.getBranchAmenities(vm.new_branch)" required>
 		    <option value="" disabled>{{vm.visit.branch.location.city}} Branch</option>
 	      <option ng-repeat="branch in vm.branchesToVisit" value="{{branch._id}}">{{branch.location.city}} Branch</option>
 	    </select>
 		</div>
 		<div class="input-field col m3">
+	    <label class="active">Airport</label>
   		<select class="browser-default" ng-model='vm.new_airport' required>
 		    <option value="" disabled>{{vm.visit.airport.name}}</option>
-	      <option ng-repeat="airport in vm.airportsToVisit[$index]" value="{{airport._id}}">{{airport.name}}</option>
+	      <option ng-repeat="airport in vm.airportsToVisit" value="{{airport._id}}">{{airport.name}}</option>
 	    </select>
   	</div>
   	<div class="input-field col m3">
+	    <label class="active">Hotel</label>
   		<select class="browser-default" ng-model='vm.new_hotel' required>
 		    <option value="" disabled>{{vm.visit.hotel.name}}</option>
-	      <option ng-repeat="hotel in vm.hotelsToVisit[$index]" value="{{hotel._id}}">{{hotel.name}}</option>
+	      <option ng-repeat="hotel in vm.hotelsToVisit" value="{{hotel._id}}">{{hotel.name}}</option>
 	    </select>
   	</div>
 	</div>
 	<div class="row">
 		<div class="input-field col m12">
-			<button type='submit' ng-disabled="companyForm.$invalid" class="btn green accent-4">Change Company</button>
+			<button type='submit' ng-disabled="companyForm.$invalid" class="btn green accent-4">Change Location</button>
 		</div>
  	</div>
 </form>
@@ -42,16 +46,42 @@
 		<div class="input-field col m3">
 			<input type='date' class=" validate" placeholder="Start Date" ng-model='vm.visit.date' required>
 		</div>
-		<div class="col m3">
-  		<select class="browser-default multiple" ng-model='vm.visit.executive' multiple required>
-	      <option ng-repeat="exec in vm.execs" value="{{exec._id}}">{{exec.name}}</option>
-	    </select>
-  	</div>
   	<div class="col m3">
+	    <label class="active">Sales Manager</label>
   		<select class="browser-default" ng-model='vm.visit.manager' required>
 	      <option ng-repeat="manager in vm.managers" value="{{manager._id}}">{{manager.name}}</option>
 	    </select>
   	</div>
+	</div>
+	<div class="row">
+		<div class="col m4">
+			<p>Add Executives</p>
+			<div
+			    isteven-multi-select
+			    input-model="vm.execs"
+			    output-model="vm.add_execs"
+			    output-properties="_id"
+			    button-label="name"
+			    item-label="name"
+			    tick-property="ticked"
+			    translation="vm.selectExecsAdd"
+			>
+			</div>
+		</div>
+		<div class="col m4">
+			<p>Remove Executives</p>
+			<div
+			    isteven-multi-select
+			    input-model="vm.visit.executives"
+			    output-model="vm.remove_employees"
+			    output-properties="_id"
+			    button-label="name"
+			    item-label="name"
+			    tick-property="ticked"
+			    translation="vm.selectExecsRemove"
+			>
+			</div>
+		</div>
 	</div>
 	<div class="row">
 		<div class="col m4">
@@ -85,7 +115,7 @@
 	</div>
 	<div class="row">
 		<div class="input-field col m12">
-			<button type='submit' class="btn green accent-4">Submit</button>
+			<button type='submit' class="btn green accent-4">Edit Visit</button>
 		</div>
  	</div>
 </form>
