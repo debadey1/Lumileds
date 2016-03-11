@@ -77,10 +77,8 @@
       }
 
       function getOthersSuccess(res) {
-        var data = res.data;
-
-        vm.companies = data[0];
-        var temp_employees = data[1];
+        vm.companies = res[0].data;
+        var temp_employees = res[1].data;
 
         for (var i = 0; i < temp_employees.length; i++) {
           switch(temp_employees[i].title) {

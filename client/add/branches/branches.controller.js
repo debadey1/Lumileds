@@ -52,7 +52,7 @@
         var payload = {
           branch: {
             company: vm.company_id,
-            notes: vm.new_branch.notes
+            notes: vm.notes
           },
           branch_location: pruneEmpty(vm.branch_location)
         };

@@ -64,9 +64,8 @@
         .catch(fail);
 
       function success(res) {
-        var data = res.data
-        vm.companies = data[0];
-        vm.employees = data[1];
+        vm.companies = res[0].data;
+        vm.employees = res[1].data;
 
         for (var i = 0; i < vm.employees.length; i++) {
           switch(vm.employees[i].title) {
@@ -152,8 +151,8 @@
         .catch(fail);
 
       function success(result) {
-        vm.airportsToVisit[index] = result.airports;
-        vm.hotelsToVisit[index] = result.hotels;
+        vm.airportsToVisit[index] = result.data.airports;
+        vm.hotelsToVisit[index] = result.data.hotels;
       }
     }
 

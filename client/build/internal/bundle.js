@@ -299,7 +299,7 @@
         var payload = {
           branch: {
             company: vm.company_id,
-            notes: vm.new_branch.notes
+            notes: vm.notes
           },
           branch_location: pruneEmpty(vm.branch_location)
         };
@@ -676,9 +676,8 @@
         .catch(fail);
 
       function success(res) {
-        var data = res.data
-        vm.companies = data[0];
-        vm.employees = data[1];
+        vm.companies = res[0].data;
+        vm.employees = res[1].data;
 
         for (var i = 0; i < vm.employees.length; i++) {
           switch(vm.employees[i].title) {
@@ -764,8 +763,8 @@
         .catch(fail);
 
       function success(result) {
-        vm.airportsToVisit[index] = result.airports;
-        vm.hotelsToVisit[index] = result.hotels;
+        vm.airportsToVisit[index] = result.data.airports;
+        vm.hotelsToVisit[index] = result.data.hotels;
       }
     }
 
@@ -1677,10 +1676,8 @@
         .catch(fail);
 
       function success(res) {
-        var data = res.data;
-
-        vm.companies = data[0];
-        vm.employees = data[1];
+        vm.companies = res[0].data;
+        vm.employees = res[1].data;
 
         for (var i = 0; i < vm.employees.length; i++) {
           switch(vm.employees[i].title) {
@@ -1973,10 +1970,8 @@
       }
 
       function getOthersSuccess(res) {
-        var data = res.data;
-
-        vm.companies = data[0];
-        var temp_employees = data[1];
+        vm.companies = res[0].data;
+        var temp_employees = res[1].data;
 
         for (var i = 0; i < temp_employees.length; i++) {
           switch(temp_employees[i].title) {

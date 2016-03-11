@@ -67,10 +67,8 @@
         .catch(fail);
 
       function success(res) {
-        var data = res.data;
-
-        vm.companies = data[0];
-        vm.employees = data[1];
+        vm.companies = res[0].data;
+        vm.employees = res[1].data;
 
         for (var i = 0; i < vm.employees.length; i++) {
           switch(vm.employees[i].title) {
