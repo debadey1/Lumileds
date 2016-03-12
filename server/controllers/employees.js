@@ -105,15 +105,13 @@ function destroy(req, res) {
     switch(result.title) {
       case "Executive": {
         promises.push(
-          Visit.update({executives: result._id}, {$pull: {executives: result._id}}, {multi: true}).exec(),
-          Itinerary.update({executives: result._id}, {$pull: {executives: result._id}}, {multi: true}).exec()
+          Visit.update({executives: result._id}, {$pull: {executives: result._id}}, {multi: true}).exec()
         );
         break;
       }
       case "Sales Manager": {
         promises.push(
-          Visit.update({manager: result._id}, {$pull: {manager: result._id}}, {multi: true}).exec(),
-          Itinerary.update({managers: result._id}, {$pull: {manager: result._id}}, {multi: true}).exec()
+          Visit.update({manager: result._id}, {$pull: {manager: result._id}}, {multi: true}).exec()
         );
         break;
       }

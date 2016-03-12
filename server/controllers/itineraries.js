@@ -155,11 +155,13 @@ function edit(req, res) {
   var promises = [];
   var min = visits[0].date;
   var max = visits[0].date;
+  var execs = [];
 
   for (var i = 0; i < visits.length; i++) {
     // push into promises
     promises.push(new Visit(visits[i]).save());
-
+    // grab all execs from each visit
+    execs = _.concat(execs, visits[i].executives);
     // also find min start date and max end date
     if (i > 0) {
       if (visits[i].date < min) {
@@ -169,6 +171,8 @@ function edit(req, res) {
       }
     }
   }
+
+  execs = _.uniq(execs);
 
   Q.all(promises)
     .then(pushVisits)
@@ -188,6 +192,12 @@ function edit(req, res) {
   function updateItinerary(result) {
     var updatedItineraryDates = {};
     var shouldUpdate = false;
+    var promises = [];
+
+    // push itinerary into execs of visits just created
+    for (var i = 0; i < execs.length; i++) {
+      promises.push(Employee.findByIdAndUpdate(execs[i], {$addToSet: {itineraries: result._id}}));
+    }
 
     // must cast to Date object to compare
     if (new Date(min) < result.start_date) {
@@ -201,7 +211,8 @@ function edit(req, res) {
 
     // checks to make sure we're not updating with an empty object, which would wipe the itinerary
     if (shouldUpdate) {
-      return Itinerary.findByIdAndUpdate(itinerary_id, {$set: updatedItineraryDates}).exec();
+      promises.push(Itinerary.findByIdAndUpdate(itinerary_id, {$set: updatedItineraryDates}).exec());
+      return Q.all(promises);
     } else {
       return result;
     }

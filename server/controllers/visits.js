@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Visit = mongoose.model('Visit');
+var Employee = mongoose.model('Employee');
 var Itinerary = mongoose.model('Itinerary');
 var Q = require('q');
 var _ = require('lodash');
@@ -41,9 +42,12 @@ function create(req, res) {
 function destroy(req, res) {
   var visit_id = req.params.id;
   var date = new Date(req.body.date);
+  var execs = req.body.executives;
+
   Visit.findByIdAndRemove(visit_id).exec()
     .then(success)
     .then(updateItineraryDates)
+    .then(updateItineraryExecs)
     .catch(fail);
 
   function success(result) {
@@ -51,21 +55,46 @@ function destroy(req, res) {
   }
   function updateItineraryDates(result) {
     if (result.visits.length > 0) {
-      //send response back after checking to see if there are still visits left
-      res.status(200).send(result);
-
       if (date.getTime() === result.end_date.getTime()) {
         // find the next latest date in the itinerary's visits, then update the end date of the itinerary
-        return Itinerary.findByIdAndUpdate(result._id, {$set: {end_date: getMaxDate(result.visits)}});
+        return Itinerary.findByIdAndUpdate(result._id, {$set: {end_date: getMaxDate(result.visits)}}).deepPopulate("visits").exec();
       } else if (date.getTime() === result.start_date.getTime()) {
         // same but with start date
-        return Itinerary.findByIdAndUpdate(result._id, {$set: {start_date: getMinDate(result.visits)}});
+        return Itinerary.findByIdAndUpdate(result._id, {$set: {start_date: getMinDate(result.visits)}}).deepPopulate("visits").exec();
       }
-      return result;
+      return Itinerary.findById(result._id).deepPopulate("visits)").exec();
     } else {
       //send empty response back if the Itinerary will be removed
       res.status(204).send();
       return Itinerary.findByIdAndRemove(result._id).exec();
+    }
+  }
+  function updateItineraryExecs(result) {
+    if (result.visits.length > 0) {
+      //send success response back after checking to see if there are still visits left
+      res.status(200).send(result);
+
+      var all_execs = [];
+      var promises = [];
+
+      // get all execs in one array
+      for (var i = 0; i < result.visits.length; i++) {
+        for (var j = 0; j < result.visits[i].executives.length; j++) {
+          all_execs = _.concat(all_execs, result.visits[i].executives[j].toString()); // convert result.visits.executives to string to compare properly below
+        }
+      }
+
+      // compare itinerary execs with the execs of the visit you just removed
+      // if they don't exist, pull the itinerary from that exec
+      for (var i = execs.length - 1; i >= 0; i--) {
+        if(!_.includes(all_execs, execs[i]._id)){
+          promises.push(Employee.findByIdAndUpdate(execs[i]._id, {$pull: {itineraries: result._id}}).exec());
+        }
+      }
+
+      return Q.all(promises);
+    } else {
+      return result;
     }
   }
   function fail(err) {
@@ -89,6 +118,8 @@ function one(req, res) {
 function edit(req, res) {
   var visit_id = req.params.id;
   var visit = req.body.visit;
+  var add_execs = req.body.add_execs;
+  var remove_execs = req.body.remove_execs;
 
   var promises = [
     Visit.findByIdAndUpdate(visit_id, visit).exec()
@@ -103,15 +134,16 @@ function edit(req, res) {
   if (req.body.add_employees) {
     promises.push(Visit.findByIdAndUpdate(visit_id, {$pushAll: {employees: req.body.add_employees}}).exec());
   }
-  if (req.body.remove_execs) {
-    promises.push(Visit.findByIdAndUpdate(visit_id, {$pullAll: {executives: req.body.remove_execs}}).exec());
+  if (remove_execs) {
+    promises.push(Visit.findByIdAndUpdate(visit_id, {$pullAll: {executives: remove_execs}}).exec());
   }
-  if (req.body.add_execs) {
-    promises.push(Visit.findByIdAndUpdate(visit_id, {$pushAll: {executives: req.body.add_execs}}).exec());
+  if (add_execs) {
+    promises.push(Visit.findByIdAndUpdate(visit_id, {$pushAll: {executives: add_execs}}).exec());
   }
 
   Q.all(promises)
     .then(changeDates)
+    .then(updateItineraryExecs)
     .catch(fail);
 
   function changeDates(result) {
@@ -157,10 +189,35 @@ function edit(req, res) {
     }
     res.status(200).send(result);
 
-    return Itinerary.findByIdAndUpdate(itinerary._id, {$set: update}).exec();
+    return Itinerary.findByIdAndUpdate(itinerary._id, {$set: update}).deepPopulate("visits").exec();
+  }
+  function updateItineraryExecs(result) {
+    var all_execs = [];
+    var promises = [];
+
+    // push all promises into the execs to be added
+    for (var i = 0; i < add_execs.length; i++) {
+      promises.push(Employee.findByIdAndUpdate(add_execs[i], {$addToSet: {itineraries: result._id}}).exec());
+    }
+
+    // get all execs in one array
+    for (var i = 0; i < result.visits.length; i++) {
+      for (var j = 0; j < result.visits[i].executives.length; j++) {
+        all_execs = _.concat(all_execs, result.visits[i].executives[j].toString()); // convert result.visits.executives to string to compare properly below
+      }
+    }
+
+    // compare itinerary execs with the execs to be removed from the visit
+    // if they don't exist, pull the itinerary from that exec
+    for (var i = remove_execs.length - 1; i >= 0; i--) {
+      if(!_.includes(all_execs, remove_execs[i])){
+        promises.push(Employee.findByIdAndUpdate(remove_execs[i], {$pull: {itineraries: result._id}}).exec());
+      }
+    }
+
+    return Q.all(promises);
   }
   function fail(err) {
-    console.log(err);
     res.status(500).send(err);
   }
 }

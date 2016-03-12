@@ -5,7 +5,11 @@ var EmployeeSchema = new mongoose.Schema({
   phone: String,
   email: String,
   title: String,
-  itineraries: [{type: Schema.Types.ObjectId, ref: "Itinerary"}],
+  itineraries: [{
+  	type: Schema.Types.ObjectId,
+  	ref: "Itinerary",
+  	unique: true
+  }],
   location: {type: Schema.Types.ObjectId, ref: "Location"},
   created_at: {type: Date, default: Date.now}
 });
