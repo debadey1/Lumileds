@@ -16,7 +16,9 @@
       one: one,
       edit: edit,
       add: add,
-      remove: remove
+      remove: remove,
+      executives: executives,
+      execItineraries: execItineraries
     };
 
     return factory;
@@ -40,6 +42,14 @@
 
     function remove(id) {
       return $http.post('/employees/' + id);
+    }
+
+    function executives() {
+      return $http.get('/employees/executives');
+    }
+
+    function execItineraries(id, year) {
+      return $http.get('/employees/exec-itineraries/' + id + '/' + year);
     }
   }
 })();

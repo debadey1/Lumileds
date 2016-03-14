@@ -1,0 +1,47 @@
+<div class="row">
+	<div class="col m9">
+		<h5 class="left">Report: Itineraries per executive</h5>
+	</div>
+	<div class="col m3">
+		<input type="text" placeholder="Search results" ng-model="itineraryFilter">
+	</div>
+</div>
+
+<form name="form" ng-submit="vm.getItineraries(form.$valid)">
+	<div class="row">
+	  <div class="col m3">
+  		<select class="browser-default" ng-model='vm.executive' required>
+		    <option value="" disabled selected>Select an executive</option>
+	      <option ng-repeat="exec in vm.execs" value="{{exec._id}}">{{exec.name}}</option>
+	    </select>
+  	</div>
+  	<div class="col m3">
+  		<select class="browser-default" ng-model='vm.year' required>
+		    <option value="" disabled selected>Select a year</option>
+	      <option ng-repeat="year in vm.years">{{year}}</option>
+	    </select>
+  	</div>
+		<div class="col m3">
+			<button type='submit' ng-disabled="form.$invalid" class="btn green accent-4">Submit</button>
+		</div>
+ 	</div>
+</form>
+
+<div class="row">
+	<table class="highlight">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Duration</th>
+				<th>Region</th>
+			</tr>
+		</thead>
+		<tbody ng-repeat="itinerary in vm.itineraries | filter: itineraryFilter | orderBy: 'start_date' track by $index">
+			<tr ng-click="vm.view(itinerary._id)">
+				<td>{{$index+1}}</td>
+				<td>{{itinerary.start_date | date: format: 'mediumDate'}} - {{itinerary.end_date | date: format: 'mediumDate'}}</td>
+				<td>{{itinerary.region}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

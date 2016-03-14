@@ -34,6 +34,14 @@ module.exports = function (app) {
     function (req, res){
       employees.all(req, res);
     });
+  app.get('/employees/executives',
+    function (req, res){
+      employees.getExecs(req, res);
+    });
+  app.get('/employees/exec-itineraries/:id/:year',
+    function (req, res){
+      employees.getExecItineraries(req, res);
+    });
   app.get('/employees/:id',
     function (req, res){
       employees.one(req, res);

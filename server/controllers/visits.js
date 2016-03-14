@@ -43,6 +43,7 @@ function destroy(req, res) {
   var visit_id = req.params.id;
   var date = new Date(req.body.date);
   var execs = req.body.executives;
+      console.log(execs);
 
   Visit.findByIdAndRemove(visit_id).exec()
     .then(success)
@@ -54,6 +55,7 @@ function destroy(req, res) {
     return Itinerary.findOneAndUpdate({visits:{$in:[visit_id]}}, {$pull: {visits: visit_id}}).deepPopulate("visits").exec();
   }
   function updateItineraryDates(result) {
+    // can't send HTTP response and also have code run after it
     if (result.visits.length > 0) {
       if (date.getTime() === result.end_date.getTime()) {
         // find the next latest date in the itinerary's visits, then update the end date of the itinerary
@@ -64,23 +66,20 @@ function destroy(req, res) {
       }
       return Itinerary.findById(result._id).deepPopulate("visits)").exec();
     } else {
-      //send empty response back if the Itinerary will be removed
-      res.status(204).send();
       return Itinerary.findByIdAndRemove(result._id).exec();
     }
   }
   function updateItineraryExecs(result) {
+    var promises = [];
+    
     if (result.visits.length > 0) {
-      //send success response back after checking to see if there are still visits left
-      res.status(200).send(result);
-
       var all_execs = [];
-      var promises = [];
 
       // get all execs in one array
       for (var i = 0; i < result.visits.length; i++) {
         for (var j = 0; j < result.visits[i].executives.length; j++) {
-          all_execs = _.concat(all_execs, result.visits[i].executives[j].toString()); // convert result.visits.executives to string to compare properly below
+          // convert result.visits.executives to string to compare properly below
+          all_execs = _.concat(all_execs, result.visits[i].executives[j].toString());
         }
       }
 
@@ -92,9 +91,18 @@ function destroy(req, res) {
         }
       }
 
+      //send success response back after checking to see if there are still visits left
+      res.status(200).send(result);
       return Q.all(promises);
     } else {
-      return result;
+      // if it's the last visit and the itinerary is going to be removed, pull the itinerary from the execs
+      for (var i = 0; i < execs.length; i++) {
+        promises.push(Employee.findByIdAndUpdate(execs[i]._id, {$pull: {itineraries: result._id}}).exec());
+      }
+
+      //send empty response back if the Itinerary will be removed
+      res.status(204).send();
+      return Employee.update({$pull: {itineraries: result._id}}, {multi: true}).exec();
     }
   }
   function fail(err) {

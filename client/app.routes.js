@@ -149,6 +149,18 @@
           controller: 'RestaurantController',
           controllerAs: 'vm'
       })
+
+      // reports
+      .when('/reports/itin-per-exec',{
+          templateUrl: 'reports/exec-itineraries/exec-itineraries.html',
+          controller: 'ExecItinerariesController',
+          controllerAs: 'vm'
+      })
+      .when('/reports/visits-per-exec',{
+          templateUrl: 'reports/exec-visits/exec-visits.html',
+          controller: 'ExecVisitsController',
+          controllerAs: 'vm'
+      })
       
       .otherwise({
         redirectTo: '/'

@@ -5,3 +5,7 @@ td {
 select.multiple {
 	height: 80px;
 }
+
+#reports {
+	width: 300px !important;
+}

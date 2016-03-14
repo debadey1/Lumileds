@@ -157,6 +157,18 @@
           controller: 'RestaurantController',
           controllerAs: 'vm'
       })
+
+      // reports
+      .when('/reports/itin-per-exec',{
+          templateUrl: 'reports/exec-itineraries/exec-itineraries.html',
+          controller: 'ExecItinerariesController',
+          controllerAs: 'vm'
+      })
+      .when('/reports/visits-per-exec',{
+          templateUrl: 'reports/exec-visits/exec-visits.html',
+          controller: 'ExecVisitsController',
+          controllerAs: 'vm'
+      })
       
       .otherwise({
         redirectTo: '/'
@@ -2028,6 +2040,7 @@
 
         function success() {
           toastrFactory.success("Visit successfully edited.");
+
           initialize();
         }
       }
@@ -2074,6 +2087,8 @@
 
       function success() {
         toastrFactory.success("Visit successfully edited.");
+        vm.employees = [];
+        vm.execs = [];
         initialize();
       }
     }
@@ -2330,7 +2345,9 @@
       one: one,
       edit: edit,
       add: add,
-      remove: remove
+      remove: remove,
+      executives: executives,
+      execItineraries: execItineraries
     };
 
     return factory;
@@ -2354,6 +2371,14 @@
 
     function remove(id) {
       return $http.post('/employees/' + id);
+    }
+
+    function executives() {
+      return $http.get('/employees/executives');
+    }
+
+    function execItineraries(id, year) {
+      return $http.get('/employees/exec-itineraries/' + id + '/' + year);
     }
   }
 })();
@@ -2650,6 +2675,140 @@
 
     function remove(payload, id) {
       return $http.post('/visits/' + id, payload);
+    }
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .controller('ExecItinerariesController', controller);
+
+  controller.$inject = [
+    "$log",
+    "$location",
+    "employeeFactory",
+    "itineraryFactory"
+  ];
+
+  function controller(
+    $log,
+    $location,
+    employeeFactory,
+    itineraryFactory
+  ) {
+    var vm = this;
+
+    vm.years = getYears();
+
+    vm.view = view;
+    vm.getItineraries = getItineraries;
+
+    initialize();
+    //////////
+
+    function initialize() {
+      getEmployees();
+    }
+
+    function getEmployees() {
+      employeeFactory.executives()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.execs = res.data;
+      }
+    }
+
+    function getItineraries(isValid) {
+      if (isValid) {
+        employeeFactory.execItineraries(vm.executive, vm.year)
+          .then(success)
+          .catch(fail);
+      }
+
+      function success(res) {
+        vm.itineraries = res.data;
+
+        // set dates to be formatted as strings, so that it's searchable via angular
+        for (var i = 0; i < vm.itineraries.length; i++) {
+          vm.itineraries[i].start_date = moment(vm.itineraries[i].start_date).format("MMM Do, YYYY");
+          vm.itineraries[i].end_date = moment(vm.itineraries[i].end_date).format("MMM Do, YYYY");
+        }
+      }
+    }
+
+    function view(id) {
+      $location.path('/itinerary/' + id);
+    }
+
+    function getYears() {
+      // TODO: get years from all as far back as all itineraries go, and as far forward as all itineraries go
+      var years = [];
+
+      for (var i = 0; i < 10; i++) {
+        // start at 2010 cause why not
+        years.push(2010 + i);
+      }
+
+      return years;
+    }
+
+    function fail(err) {
+      $log.log('Exec Itineraries Controller XHR Failed: ', err.data);
+    }
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .controller('ExecVisitsController', controller);
+
+  controller.$inject = [
+    "$log",
+    "$location",
+    "itineraryFactory"
+  ];
+
+  function controller(
+    $log,
+    $location,
+    itineraryFactory
+  ) {
+    var vm = this;
+
+    vm.itineraries = getItineraries();
+
+    vm.view = view;
+    //////////
+
+
+    function getItineraries() {
+      itineraryFactory.all()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.itineraries = res.data;
+
+        // set dates to be formatted as strings, so that it's searchable via angular
+        for (var i = 0; i < vm.itineraries.length; i++) {
+          vm.itineraries[i].start_date = moment(vm.itineraries[i].start_date).format("MMM Do, YYYY");
+          vm.itineraries[i].end_date = moment(vm.itineraries[i].end_date).format("MMM Do, YYYY");
+        }
+      }
+    }
+
+    function view(id) {
+      $location.path('/itinerary/' + id);
+    }
+
+    function fail(err) {
+      $log.log('Itineraries List Controller XHR Failed: ' + err.data);
     }
   }
 })();

@@ -11,7 +11,9 @@ var exports = {
   one: one,
   edit: edit,
   create: create,
-  destroy: destroy
+  destroy: destroy,
+  getExecs: getExecs,
+  getExecItineraries: getExecItineraries
 };
 module.exports = exports;
 //////////
@@ -121,6 +123,52 @@ function destroy(req, res) {
     }
 
     return Q.all(promises);
+  }
+  function fail(err) {
+    res.status(500).send(err);
+  }
+}
+
+function getExecs(req, res) {
+  Employee.find({title: "Executive"})
+    .sort("name")
+    .exec()
+    .then(success)
+    .catch(fail);
+
+  function success(result) {
+    res.status(200).send(result);
+    return result;
+  }
+  function fail(err) {
+    res.status(500).send(err);
+  }
+}
+
+function getExecItineraries(req, res) {
+  var year = parseInt(req.params.year);
+  var start = new Date(year, 0, 1);
+  var end = new Date(year + 1, 0, 1);
+
+  Employee.findById(req.params.id, "itineraries")
+    .lean()
+    .deepPopulate(["itineraries"])
+    .exec()
+    .then(success)
+    .catch(fail);
+
+  function success(result) {
+    var result = result.itineraries;
+    var itineraries = [];
+
+    for (var i = 0; i < result.length; i++) {
+      if (result[i].start_date > start && result[i].start_date < end) {
+        itineraries.push(result[i]);
+      }
+    }
+
+    res.status(200).send(itineraries);
+    return result;
   }
   function fail(err) {
     res.status(500).send(err);

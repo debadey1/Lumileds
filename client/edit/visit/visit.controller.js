@@ -135,6 +135,7 @@
 
         function success() {
           toastrFactory.success("Visit successfully edited.");
+
           initialize();
         }
       }
@@ -181,6 +182,8 @@
 
       function success() {
         toastrFactory.success("Visit successfully edited.");
+        vm.employees = [];
+        vm.execs = [];
         initialize();
       }
     }
