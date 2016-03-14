@@ -109,6 +109,10 @@ module.exports = function (app) {
     function (req, res){
       visits.all(req, res);
     });
+  app.post('/visits/exec-visits',
+    function (req, res){
+      visits.getExecVisits(req, res);
+    });
   app.get('/visits/:id',
     function (req, res){
       visits.one(req, res);

@@ -1,33 +1,52 @@
 <div class="row">
-	<div class="col m7">
-		<h5 class="left">All Itineraries</h5>
+	<div class="col m9">
+		<h5 class="left">Report: Visits per exec</h5>
 	</div>
 	<div class="col m3">
-		<input type="text" placeholder="Search itineraries" ng-model="itineraryFilter">
-	</div>
-	<div class="col m2">
-		<a class="btn blue darken-4 right" href="#/itineraries">Add Itinerary</a>
+		<input type="text" placeholder="Search visits" ng-model="visitFilter">
 	</div>
 </div>
+
+<form name="form" ng-submit="vm.getVisits(form.$valid)">
+	<div class="row">
+	  <div class="col m3">
+  		<select class="browser-default" ng-model='vm.company' required>
+		    <option value="" disabled selected>Select a company</option>
+	      <option ng-repeat="company in vm.companies" value="{{company._id}}">{{company.name}}</option>
+	    </select>
+  	</div>
+  	<div class="col m3">
+  		<select class="browser-default" ng-model='vm.executive' required>
+		    <option value="" disabled selected>Select an executive</option>
+	      <option ng-repeat="exec in vm.execs" value="{{exec._id}}">{{exec.name}}</option>
+	    </select>
+  	</div>
+  	<div class="col m3">
+			<input type='date' placeholder="Start Date" ng-model='vm.start_date'>
+		</div>
+		<div class="col m3">
+			<input type='date' placeholder="End Date" ng-model='vm.end_date'>
+		</div>
+		<div class="col m3">
+			<button type='submit' ng-disabled="form.$invalid" class="btn green accent-4">Submit</button>
+		</div>
+ 	</div>
+</form>
+
 <div class="row">
-	
 	<table class="highlight">
 		<thead>
 			<tr>
 				<th>#</th>
-				<th>Duration</th>
-				<th>Region</th>
+				<th>Date</th>
 				<th>Execs</th>
-				<th>Managers</th>
 			</tr>
 		</thead>
-		<tbody ng-repeat="itinerary in vm.itineraries | filter: itineraryFilter | orderBy: 'start_date' track by $index">
-			<tr ng-click="vm.view(itinerary._id)">
+		<tbody ng-repeat="visit in vm.visits | filter: visitFilter | orderBy: 'date' track by $index">
+			<tr ng-click="vm.view(visit._id)">
 				<td>{{$index+1}}</td>
-				<td>{{itinerary.start_date | date: format: 'mediumDate'}} - {{itinerary.end_date | date: format: 'mediumDate'}}</td>
-				<td>{{itinerary.region}}</td>
-				<td><span ng-repeat="exec in itinerary.executives">{{exec.name}}<span ng-if="!$last">, </span></span></td>
-				<td><span ng-repeat="manager in itinerary.managers">{{manager.name}}<span ng-if="!$last">, </span></span></td>
+				<td>{{visit.date | date: format: 'mediumDate'}}</td>
+				<td><span ng-repeat="exec in visit.executives">{{exec.name}}<span ng-if="!$last">, </span></span></td>
 			</tr>
 		</tbody>
 	</table>

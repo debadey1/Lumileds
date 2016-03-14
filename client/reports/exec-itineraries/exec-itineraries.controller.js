@@ -8,15 +8,13 @@
   controller.$inject = [
     "$log",
     "$location",
-    "employeeFactory",
-    "itineraryFactory"
+    "employeeFactory"
   ];
 
   function controller(
     $log,
     $location,
-    employeeFactory,
-    itineraryFactory
+    employeeFactory
   ) {
     var vm = this;
 

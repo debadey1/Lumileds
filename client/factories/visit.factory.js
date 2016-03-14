@@ -16,7 +16,8 @@
       all: all,
       one: one,
       edit: edit,
-      remove: remove
+      remove: remove,
+      execVisits: execVisits
     };
 
     return factory;
@@ -40,6 +41,10 @@
 
     function remove(payload, id) {
       return $http.post('/visits/' + id, payload);
+    }
+
+    function execVisits(payload) {
+      return $http.post('/visits/exec-visits', payload);
     }
   }
 })();

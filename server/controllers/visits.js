@@ -11,7 +11,8 @@ var exports = {
   create: create,
   destroy: destroy,
   edit: edit,
-  one: one
+  one: one,
+  getExecVisits: getExecVisits
 };
 
 function all(req, res) {
@@ -224,6 +225,46 @@ function edit(req, res) {
     }
 
     return Q.all(promises);
+  }
+  function fail(err) {
+    res.status(500).send(err);
+  }
+}
+
+function getExecVisits(req, res) {
+  if (req.body.start && req.body.end) {
+    var start = new Date(req.body.start);
+    var end = new Date(req.body.end);
+  }
+
+  Visit.find({
+    company: req.body.company,
+    executives: {
+      $in: [req.body.exec]
+    }
+  })
+    .lean()
+    .deepPopulate(["executives"])
+    .exec()
+    .then(success)
+    .catch(fail);
+
+  function success(result) {
+    if (start) {
+      var visits = [];
+
+      for (var i = 0; i < result.length; i++) {
+        if(result[i].date >= start && result[i].date <= end) {
+          visits.push(result[i]);
+        }
+      }
+      console.log(visits);
+
+      res.status(200).send(visits);
+    } else {
+      res.status(200).send(result);
+    }
+    return result;
   }
   function fail(err) {
     res.status(500).send(err);

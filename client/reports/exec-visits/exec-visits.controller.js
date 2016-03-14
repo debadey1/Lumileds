@@ -8,44 +8,82 @@
   controller.$inject = [
     "$log",
     "$location",
-    "itineraryFactory"
+    "visitFactory",
+    "employeeFactory",
+    "companyFactory"
   ];
 
   function controller(
     $log,
     $location,
-    itineraryFactory
+    visitFactory,
+    employeeFactory,
+    companyFactory
   ) {
     var vm = this;
 
-    vm.itineraries = getItineraries();
+    vm.getVisits = getVisits;
 
     vm.view = view;
+
+    initialize();
     //////////
 
+    function initialize() {
+      getCompanies();
+      getEmployees();
+    }
 
-    function getItineraries() {
-      itineraryFactory.all()
+    function getCompanies() {
+      companyFactory.all()
         .then(success)
         .catch(fail);
 
       function success(res) {
-        vm.itineraries = res.data;
+        vm.companies = res.data;
+      }
+    }
+
+    function getEmployees() {
+      employeeFactory.executives()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.execs = res.data;
+      }
+    }
+
+    function getVisits(isValid) {
+      if (isValid) {
+        var payload = {
+          company: vm.company,
+          exec: vm.executive,
+          start: vm.start_date,
+          end: vm.end_date
+        }
+        visitFactory.execVisits(payload)
+          .then(success)
+          .catch(fail);
+      }
+
+      function success(res) {
+        vm.visits = res.data;
 
         // set dates to be formatted as strings, so that it's searchable via angular
-        for (var i = 0; i < vm.itineraries.length; i++) {
-          vm.itineraries[i].start_date = moment(vm.itineraries[i].start_date).format("MMM Do, YYYY");
-          vm.itineraries[i].end_date = moment(vm.itineraries[i].end_date).format("MMM Do, YYYY");
+        for (var i = 0; i < vm.visits.length; i++) {
+          vm.visits[i].date = moment(vm.visits[i].date).format("MMM Do, YYYY");
         }
       }
     }
 
     function view(id) {
-      $location.path('/itinerary/' + id);
+      // FIXME: how to get itinerary?
+      $location.path('itinerary/' + '/visit/' + id);
     }
 
     function fail(err) {
-      $log.log('Itineraries List Controller XHR Failed: ' + err.data);
+      $log.log('Itineraries List Controller XHR Failed: ', err.data);
     }
   }
 })();
