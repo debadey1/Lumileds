@@ -232,8 +232,8 @@
     }
 
     function fail(err) {
+      $log.log('Visit Controller XHR Failed: ', err.data);
       toastrFactory.error(err.data.errors.name.message);
-      $log.log('Visit Controller XHR Failed: ' + err.data);
     }
   }
 })();

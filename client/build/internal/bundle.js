@@ -1709,6 +1709,7 @@
     vm.airportsToVisit = [],
     vm.hotelsToVisit = [],
     vm.execs = [],
+    vm.others = [],
     vm.managers = [];
 
     vm.edit = edit;
@@ -1748,6 +1749,7 @@
               break;
             }
             default:
+              vm.others.push(vm.employees[i]);
               break;
           }
         }
@@ -2183,8 +2185,8 @@
     }
 
     function fail(err) {
+      $log.log('Visit Controller XHR Failed: ', err.data);
       toastrFactory.error(err.data.errors.name.message);
-      $log.log('Visit Controller XHR Failed: ' + err.data);
     }
   }
 })();

@@ -42,6 +42,7 @@
     vm.airportsToVisit = [],
     vm.hotelsToVisit = [],
     vm.execs = [],
+    vm.others = [],
     vm.managers = [];
 
     vm.edit = edit;
@@ -81,6 +82,7 @@
               break;
             }
             default:
+              vm.others.push(vm.employees[i]);
               break;
           }
         }
