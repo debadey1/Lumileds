@@ -8,6 +8,7 @@
   controller.$inject = [
     "$log",
     "$location",
+    "employeeFactory",
     "companyFactory",
     "toastrFactory"
   ];
@@ -15,16 +16,32 @@
   function controller(
     $log,
     $location,
+    employeeFactory,
     companyFactory,
     toastrFactory
   ) {
     var vm = this;
 
-    vm.companies = getCompanies();
-
     vm.add = add;
     vm.view = view;
+
+    initialize();
     //////////
+
+    function initialize() {
+      getManagers();
+      getCompanies();
+    }
+
+    function getManagers() {
+      employeeFactory.managers()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.managers = res.data;
+      }
+    }
 
     function getCompanies() {
       companyFactory.all()
@@ -32,15 +49,13 @@
         .catch(fail);
 
       function success(res) {
+        vm.companies = res.data;
         var data = res.data;
-
-        vm.companies1 = [], vm.companies2 = [], vm.companies3 = [], vm.companies4 = [];
+        vm.companies1 = [], vm.companies2 = [];
         for (var i = 0; i < data.length; i++) {
-          var x = (i + 4) % 4;
+          var x = (i + 2) % 2;
           if (x === 0) {vm.companies1.push(data[i]);}
           else if (x === 1) {vm.companies2.push(data[i]);}
-          else if (x === 2) {vm.companies3.push(data[i]);}
-          else if (x === 3) {vm.companies4.push(data[i]);}
         }
       }
     }
@@ -63,12 +78,16 @@
       }
     }
 
-    function view(data) {
-      $location.path('/company/' + data._id);
+    function view(id) {
+      $location.path('/company/' + id);
     }
 
     function fail(err) {
-      toastrFactory.error(err.data.errors.name.message);
+      if (err.data.code === 11000) {
+        toastrFactory.error("Already added company.");
+      } else {
+        toastrFactory.error(err.data.errors.name.message);
+      }
       $log.log('Companies Controller XHR Failed: ', err);
     }
   }

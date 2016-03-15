@@ -8,13 +8,15 @@
   controller.$inject = [
     "$log",
     "$location",
-    "employeeFactory"
+    "employeeFactory",
+    "itineraryFactory"
   ];
 
   function controller(
     $log,
     $location,
-    employeeFactory
+    employeeFactory,
+    itineraryFactory
   ) {
     var vm = this;
 
@@ -22,12 +24,14 @@
 
     vm.view = view;
     vm.getItineraries = getItineraries;
+    vm.getAllItineraries = getAllItineraries;
 
     initialize();
     //////////
 
     function initialize() {
       getEmployees();
+      getAllItineraries();
     }
 
     function getEmployees() {
@@ -37,6 +41,16 @@
 
       function success(res) {
         vm.execs = res.data;
+      }
+    }
+
+    function getAllItineraries() {
+      itineraryFactory.all()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.itineraries = res.data;
       }
     }
 
@@ -66,9 +80,9 @@
       // TODO: get years from all as far back as all itineraries go, and as far forward as all itineraries go
       var years = [];
 
-      for (var i = 0; i < 10; i++) {
+      for (var i = 0; i < 5; i++) {
         // start at 2010 cause why not
-        years.push(2010 + i);
+        years.push(2014 + i);
       }
 
       return years;

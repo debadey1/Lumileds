@@ -343,6 +343,7 @@
   controller.$inject = [
     "$log",
     "$location",
+    "employeeFactory",
     "companyFactory",
     "toastrFactory"
   ];
@@ -350,16 +351,32 @@
   function controller(
     $log,
     $location,
+    employeeFactory,
     companyFactory,
     toastrFactory
   ) {
     var vm = this;
 
-    vm.companies = getCompanies();
-
     vm.add = add;
     vm.view = view;
+
+    initialize();
     //////////
+
+    function initialize() {
+      getManagers();
+      getCompanies();
+    }
+
+    function getManagers() {
+      employeeFactory.managers()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.managers = res.data;
+      }
+    }
 
     function getCompanies() {
       companyFactory.all()
@@ -367,15 +384,13 @@
         .catch(fail);
 
       function success(res) {
+        vm.companies = res.data;
         var data = res.data;
-
-        vm.companies1 = [], vm.companies2 = [], vm.companies3 = [], vm.companies4 = [];
+        vm.companies1 = [], vm.companies2 = [];
         for (var i = 0; i < data.length; i++) {
-          var x = (i + 4) % 4;
+          var x = (i + 2) % 2;
           if (x === 0) {vm.companies1.push(data[i]);}
           else if (x === 1) {vm.companies2.push(data[i]);}
-          else if (x === 2) {vm.companies3.push(data[i]);}
-          else if (x === 3) {vm.companies4.push(data[i]);}
         }
       }
     }
@@ -398,12 +413,16 @@
       }
     }
 
-    function view(data) {
-      $location.path('/company/' + data._id);
+    function view(id) {
+      $location.path('/company/' + id);
     }
 
     function fail(err) {
-      toastrFactory.error(err.data.errors.name.message);
+      if (err.data.code === 11000) {
+        toastrFactory.error("Already added company.");
+      } else {
+        toastrFactory.error(err.data.errors.name.message);
+      }
       $log.log('Companies Controller XHR Failed: ', err);
     }
   }
@@ -664,6 +683,7 @@
     vm.airportsToVisit = [],
     vm.hotelsToVisit = [],
     vm.execs = [],
+    vm.others = [],
     vm.managers = [];
 
     vm.add = add;
@@ -702,6 +722,7 @@
               break;
             }
             default:
+              vm.others.push(vm.employees[i]);
               break;
           }
         }
@@ -1291,6 +1312,7 @@
     "$log",
     "$location",
     "$routeParams",
+    "employeeFactory",
     "companyFactory",
     "toastrFactory",
     "pruneFactory"
@@ -1300,6 +1322,7 @@
     $log,
     $location,
     $routeParams,
+    employeeFactory,
     companyFactory,
     toastrFactory,
     pruneFactory
@@ -1308,11 +1331,17 @@
     var pruneEmpty = pruneFactory.pruneEmpty;
 
     vm.company_id = $routeParams.id;
-    vm.company = getCompany();
 
     vm.edit = edit;
     vm.remove = remove;
+    
+    initialize();
     //////////
+
+    function initialize() {
+      getCompany();
+      getManagers();
+    }
 
     function getCompany() {
       companyFactory.one(vm.company_id)
@@ -1324,10 +1353,23 @@
       }
     }
 
+    function getManagers() {
+      employeeFactory.managers()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.managers = res.data;
+      }
+    }
+
     function edit() {
+      vm.company.manager = vm.new_manager;
+
       var payload = {
         company: pruneEmpty(vm.company)
       };
+
       companyFactory.edit(payload, vm.company_id)
         .then(success)
         .catch(fail);
@@ -1335,7 +1377,6 @@
       function success() {
         toastrFactory.success("Company successfully edited.");
         getCompany();
-        vm.new_company = {};
       }
     }
 
@@ -1351,8 +1392,13 @@
     }
 
     function fail(err) {
-      toastrFactory.error(err.data.errors.name.message);
-      $log.log('Company Controller XHR Failed: ' + err.data);
+      if (err.data.code === 11000) {
+        toastrFactory.error("Already added company.");
+      } else {
+        toastrFactory.error(err.data.errors.name.message);
+      }
+      $log.log('Company Controller XHR Failed: ', err.data);
+      getCompany();
     }
   }
 })();
@@ -2347,6 +2393,7 @@
       add: add,
       remove: remove,
       executives: executives,
+      managers: managers,
       execItineraries: execItineraries
     };
 
@@ -2375,6 +2422,10 @@
 
     function executives() {
       return $http.get('/employees/executives');
+    }
+
+    function managers() {
+      return $http.get('/employees/managers');
     }
 
     function execItineraries(id, year) {
@@ -2693,13 +2744,15 @@
   controller.$inject = [
     "$log",
     "$location",
-    "employeeFactory"
+    "employeeFactory",
+    "itineraryFactory"
   ];
 
   function controller(
     $log,
     $location,
-    employeeFactory
+    employeeFactory,
+    itineraryFactory
   ) {
     var vm = this;
 
@@ -2707,12 +2760,14 @@
 
     vm.view = view;
     vm.getItineraries = getItineraries;
+    vm.getAllItineraries = getAllItineraries;
 
     initialize();
     //////////
 
     function initialize() {
       getEmployees();
+      getAllItineraries();
     }
 
     function getEmployees() {
@@ -2722,6 +2777,16 @@
 
       function success(res) {
         vm.execs = res.data;
+      }
+    }
+
+    function getAllItineraries() {
+      itineraryFactory.all()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.itineraries = res.data;
       }
     }
 
@@ -2751,9 +2816,9 @@
       // TODO: get years from all as far back as all itineraries go, and as far forward as all itineraries go
       var years = [];
 
-      for (var i = 0; i < 10; i++) {
+      for (var i = 0; i < 5; i++) {
         // start at 2010 cause why not
-        years.push(2010 + i);
+        years.push(2014 + i);
       }
 
       return years;

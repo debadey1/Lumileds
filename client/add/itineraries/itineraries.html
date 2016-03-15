@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col m12">
 		<h5 class="left"><span class="green-text text-accent-4">Create</span> An Itinerary</h5>
-		<a class="btn blue darken-4 right" href="#/itineraries/all">All Itineraries</a>
+		<a class="btn blue darken-4 right" href="#/reports/itin-per-exec">All Itineraries</a>
 		<a class="btn purple darken-4 right" href="#/visits/all">All Visits</a>
 	</div>
 </div>
@@ -14,7 +14,7 @@
 	    </select>
 	  </div>
 	</div>
-	<h5>Add Visits to Itinerary</h5>
+	<hr>
 	<div ng-repeat="visit in vm.visits">
 	 	<div class="row valign-wrapper">
 			<div class="input-field col m3">
@@ -38,13 +38,13 @@
 	  </div>
 	  <div class="row">
 	  	<div class="col m3">
-	  		<select class="browser-default" ng-model='visit.airport' required>
+	  		<select class="browser-default" ng-model='visit.airport'>
 			    <option value="" disabled selected>Airport*</option>
 		      <option ng-repeat="airport in vm.airportsToVisit[$index]" value="{{airport._id}}">{{airport.name}}</option>
 		    </select>
 	  	</div>
 	  	<div class="col m3">
-	  		<select class="browser-default" ng-model='visit.hotel' required>
+	  		<select class="browser-default" ng-model='visit.hotel'>
 			    <option value="" disabled selected>Hotel*</option>
 		      <option ng-repeat="hotel in vm.hotelsToVisit[$index]" value="{{hotel._id}}">{{hotel.name}}</option>
 		    </select>
@@ -66,10 +66,11 @@
 	  	<div class="col m4">
 	  		<select class="browser-default multiple" ng-model='visit.employees' multiple>
 			    <option value="" disabled selected>Add Others (Ctrl to select multiple)</option>
-		      <option ng-repeat="employee in vm.employees" value="{{employee._id}}">{{employee.name}}</option>
+		      <option ng-repeat="employee in vm.others" value="{{employee._id}}">{{employee.name}}</option>
 		    </select>
 	  	</div>
 		</div>
+		<hr>
 	</div>
 	<div class="row">
 		<div class="input-field col m12">

@@ -13,6 +13,7 @@ var exports = {
   create: create,
   destroy: destroy,
   getExecs: getExecs,
+  getManagers: getManagers,
   getExecItineraries: getExecItineraries
 };
 module.exports = exports;
@@ -131,6 +132,22 @@ function destroy(req, res) {
 
 function getExecs(req, res) {
   Employee.find({title: "Executive"})
+    .sort("name")
+    .exec()
+    .then(success)
+    .catch(fail);
+
+  function success(result) {
+    res.status(200).send(result);
+    return result;
+  }
+  function fail(err) {
+    res.status(500).send(err);
+  }
+}
+
+function getManagers(req, res) {
+  Employee.find({title: "Sales Manager"})
     .sort("name")
     .exec()
     .then(success)

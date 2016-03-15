@@ -55,7 +55,7 @@
     </div>
     <div class="row">
     	<div class="col m3">
-				<input type='submit' value='Edit' ng-click='vm.edit()' class="btn green accent-4">
+				<input type='submit' value='Submit' ng-click='vm.edit()' class="btn green accent-4">
 			</div>
     </div>
 	</form>
@@ -68,7 +68,7 @@
 		<table class="bordered highlight">
 			<tr ng-repeat="airport in vm.branch.airports | orderBy: 'airport.name' track by $index" ng-click="vm.view('/branch/' + vm.branch_id + '/airport/' + airport._id)">
 				<td>{{airport.name}}</td>
-				<td>{{airport.location.street}} {{airport.location.city}}, {{airport.location.country}}</td>
+				<td>{{airport.location.street}} {{airport.location.city}}, <span ng-if="airport.location.state">{{airport.location.state}}, </span>{{airport.location.country}}</td>
 			</tr>
 		</table>
 		<h5>Hotels: </h5>
@@ -76,7 +76,7 @@
 			<tr ng-repeat="hotel in vm.branch.hotels | orderBy: 'hotel.name' track by $index" ng-click="vm.view('/branch/' + vm.branch_id + '/hotel/' + hotel._id)">
 				<td>{{hotel.name}}</td>
 				<td>{{hotel.phone}}</td>
-				<td>{{hotel.location.street}} {{hotel.location.city}}, {{hotel.location.country}}</td>
+				<td>{{hotel.location.street}} {{hotel.location.city}}, <span ng-if="hotel.location.state">{{hotel.location.state}}, </span>{{hotel.location.country}}</td>
 			</tr>
 		</table>
 		<h5>Restaurants: </h5>
@@ -84,7 +84,7 @@
 			<tr ng-repeat="restaurant in vm.branch.restaurants | orderBy: 'restaurant.name' track by $index" ng-click="vm.view('/branch/' + vm.branch_id + '/restaurant/' + restaurant._id)">
 				<td>{{restaurant.name}}</td>
 				<td>{{restaurant.phone}}</td>
-				<td>{{restaurant.location.street}} {{restaurant.location.city}}, {{restaurant.location.country}}</td>
+				<td>{{restaurant.location.street}} {{restaurant.location.city}}, <span ng-if="restaurant.location.state">{{restaurant.location.state}}, </span>{{restaurant.location.country}}</td>
 			</tr>
 		</table>
 	</div>

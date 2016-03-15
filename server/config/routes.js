@@ -38,6 +38,10 @@ module.exports = function (app) {
     function (req, res){
       employees.getExecs(req, res);
     });
+  app.get('/employees/managers',
+    function (req, res){
+      employees.getManagers(req, res);
+    });
   app.get('/employees/exec-itineraries/:id/:year',
     function (req, res){
       employees.getExecItineraries(req, res);

@@ -1,9 +1,12 @@
 <div class="row">
-	<div class="col m9">
+	<div class="col m6">
 		<h5 class="left">Report: Itineraries per executive</h5>
 	</div>
-	<div class="col m3">
+	<div class="col m4">
 		<input type="text" placeholder="Search results" ng-model="itineraryFilter">
+	</div>
+	<div class="col m2 right">
+		<button class="btn orange accent-4" ng-click="vm.getAllItineraries()">Reset</button>
 	</div>
 </div>
 
@@ -33,6 +36,7 @@
 			<tr>
 				<th>#</th>
 				<th>Duration</th>
+				<th>Execs</th>
 				<th>Region</th>
 			</tr>
 		</thead>
@@ -40,6 +44,7 @@
 			<tr ng-click="vm.view(itinerary._id)">
 				<td>{{$index+1}}</td>
 				<td>{{itinerary.start_date | date: format: 'mediumDate'}} - {{itinerary.end_date | date: format: 'mediumDate'}}</td>
+				<td><span ng-repeat="exec in itinerary.executives">{{exec.name}}<span ng-if="!$last">, </span></span></td>
 				<td>{{itinerary.region}}</td>
 			</tr>
 		</tbody>

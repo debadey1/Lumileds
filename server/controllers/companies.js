@@ -15,7 +15,7 @@ var exports = {
 function all(req, res) {
   Company.find()
     .sort("name")
-    .deepPopulate(["branches.location"])
+    .deepPopulate(["branches.location", "manager"])
     .exec()
     .then(function (result) {
       res.status(200).send(result);
@@ -51,7 +51,7 @@ function destroy(req, res) {
 
 function one(req, res) {
   Company.findById(req.params.id)
-    .deepPopulate(["employees", "branches.location"])
+    .deepPopulate(["employees", "branches.location", "manager"])
     .exec()
     .then(function (result) {
       res.status(200).send(result);

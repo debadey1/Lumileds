@@ -12,7 +12,6 @@
 			<tr>
 				<th>Company</th>
 				<th>Branch</th>
-				<th>Address</th>
 				<th>State</th>
 				<th>Country</th>
 				<th>Region</th>
@@ -22,7 +21,6 @@
 			<tr ng-click="vm.view(branch._id, branch.company._id)">
 				<td>{{branch.company.name}}</td>
 				<td>{{branch.location.city}} Branch</td>
-				<td>{{branch.location.street}}</td>
 				<td>{{branch.location.state}}</td>
 				<td>{{branch.location.country}}</td>
 				<td>{{branch.location.region}}</td>

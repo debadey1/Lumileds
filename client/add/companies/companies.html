@@ -5,6 +5,12 @@
 			<input type='text' placeholder="Name*" ng-model='vm.new_company.name' required>
 		</div>
 		<div class="input-field col m3">
+  		<select class="browser-default" ng-model='vm.new_company.manager'>
+		    <option value="" disabled selected>Sales Manager</option>
+	      <option ng-repeat="manager in vm.managers" value="{{manager._id}}">{{manager.name}}</option>
+	    </select>
+  	</div>
+		<div class="input-field col m3">
 			<input type='submit' value='Add' class="btn green accent-4" ng-disabled="form.$invalid">
 		</div>
 	</form>
@@ -19,24 +25,36 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col s3 m3 center-align">
-		<div class="collection">
-			<a href="" class="collection-item" ng-click="vm.view(company)" ng-repeat="company in vm.companies1 | filter: companyFilter track by $index">{{company.name}}</a>
-		</div>
+	<div class="col m6">
+		<table class="highlight">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Manager</th>
+				</tr>
+			</thead>
+			<tbody ng-repeat="company in vm.companies1 | filter: companyFilter | orderBy: 'company.name' track by $index">
+				<tr ng-click="vm.view(company._id)">
+					<td>{{company.name}}</td>
+					<td>{{company.manager.name}}</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
-	<div class="col s3 m3 center-align">
-		<div class="collection">
-			<a href="" class="collection-item" ng-click="vm.view(company)" ng-repeat="company in vm.companies2 | filter: companyFilter track by $index">{{company.name}}</a>
-		</div>
-	</div>
-	<div class="col s3 m3 center-align">
-		<div class="collection">
-			<a href="" class="collection-item" ng-click="vm.view(company)" ng-repeat="company in vm.companies3 | filter: companyFilter track by $index">{{company.name}}</a>
-		</div>
-	</div>
-	<div class="col s3 m3 center-align">
-		<div class="collection">
-			<a href="" class="collection-item" ng-click="vm.view(company)" ng-repeat="company in vm.companies4 | filter: companyFilter track by $index">{{company.name}}</a>
-		</div>
+	<div class="col m6 left-border">
+		<table class="highlight">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Manager</th>
+				</tr>
+			</thead>
+			<tbody ng-repeat="company in vm.companies2 | filter: companyFilter | orderBy: 'company.name' track by $index">
+				<tr ng-click="vm.view(company._id)">
+					<td>{{company.name}}</td>
+					<td>{{company.manager.name}}</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </div>

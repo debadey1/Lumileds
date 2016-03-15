@@ -9,6 +9,7 @@
     "$log",
     "$location",
     "$routeParams",
+    "employeeFactory",
     "companyFactory",
     "toastrFactory",
     "pruneFactory"
@@ -18,6 +19,7 @@
     $log,
     $location,
     $routeParams,
+    employeeFactory,
     companyFactory,
     toastrFactory,
     pruneFactory
@@ -26,11 +28,17 @@
     var pruneEmpty = pruneFactory.pruneEmpty;
 
     vm.company_id = $routeParams.id;
-    vm.company = getCompany();
 
     vm.edit = edit;
     vm.remove = remove;
+    
+    initialize();
     //////////
+
+    function initialize() {
+      getCompany();
+      getManagers();
+    }
 
     function getCompany() {
       companyFactory.one(vm.company_id)
@@ -42,10 +50,23 @@
       }
     }
 
+    function getManagers() {
+      employeeFactory.managers()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.managers = res.data;
+      }
+    }
+
     function edit() {
+      vm.company.manager = vm.new_manager;
+
       var payload = {
         company: pruneEmpty(vm.company)
       };
+
       companyFactory.edit(payload, vm.company_id)
         .then(success)
         .catch(fail);
@@ -53,7 +74,6 @@
       function success() {
         toastrFactory.success("Company successfully edited.");
         getCompany();
-        vm.new_company = {};
       }
     }
 
@@ -69,8 +89,13 @@
     }
 
     function fail(err) {
-      toastrFactory.error(err.data.errors.name.message);
-      $log.log('Company Controller XHR Failed: ' + err.data);
+      if (err.data.code === 11000) {
+        toastrFactory.error("Already added company.");
+      } else {
+        toastrFactory.error(err.data.errors.name.message);
+      }
+      $log.log('Company Controller XHR Failed: ', err.data);
+      getCompany();
     }
   }
 })();

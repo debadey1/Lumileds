@@ -11,7 +11,13 @@
 		    <input ng-model='vm.company.name' id="name" type="text" class="validate" required>
 		    <label class="active" for="name">Name</label>
 		  </div>
-			<div class="col m3">
+			<div class="input-field col m3">
+	  		<select class="browser-default" ng-model='vm.new_manager'>
+			    <option value="" disabled>{{vm.company.manager.name}}</option>
+		      <option ng-repeat="manager in vm.managers" value="{{manager._id}}">{{manager.name}}</option>
+		    </select>
+	  	</div>
+			<div class="input-field col m3">
 				<input type='submit' value='Submit' ng-click='vm.edit()' class="btn green accent-4">
 			</div>
 		</div>
@@ -19,12 +25,18 @@
 </div>
 <div class="row">
 	<div class="col m4">
+		<h5>Sales Manager</h5>
+		<div class="collection">
+			<a href="#/employee/{{vm.company.manager._id}}" class="collection-item">{{vm.company.manager.name}}</a>
+		</div>
+	</div>
+	<div class="col m4">
 		<h5>Branches</h5>
 		<div class="collection">
 			<a href="#/company/{{vm.company_id}}/branch/{{branch._id}}" class="collection-item" ng-repeat="branch in vm.company.branches | orderBy: 'name' track by $index">{{branch.location.city}} Branch</a>
 		</div>
 	</div>
-	<div class="col m8">
+	<div class="col m4">
 		<h5>Employees</h5>
 		<div class="collection">
 			<a href="#/company/{{vm.company_id}}/employee/{{employee._id}}" class="collection-item" ng-repeat="employee in vm.company.employees | orderBy: 'name' track by $index">{{employee.name}}</a>

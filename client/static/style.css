@@ -9,3 +9,7 @@ select.multiple {
 #reports {
 	width: 300px !important;
 }
+
+.left-border {
+	border-left: 1px solid black;
+}

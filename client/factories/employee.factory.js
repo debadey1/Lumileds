@@ -18,6 +18,7 @@
       add: add,
       remove: remove,
       executives: executives,
+      managers: managers,
       execItineraries: execItineraries
     };
 
@@ -46,6 +47,10 @@
 
     function executives() {
       return $http.get('/employees/executives');
+    }
+
+    function managers() {
+      return $http.get('/employees/managers');
     }
 
     function execItineraries(id, year) {
