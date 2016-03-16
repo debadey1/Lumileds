@@ -19,6 +19,10 @@
     var vm = this;
 
     vm.view = view;
+    vm.predicate = "company";
+    vm.reverse = false;
+
+    vm.order = order;
 
     initialize();
     //////////
@@ -35,6 +39,11 @@
       function success(res) {
         vm.amenities = res.data;
       }
+    }
+
+    function order(p) {
+      vm.reverse = (vm.predicate === p) ? !vm.reverse : false;
+      vm.predicate = p;
     }
 
     function view(link) {

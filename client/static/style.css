@@ -17,3 +17,7 @@ select.multiple {
 div.row.blue {
 	height: 10px;
 }
+
+.orderable {
+	cursor: pointer;
+}

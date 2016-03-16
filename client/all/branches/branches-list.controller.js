@@ -18,11 +18,18 @@
   ) {
     var vm = this;
 
-    vm.branches = getBranches();
+    vm.predicate = "company.name";
+    vm.reverse = false;
 
+    vm.order = order;
     vm.view = view;
+
+    initialize();
     //////////
 
+    function initialize() {
+      getBranches();
+    }
 
     function getBranches() {
       branchFactory.all()
@@ -32,6 +39,11 @@
       function success(res) {
         vm.branches = res.data;
       }
+    }
+
+    function order(p) {
+      vm.reverse = (vm.predicate === p) ? !vm.reverse : false;
+      vm.predicate = p;
     }
 
     function view(branch_id, company_id) {

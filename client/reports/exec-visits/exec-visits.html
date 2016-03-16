@@ -37,13 +37,15 @@
 	<table class="highlight">
 		<thead>
 			<tr>
-				<th>Date</th>
-				<th>Executives</th>
-				<th>Location</th>
+				<th>#</th>
+				<th class="orderable" ng-click="vm.order('date')">Date</th>
+				<th class="orderable" ng-click="vm.order('exec.name')">Executives</th>
+				<th class="orderable" ng-click="vm.order('company.name')">Location</th>
 			</tr>
 		</thead>
-		<tbody ng-repeat="visit in vm.visits | filter: visitFilter | orderBy: 'date' track by $index">
+		<tbody ng-repeat="visit in vm.visits | filter: visitFilter | limitTo: 300 | orderBy:vm.predicate:vm.reverse track by $index">
 			<tr ng-click="vm.view(visit._id)">
+				<td>{{$index+1}}</td>
 				<td>{{visit.date | date: format: 'mediumDate'}}</td>
 				<td><span ng-repeat="exec in visit.executives">{{exec.name}}<span ng-if="!$last">, </span></span></td>
 				<td>{{visit.company.name}} - {{visit.branch.location.city}} Branch</td>

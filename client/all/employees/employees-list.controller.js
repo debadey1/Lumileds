@@ -18,11 +18,18 @@
   ) {
     var vm = this;
 
-    vm.employees = getEmployees();
+    vm.predicate = "name";
+    vm.reverse = false;
 
     vm.view = view;
+    vm.order = order;
+
+    initialize();
     //////////
 
+    function initialize() {
+      getEmployees();
+    }
 
     function getEmployees() {
       employeeFactory.all()
@@ -32,6 +39,11 @@
       function success(res) {
         vm.employees = res.data;
       }
+    }
+
+    function order(p) {
+      vm.reverse = (vm.predicate === p) ? !vm.reverse : false;
+      vm.predicate = p;
     }
 
     function view(data) {

@@ -11,13 +11,13 @@
 	<table class="highlight">
 		<thead>
 			<tr>
-				<th>Name</th>
-				<th>Title</th>
-				<th>Phone</th>
-				<th>Region</th>
+				<th class="orderable" ng-click="vm.order('name')">Name</th>
+				<th class="orderable" ng-click="vm.order('title')">Title</th>
+				<th class="orderable" ng-click="vm.order('phone')">Phone</th>
+				<th class="orderable" ng-click="vm.order('location.region')">Region</th>
 			</tr>
 		</thead>
-		<tbody ng-repeat="employee in vm.employees | filter: employeeFilter | orderBy: 'name' track by $index">
+		<tbody ng-repeat="employee in vm.employees | filter: employeeFilter | limitTo: 300 | orderBy:vm.predicate:vm.reverse track by $index">
 			<tr ng-click="vm.view(employee)">
 				<td>{{employee.name}}</td>
 				<td>{{employee.title}}</td>

@@ -22,8 +22,11 @@
   ) {
     var vm = this;
 
-    vm.getVisits = getVisits;
+    vm.predicate = "date";
+    vm.reverse = false;
 
+    vm.order = order;
+    vm.getVisits = getVisits;
     vm.view = view;
 
     initialize();
@@ -70,6 +73,11 @@
           vm.visits[i].date = moment(vm.visits[i].date).format("MMM Do, YYYY");
         }
       }
+    }
+
+    function order(p) {
+      vm.reverse = (vm.predicate === p) ? !vm.reverse : false;
+      vm.predicate = p;
     }
 
     function view(id) {

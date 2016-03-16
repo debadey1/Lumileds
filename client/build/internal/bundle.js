@@ -825,6 +825,10 @@
     var vm = this;
 
     vm.view = view;
+    vm.predicate = "company";
+    vm.reverse = false;
+
+    vm.order = order;
 
     initialize();
     //////////
@@ -841,6 +845,11 @@
       function success(res) {
         vm.amenities = res.data;
       }
+    }
+
+    function order(p) {
+      vm.reverse = (vm.predicate === p) ? !vm.reverse : false;
+      vm.predicate = p;
     }
 
     function view(link) {
@@ -872,11 +881,18 @@
   ) {
     var vm = this;
 
-    vm.branches = getBranches();
+    vm.predicate = "company.name";
+    vm.reverse = false;
 
+    vm.order = order;
     vm.view = view;
+
+    initialize();
     //////////
 
+    function initialize() {
+      getBranches();
+    }
 
     function getBranches() {
       branchFactory.all()
@@ -886,6 +902,11 @@
       function success(res) {
         vm.branches = res.data;
       }
+    }
+
+    function order(p) {
+      vm.reverse = (vm.predicate === p) ? !vm.reverse : false;
+      vm.predicate = p;
     }
 
     function view(branch_id, company_id) {
@@ -917,11 +938,18 @@
   ) {
     var vm = this;
 
-    vm.employees = getEmployees();
+    vm.predicate = "name";
+    vm.reverse = false;
 
     vm.view = view;
+    vm.order = order;
+
+    initialize();
     //////////
 
+    function initialize() {
+      getEmployees();
+    }
 
     function getEmployees() {
       employeeFactory.all()
@@ -931,6 +959,11 @@
       function success(res) {
         vm.employees = res.data;
       }
+    }
+
+    function order(p) {
+      vm.reverse = (vm.predicate === p) ? !vm.reverse : false;
+      vm.predicate = p;
     }
 
     function view(data) {
@@ -2741,8 +2774,11 @@
   ) {
     var vm = this;
 
-    vm.getVisits = getVisits;
+    vm.predicate = "date";
+    vm.reverse = false;
 
+    vm.order = order;
+    vm.getVisits = getVisits;
     vm.view = view;
 
     initialize();
@@ -2789,6 +2825,11 @@
           vm.visits[i].date = moment(vm.visits[i].date).format("MMM Do, YYYY");
         }
       }
+    }
+
+    function order(p) {
+      vm.reverse = (vm.predicate === p) ? !vm.reverse : false;
+      vm.predicate = p;
     }
 
     function view(id) {
