@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Location = mongoose.model('Location');
 var Employee = mongoose.model('Employee');
+var Company = mongoose.model('Company');
 var Visit = mongoose.model('Visit');
 var Itinerary = mongoose.model('Itinerary');
 var Q = require('q');
@@ -105,22 +106,8 @@ function destroy(req, res) {
       Location.findByIdAndRemove(result.location).exec()
     ];
 
-    switch(result.title) {
-      case "Executive": {
-        promises.push(
-          Visit.update({executives: result._id}, {$pull: {executives: result._id}}, {multi: true}).exec()
-        );
-        break;
-      }
-      case "Sales Manager": {
-        promises.push(
-          Visit.update({manager: result._id}, {$pull: {manager: result._id}}, {multi: true}).exec()
-        );
-        break;
-      }
-      default:
-        promises.push(Visit.update({employees: result._id}, {$pull: {employees: result._id}}, {multi: true}).exec());
-        break;
+    if (result.title === "Sales Manager") {
+      promises.push(Company.update({manager: result._id}, {$unset: {manager: ""}}, {multi: true}).exec());
     }
 
     return Q.all(promises);

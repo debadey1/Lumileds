@@ -17,7 +17,8 @@
       edit: edit,
       changeCompany: changeCompany,
       add: add,
-      remove: remove
+      remove: remove,
+      amenities: amenities
     };
 
     return factory;
@@ -45,6 +46,10 @@
 
     function remove(data) {
       return $http.delete('/branches/' + data._id);
+    }
+
+    function amenities() {
+      return $http.get('/branches/amenities');
     }
   }
 })();

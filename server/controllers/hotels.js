@@ -52,6 +52,7 @@ function destroy(req, res) {
 
 function all(req, res) {
   Hotel.find()
+    .deepPopulate(["location"])
     .exec()
     .then(success)
     .catch(fail);

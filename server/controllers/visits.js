@@ -12,7 +12,9 @@ var exports = {
   destroy: destroy,
   edit: edit,
   one: one,
-  getExecVisits: getExecVisits
+  getExecVisits: getExecVisits,
+  addExec: addExec,
+  removeExec: removeExec
 };
 
 function all(req, res) {
@@ -47,6 +49,21 @@ function create(req, res) {
 }
 
 function destroy(req, res) {
+  Visit.findByIdAndRemove(req.params.id)
+    .exec()
+    .then(success)
+    .catch(fail);
+
+  function success(result) {
+    res.status(200).send(result);
+    return result;
+  }
+  function fail(err) {
+    res.status(500).send(err);
+  }
+}
+
+/*function destroy(req, res) {
   var visit_id = req.params.id;
   var date = new Date(req.body.date);
   var execs = req.body.executives;
@@ -115,7 +132,7 @@ function destroy(req, res) {
   function fail(err) {
     res.status(500).send(err);
   }
-}
+}*/
 
 function one(req, res) {
   Visit.findById(req.params.id)
@@ -133,7 +150,7 @@ function one(req, res) {
   }
 }
 
-function edit(req, res) {
+/*function edit(req, res) {
   var visit_id = req.params.id;
   var visit = req.body.visit;
   var add_execs = req.body.add_execs;
@@ -238,41 +255,78 @@ function edit(req, res) {
   function fail(err) {
     res.status(500).send(err);
   }
+}*/
+
+function edit(req, res) {
+  Visit.findByIdAndUpdate(req.params.id, req.body.visit)
+    .then(success)
+    .catch(fail);
+
+  function success(result) {
+    res.status(200).send(result);
+    return result;
+  }
+  function fail(err) {
+    res.status(500).send(err);
+  }
 }
 
 function getExecVisits(req, res) {
+  var query = {};
+
+  if (req.body.company) {
+    query.company = req.body.company;
+  }
+  if (req.body.executive) {
+    query.executives = {
+      $in: [req.body.executive]
+    }
+  }
   if (req.body.start && req.body.end) {
-    var start = new Date(req.body.start);
-    var end = new Date(req.body.end);
+    query.date = {
+      $gte: new Date(req.body.start),
+      $lte: new Date(req.body.end)
+    }
   }
 
-  Visit.find({
-    company: req.body.company,
-    executives: {
-      $in: [req.body.exec]
-    }
-  })
-    .lean()
+  Visit.find(query)
     .deepPopulate(["executives", "company", "branch.location"])
     .exec()
     .then(success)
     .catch(fail);
 
   function success(result) {
-    if (start) {
-      var visits = [];
+    res.status(200).send(result);
+    return result;
+  }
+  function fail(err) {
+    res.status(500).send(err);
+  }
+}
 
-      for (var i = 0; i < result.length; i++) {
-        if(result[i].date >= start && result[i].date <= end) {
-          visits.push(result[i]);
-        }
-      }
-      console.log(visits);
+function addExec(req, res) {
+  Visit.findByIdAndUpdate(req.params.id, {$push: {executives: req.params.exec}})
+    .exec()
+    .then(success)
+    .catch(fail);
 
-      res.status(200).send(visits);
-    } else {
-      res.status(200).send(result);
-    }
+  function success(result) {
+    res.status(200).send(result);
+    return result;
+  }
+  function fail(err) {
+    res.status(500).send(err);
+  }
+}
+
+function removeExec(req, res) {
+  Visit.findByIdAndUpdate(req.params.id, {$pull: {executives: req.params.exec}})
+    .exec()
+    .then(success)
+    .catch(fail);
+
+  function success(result) {
+    res.status(200).send(result);
     return result;
   }
   function fail(err) {

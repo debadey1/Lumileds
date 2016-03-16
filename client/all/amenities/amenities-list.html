@@ -1,0 +1,32 @@
+<div class="row">
+	<div class="col m9">
+		<h5 class="left">All Branches</h5>
+	</div>
+	<div class="input-field col m3 right">
+		<input type="text" placeholder="Search" ng-model="filter">
+	</div>
+</div>
+<div class="row">
+	<table class="highlight">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>City</th>
+				<th>State</th>
+				<th>Country</th>
+				<th>Region</th>
+				<th>Company</th>
+			</tr>
+		</thead>
+		<tbody ng-repeat="a in vm.amenities | filter: filter | orderBy: 'company' track by $index">
+			<tr ng-click="vm.view(a.link)">
+				<td>{{a.name}}</td>
+				<td>{{a.location.city}}</td>
+				<td>{{a.location.state}}</td>
+				<td>{{a.location.country}}</td>
+				<td>{{a.location.region}}</td>
+				<td>{{a.company}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

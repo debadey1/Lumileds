@@ -121,6 +121,14 @@ module.exports = function (app) {
     function (req, res){
       visits.one(req, res);
     });
+  app.put('/visits/:id/add-exec/:exec',
+    function (req, res){
+      visits.addExec(req, res);
+    });
+  app.put('/visits/:id/remove-exec/:exec',
+    function (req, res){
+      visits.removeExec(req, res);
+    });
   app.put('/visits/:id',
     function (req, res){
       visits.edit(req, res);
@@ -158,6 +166,10 @@ module.exports = function (app) {
   app.get('/branches',
     function (req, res){
       branches.all(req, res);
+    });
+  app.get('/branches/amenities',
+    function (req, res){
+      branches.amenities(req, res);
     });
   app.get('/branches/:id',
     function (req, res){

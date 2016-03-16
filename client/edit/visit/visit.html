@@ -1,74 +1,48 @@
 <div class="row">
 	<div class="col m12">
 		<h5 class="left">Edit Visit</h5>
-		<a class="btn blue darken-4 right" href="#/itinerary/{{vm.itinerary_id}}">Back</a>
+		<a class="btn blue darken-4 right" href="#/reports/visits-per-exec">Back</a>
 	</div>
 </div>
-<form name="companyForm" ng-submit="vm.editCompany(companyForm.$valid)">
+<form name="companyForm" ng-submit="vm.editVisit(companyForm.$valid)">
 	<div class="row valign-wrapper">
-	  <div class="input-field col m3">
+		<div class="input-field col m3">
+		<label class="active">Date</label>
+			<input type='date' ng-model='vm.visit.date'>
+		</div>
+	  <div class="col m3">
 	    <label class="active">Company</label>
-	    <select class="browser-default validate" ng-model='vm.new_company' ng-change="vm.getCompanyBranches(vm.new_company)" required>
+	    <select class="browser-default validate" ng-model='vm.new_company' ng-change="vm.getCompanyBranches(vm.new_company)">
 		    <option value="" disabled>{{vm.visit.company.name}}</option>
 	      <option ng-repeat="company in vm.companies" value="{{company._id}}">{{company.name}}</option>
 	    </select>
 	  </div>
-	  <div class="input-field col m3">
+	  <div class="col m3">
 	    <label class="active">Branch</label>
-			<select class="browser-default validate" ng-model='vm.new_branch' ng-change="vm.getBranchAmenities(vm.new_branch)" required>
+			<select class="browser-default validate" ng-model='vm.new_branch' ng-change="vm.getBranchAmenities(vm.new_branch)">
 		    <option value="" disabled>{{vm.visit.branch.location.city}} Branch</option>
 	      <option ng-repeat="branch in vm.branchesToVisit" value="{{branch._id}}">{{branch.location.city}} Branch</option>
 	    </select>
 		</div>
-	</div>
-	<div class="row">
-		<div class="input-field col m12">
-			<button type='submit' ng-disabled="companyForm.$invalid" class="btn green accent-4">Change Location</button>
-		</div>
- 	</div>
-</form>
-<form name="form" ng-submit="vm.edit()">
-	<div class="row valign-wrapper">
 		<div class="input-field col m3">
-			<input type='date' class=" validate" placeholder="Start Date" ng-model='vm.visit.date' required>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col m4">
-			<p>Add Executives</p>
-			<div
-			    isteven-multi-select
-			    input-model="vm.execs"
-			    output-model="vm.add_execs"
-			    output-properties="_id"
-			    button-label="name"
-			    item-label="name"
-			    tick-property="ticked"
-			    translation="vm.selectExecsAdd"
-			>
-			</div>
-		</div>
-		<div class="col m4">
-			<p>Remove Executives</p>
-			<div
-			    isteven-multi-select
-			    input-model="vm.visit.executives"
-			    output-model="vm.remove_execs"
-			    output-properties="_id"
-			    button-label="name"
-			    item-label="name"
-			    tick-property="ticked"
-			    translation="vm.selectExecsRemove"
-			>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="input-field col m12">
 			<button type='submit' class="btn green accent-4">Edit Visit</button>
 		</div>
- 	</div>
+	</div>
 </form>
+<div class="row">
+	<div class="col m6">
+		<h5>Current Executives (click to remove)</h5>
+		<div class="collection">
+			<a href="" class="collection-item" ng-repeat="exec in vm.visit.executives | orderBy: 'name' track by $index" ng-click="vm.removeExec(exec._id)">{{exec.name}}</a>
+		</div>
+	</div>
+	<div class="col m6">
+		<h5>Add Executives (click to add)</h5>
+		<div class="collection">
+			<a href="" class="collection-item" ng-repeat="exec in vm.execs | orderBy: 'name' track by $index" ng-click="vm.addExec(exec._id)">{{exec.name}}</a>
+		</div>
+	</div>
+</div>
 
 <div class="row red red-text z-depth-2">-</div>
 <div class="row">

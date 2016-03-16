@@ -112,19 +112,45 @@
       })
 
       // reports
-      .when('/reports/itin-per-exec',{
-        templateUrl: 'reports/exec-itineraries/exec-itineraries.html',
-        controller: 'ExecItinerariesController',
-        controllerAs: 'vm'
-      })
       .when('/reports/visits-per-exec',{
         templateUrl: 'reports/exec-visits/exec-visits.html',
         controller: 'ExecVisitsController',
         controllerAs: 'vm'
       })
+      .when('/reports/amenities',{
+        templateUrl: 'all/amenities/amenities-list.html',
+        controller: 'AmenitiesListController',
+        controllerAs: 'vm'
+      })
+      // .when('/reports/itin-per-exec',{
+      //   templateUrl: 'reports/exec-itineraries/exec-itineraries.html',
+      //   controller: 'ExecItinerariesController',
+      //   controllerAs: 'vm'
+      // })
+      
+      // visits
+      .when('/visits', {
+        templateUrl: 'add/visits/visits.html',
+        controller: 'VisitsController',
+        controllerAs: 'vm'
+      })
+      .when('/visit/:id', {
+        templateUrl: 'edit/visit/visit.html',
+        controller: 'VisitController',
+        controllerAs: 'vm'
+      })
+      // .when('/visits/all',{
+      //   templateUrl: 'all/visits/visits-list.html',
+      //   controller: 'VisitsListController',
+      //   controllerAs: 'vm'
+      // })
+      // .when('/itinerary/:itinerary_id/visit/:id',{
+      //     templateUrl: 'edit/visit/visit.html',
+      //     controller: 'VisitController',
+      //     controllerAs: 'vm'
+      // })
 
       // itineraries
-      
       // .when('/itineraries/all',{
       //     templateUrl: 'all/itineraries/itineraries-list.html',
       //     controller: 'ItinerariesListController',
@@ -140,28 +166,6 @@
       //     controller: 'ItineraryController',
       //     controllerAs: 'vm'
       // })
-
-      // visits
-      .when('/visits', {
-        templateUrl: 'add/visits/visits.html',
-        controller: 'VisitsController',
-        controllerAs: 'vm'
-      })
-      .when('/visit/:id', {
-        templateUrl: 'edit/visit/visit.html',
-        controller: 'VisitController',
-        controllerAs: 'vm'
-      })
-      .when('/visits/all',{
-        templateUrl: 'all/visits/visits-list.html',
-        controller: 'VisitsListController',
-        controllerAs: 'vm'
-      })
-      .when('/itinerary/:itinerary_id/visit/:id',{
-          templateUrl: 'edit/visit/visit.html',
-          controller: 'VisitController',
-          controllerAs: 'vm'
-      })
       
       .otherwise({
         redirectTo: '/'

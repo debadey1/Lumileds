@@ -17,7 +17,9 @@
       one: one,
       edit: edit,
       remove: remove,
-      execVisits: execVisits
+      execVisits: execVisits,
+      addExec: addExec,
+      removeExec: removeExec
     };
 
     return factory;
@@ -45,6 +47,14 @@
 
     function execVisits(payload) {
       return $http.post('/visits/exec-visits', payload);
+    }
+
+    function addExec(visit_id, exec_id) {
+      return $http.put('/visits/' + visit_id + '/add-exec/' + exec_id);
+    }
+
+    function removeExec(visit_id, exec_id) {
+      return $http.put('/visits/' + visit_id + '/remove-exec/' + exec_id);
     }
   }
 })();

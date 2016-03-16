@@ -7,25 +7,25 @@
 	</div>
 </div>
 
-<form name="form" ng-submit="vm.getVisits(form.$valid)">
+<form name="form" ng-submit="vm.getVisits(form.$valid, vm.report)">
 	<div class="row">
 	  <div class="col m3">
-  		<select class="browser-default" ng-model='vm.company'>
+  		<select class="browser-default" ng-model='vm.report.company'>
 		    <option value="" disabled selected>Select a company</option>
 	      <option ng-repeat="company in vm.companies" value="{{company._id}}">{{company.name}}</option>
 	    </select>
   	</div>
   	<div class="col m3">
-  		<select class="browser-default" ng-model='vm.executive'>
+  		<select class="browser-default" ng-model='vm.report.executive'>
 		    <option value="" disabled selected>Select an executive</option>
 	      <option ng-repeat="exec in vm.execs" value="{{exec._id}}">{{exec.name}}</option>
 	    </select>
   	</div>
   	<div class="col m3">
-			<input type='date' placeholder="Start Date" ng-model='vm.start_date'>
+			<input type='date' placeholder="Start Date" ng-model='vm.report.start'>
 		</div>
 		<div class="col m3">
-			<input type='date' placeholder="End Date" ng-model='vm.end_date'>
+			<input type='date' placeholder="End Date" ng-model='vm.report.end'>
 		</div>
 		<div class="col m3">
 			<button type='submit' ng-disabled="form.$invalid" class="btn green accent-4">Submit</button>

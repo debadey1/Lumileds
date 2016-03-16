@@ -27,7 +27,7 @@
 	<div class="col m4">
 		<h5>Sales Manager</h5>
 		<div class="collection">
-			<a href="#/employee/lumileds/{{vm.company.manager._id}}" class="collection-item">{{vm.company.manager.name}}</a>
+			<a href="#/employee/lumileds/{{vm.company.manager._id}}" class="collection-item" ng-if="vm.company.manager">{{vm.company.manager.name}}</a>
 		</div>
 	</div>
 	<div class="col m4">

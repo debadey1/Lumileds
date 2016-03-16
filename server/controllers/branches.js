@@ -15,7 +15,8 @@ var exports = {
   destroy: destroy,
   edit: edit,
   changeCompany: changeCompany,
-  one: one
+  one: one,
+  amenities: amenities
 };
 module.exports = exports;
 ///////////
@@ -147,3 +148,42 @@ function changeCompany(req, res) {
   }
 }
 
+function amenities(req, res) {
+  Branch.find()
+    .lean()
+    .deepPopulate(["company", "location", "airports.location", "hotels.location", "restaurants.location"])
+    .exec()
+    .then(success)
+    .catch(fail);
+
+  function success(result) {
+    var data = [];
+
+    for (var i = 0; i < result.length; i++) {
+      for(var j = 0; j < result[i].airports.length; j++) {
+        var airport = result[i].airports[j];
+        airport.link = '/branch/' + result[i]._id + '/airport/' + result[i].airports[j]._id;
+        airport.company = result[i].company.name;
+        data.push(airport);
+      }
+      for(var j = 0; j < result[i].hotels.length; j++) {
+        var hotel = result[i].hotels[j];
+        hotel.link = '/branch/' + result[i]._id + '/hotel/' + result[i].hotels[j]._id;
+        hotel.company = result[i].company.name;
+        data.push(hotel);
+      }
+      for(var j = 0; j < result[i].restaurants.length; j++) {
+        var restaurant = result[i].restaurants[j];
+        restaurant.link = '/branch/' + result[i]._id + '/restaurant/' + result[i].restaurants[j]._id;
+        restaurant.branch_id = result[i]._id;
+        restaurant.company = result[i].company.name;
+        data.push(restaurant);
+      }
+    }
+    res.status(200).send(data);
+    return result;
+  }
+  function fail(err) {
+    res.status(500).send(err);
+  }
+}

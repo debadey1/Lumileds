@@ -30,24 +30,9 @@
     //////////
 
     function initialize() {
-      getAllVisits();
+      getVisits(true, {});
       getCompanies();
       getEmployees();
-    }
-
-    function getAllVisits() {
-      visitFactory.all()
-        .then(success)
-        .catch(fail);
-
-      function success(res) {
-        vm.visits = res.data;
-
-        // set dates to be formatted as strings, so that it's searchable via angular
-        for (var i = 0; i < vm.visits.length; i++) {
-          vm.visits[i].date = moment(vm.visits[i].date).format("MMM Do, YYYY");
-        }
-      }
     }
 
     function getCompanies() {
@@ -70,14 +55,8 @@
       }
     }
 
-    function getVisits(isValid) {
+    function getVisits(isValid, payload) {
       if (isValid) {
-        var payload = {
-          company: vm.company,
-          exec: vm.executive,
-          start: vm.start_date,
-          end: vm.end_date
-        }
         visitFactory.execVisits(payload)
           .then(success)
           .catch(fail);
