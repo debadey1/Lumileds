@@ -20,153 +20,154 @@
   function routes($routeProvider) {
     $routeProvider
 
-      // itineraries
       .when('/', {
-          templateUrl: 'add/itineraries/itineraries.html',
-          controller: 'ItinerariesController',
-          controllerAs: 'vm'
+        templateUrl: 'add/companies/companies.html',
+        controller: 'CompaniesController',
+        controllerAs: 'vm'
       })
-      .when('/itineraries', {
-          templateUrl: 'add/itineraries/itineraries.html',
-          controller: 'ItinerariesController',
-          controllerAs: 'vm'
-      })
-      .when('/itineraries/all',{
-          templateUrl: 'all/itineraries/itineraries-list.html',
-          controller: 'ItinerariesListController',
-          controllerAs: 'vm'
-      })
-      .when('/itinerary/:id',{
-          templateUrl: 'view/itinerary-view/itinerary-view.html',
-          controller: 'ItineraryViewController',
-          controllerAs: 'vm'
-      })
-      .when('/itinerary/:id/edit',{
-          templateUrl: 'edit/itinerary/itinerary.html',
-          controller: 'ItineraryController',
-          controllerAs: 'vm'
-      })
-
-      // visits
-      .when('/visit/:id', {
-          templateUrl: 'edit/visit/visit.html',
-          controller: 'VisitController',
-          controllerAs: 'vm'
-      })
-      .when('/visits/all',{
-          templateUrl: 'all/visits/visits-list.html',
-          controller: 'VisitsListController',
-          controllerAs: 'vm'
-      })
-      .when('/itinerary/:itinerary_id/visit/:id',{
-          templateUrl: 'edit/visit/visit.html',
-          controller: 'VisitController',
-          controllerAs: 'vm'
-      })
-
       // companies
       .when('/companies', {
-          templateUrl: 'add/companies/companies.html',
-          controller: 'CompaniesController',
-          controllerAs: 'vm'
+        templateUrl: 'add/companies/companies.html',
+        controller: 'CompaniesController',
+        controllerAs: 'vm'
       })
       .when('/company/:id',{
-          templateUrl: 'edit/company/company.html',
-          controller: 'CompanyController',
-          controllerAs: 'vm'
+        templateUrl: 'edit/company/company.html',
+        controller: 'CompanyController',
+        controllerAs: 'vm'
       })
 
       // employees
       .when('/employees/lumileds', {
-          templateUrl: 'add/employees/employees.html',
-          controller: 'EmployeesController',
-          controllerAs: 'vm'
+        templateUrl: 'add/employees/employees.html',
+        controller: 'EmployeesController',
+        controllerAs: 'vm'
       })
       .when('/employee/lumileds/:id', {
-          templateUrl: 'edit/employee/employee.html',
-          controller: 'EmployeeController',
-          controllerAs: 'vm'
+        templateUrl: 'edit/employee/employee.html',
+        controller: 'EmployeeController',
+        controllerAs: 'vm'
       })
       .when('/employees/lumileds/all',{
-          templateUrl: 'all/employees/employees-list.html',
-          controller: 'EmployeesListController',
-          controllerAs: 'vm'
+        templateUrl: 'all/employees/employees-list.html',
+        controller: 'EmployeesListController',
+        controllerAs: 'vm'
       })
       
       // customers
       .when('/employees/:company_id',{
-          templateUrl: 'add/customers/customers.html',
-          controller: 'CustomersController',
-          controllerAs: 'vm'
+        templateUrl: 'add/customers/customers.html',
+        controller: 'CustomersController',
+        controllerAs: 'vm'
       })
       .when('/company/:company_id/employee/:id',{
-          templateUrl: 'edit/customer/customer.html',
-          controller: 'CustomerController',
-          controllerAs: 'vm'
+        templateUrl: 'edit/customer/customer.html',
+        controller: 'CustomerController',
+        controllerAs: 'vm'
       })
       
       // branches
       .when('/branches', {
-          templateUrl: 'all/branches/branches-list.html',
-          controller: 'BranchesListController',
-          controllerAs: 'vm'
+        templateUrl: 'all/branches/branches-list.html',
+        controller: 'BranchesListController',
+        controllerAs: 'vm'
       })
       .when('/branches/:company_id',{
-          templateUrl: 'add/branches/branches.html',
-          controller: 'BranchesController',
-          controllerAs: 'vm'
+        templateUrl: 'add/branches/branches.html',
+        controller: 'BranchesController',
+        controllerAs: 'vm'
       })
       .when('/company/:company_id/branch/:id',{
-          templateUrl: 'edit/branch/branch.html',
-          controller: 'BranchController',
-          controllerAs: 'vm'
+        templateUrl: 'edit/branch/branch.html',
+        controller: 'BranchController',
+        controllerAs: 'vm'
       })
 
       // airports
       .when('/airports/:branch_id',{
-          templateUrl: 'add/airports/airports.html',
-          controller: 'AirportsController',
-          controllerAs: 'vm'
+        templateUrl: 'add/airports/airports.html',
+        controller: 'AirportsController',
+        controllerAs: 'vm'
       })
       .when('/branch/:branch_id/airport/:id',{
-          templateUrl: 'edit/airport/airport.html',
-          controller: 'AirportController',
-          controllerAs: 'vm'
+        templateUrl: 'edit/airport/airport.html',
+        controller: 'AirportController',
+        controllerAs: 'vm'
       })
 
       // hotels
       .when('/hotels/:branch_id',{
-          templateUrl: 'add/hotels/hotels.html',
-          controller: 'HotelsController',
-          controllerAs: 'vm'
+        templateUrl: 'add/hotels/hotels.html',
+        controller: 'HotelsController',
+        controllerAs: 'vm'
       })
       .when('/branch/:branch_id/hotel/:id',{
-          templateUrl: 'edit/hotel/hotel.html',
-          controller: 'HotelController',
-          controllerAs: 'vm'
+        templateUrl: 'edit/hotel/hotel.html',
+        controller: 'HotelController',
+        controllerAs: 'vm'
       })
 
       // restaurants
       .when('/restaurants/:branch_id',{
-          templateUrl: 'add/restaurants/restaurants.html',
-          controller: 'RestaurantsController',
-          controllerAs: 'vm'
+        templateUrl: 'add/restaurants/restaurants.html',
+        controller: 'RestaurantsController',
+        controllerAs: 'vm'
       })
       .when('/branch/:branch_id/restaurant/:id',{
-          templateUrl: 'edit/restaurant/restaurant.html',
-          controller: 'RestaurantController',
-          controllerAs: 'vm'
+        templateUrl: 'edit/restaurant/restaurant.html',
+        controller: 'RestaurantController',
+        controllerAs: 'vm'
       })
 
       // reports
       .when('/reports/itin-per-exec',{
-          templateUrl: 'reports/exec-itineraries/exec-itineraries.html',
-          controller: 'ExecItinerariesController',
-          controllerAs: 'vm'
+        templateUrl: 'reports/exec-itineraries/exec-itineraries.html',
+        controller: 'ExecItinerariesController',
+        controllerAs: 'vm'
       })
       .when('/reports/visits-per-exec',{
-          templateUrl: 'reports/exec-visits/exec-visits.html',
-          controller: 'ExecVisitsController',
+        templateUrl: 'reports/exec-visits/exec-visits.html',
+        controller: 'ExecVisitsController',
+        controllerAs: 'vm'
+      })
+
+      // itineraries
+      
+      // .when('/itineraries/all',{
+      //     templateUrl: 'all/itineraries/itineraries-list.html',
+      //     controller: 'ItinerariesListController',
+      //     controllerAs: 'vm'
+      // })
+      // .when('/itinerary/:id',{
+      //     templateUrl: 'view/itinerary-view/itinerary-view.html',
+      //     controller: 'ItineraryViewController',
+      //     controllerAs: 'vm'
+      // })
+      // .when('/itinerary/:id/edit',{
+      //     templateUrl: 'edit/itinerary/itinerary.html',
+      //     controller: 'ItineraryController',
+      //     controllerAs: 'vm'
+      // })
+
+      // visits
+      .when('/visits', {
+        templateUrl: 'add/visits/visits.html',
+        controller: 'VisitsController',
+        controllerAs: 'vm'
+      })
+      .when('/visit/:id', {
+        templateUrl: 'edit/visit/visit.html',
+        controller: 'VisitController',
+        controllerAs: 'vm'
+      })
+      .when('/visits/all',{
+        templateUrl: 'all/visits/visits-list.html',
+        controller: 'VisitsListController',
+        controllerAs: 'vm'
+      })
+      .when('/itinerary/:itinerary_id/visit/:id',{
+          templateUrl: 'edit/visit/visit.html',
+          controller: 'VisitController',
           controllerAs: 'vm'
       })
       
@@ -491,7 +492,6 @@
   controller.$inject = [
     "$log",
     "$location",
-    "companyFactory",
     "employeeFactory",
     "toastrFactory",
     "regionFactory"
@@ -500,7 +500,6 @@
   function controller(
     $log,
     $location,
-    companyFactory,
     employeeFactory,
     toastrFactory,
     regionFactory
@@ -508,22 +507,8 @@
     var vm = this;
     vm.regions = regionFactory.regions;
 
-    vm.employees = getEmployees();
-
     vm.add = add;
-    vm.view = view;
     //////////
-
-
-    function getEmployees() {
-      employeeFactory.all()
-        .then(success)
-        .catch(fail);
-
-      function success(res) {
-        vm.employees = res.data;
-      }
-    }
 
     function add(isValid) {
       if (isValid) {
@@ -540,14 +525,9 @@
 
       function success() {
         toastrFactory.success("Added Lumileds employee!");
-        getEmployees();
         vm.new_employee = {};
         vm.new_location = {};
       }
-    }
-
-    function view(data) {
-      $location.path('/employee/lumileds/' + data._id);
     }
 
     function fail(err) {
@@ -646,172 +626,6 @@
 
   angular
     .module('app')
-    .controller('ItinerariesController', controller);
-
-  controller.$inject = [
-    "$q",
-    "$log",
-    "$location",
-    "visitFactory",
-    "itineraryFactory",
-    "companyFactory",
-    "employeeFactory",
-    "branchFactory",
-    "toastrFactory",
-    "regionFactory"
-    // "multiselectFactory",
-  ];
-
-  function controller(
-    $q,
-    $log,
-    $location,
-    visitFactory,
-    itineraryFactory,
-    companyFactory,
-    employeeFactory,
-    branchFactory,
-    toastrFactory,
-    regionFactory
-    // multiselectFactory,
-  ) {
-    var vm = this;
-    vm.regions = regionFactory.regions;
-    // vm.selectProps = multiselectFactory.selectProps("Add Attendees");
-    vm.visits = [{}],
-    vm.branchesToVisit = [],
-    vm.airportsToVisit = [],
-    vm.hotelsToVisit = [],
-    vm.execs = [],
-    vm.others = [],
-    vm.managers = [];
-
-    vm.add = add;
-    vm.removeVisit = removeVisit;
-    vm.view = view;
-    vm.getCompanyBranches = getCompanyBranches;
-    vm.getBranchAmenities = getBranchAmenities;
-
-    initialize();
-    //////////
-
-    function initialize() {
-      getItineraries();
-
-      var promises = [
-        companyFactory.all(),
-        employeeFactory.all()
-      ];
-
-      $q.all(promises)
-        .then(success)
-        .catch(fail);
-
-      function success(res) {
-        vm.companies = res[0].data;
-        vm.employees = res[1].data;
-
-        for (var i = 0; i < vm.employees.length; i++) {
-          switch(vm.employees[i].title) {
-            case "Executive": {
-              vm.execs.push(vm.employees[i]);
-              break;
-            }
-            case "Sales Manager": {
-              vm.managers.push(vm.employees[i]);
-              break;
-            }
-            default:
-              vm.others.push(vm.employees[i]);
-              break;
-          }
-        }
-      }
-    }
-
-    function getItineraries() {
-      itineraryFactory.all()
-        .then(success)
-        .catch(fail);
-
-      function success(res) {
-        vm.itineraries = res.data;
-      }
-    }
-
-    function add(isValid) {
-      // if you have 0 visits, angular interprets the form to be valid
-      if (isValid && vm.visits.length > 0) {
-        var payload = {
-          itinerary: vm.itinerary,
-          visits: vm.visits
-        };
-
-        itineraryFactory.add(payload)
-          .then(success)
-          .catch(fail);
-      }
-
-      function success() {
-        toastrFactory.success("Added itinerary!");
-        vm.itinerary = {};
-        vm.visits = [{}];
-        getItineraries();
-      }
-    }
-
-    function view(data) {
-      $location.path('/itinerary/' + data._id);
-    }
-
-    function removeVisit(index) {
-      vm.visits.splice(index, 1);
-      vm.branchesToVisit.splice(index, 1);
-    }
-
-    // gets branches for the dropdown of each visit after a user selects a company
-    function getCompanyBranches(company_id, index) {
-      // reset branch, airport, and hotel
-      delete vm.visits[index].branch;
-      delete vm.visits[index].airport;
-      delete vm.visits[index].hotel;
-
-      vm.branchesToVisit[index] = [];
-      for (var i = 0; i < vm.companies.length; i++) {
-        if (company_id === vm.companies[i]._id) {
-          if (vm.companies[i].branches.length > 0) {
-            vm.branchesToVisit[index] = vm.companies[i].branches;
-          }
-        }
-      }
-    }
-
-    function getBranchAmenities(branch_id, index) {
-      // reset airport and hotel
-      delete vm.visits[index].airport;
-      delete vm.visits[index].hotel;
-
-      branchFactory.one(branch_id)
-        .then(success)
-        .catch(fail);
-
-      function success(result) {
-        vm.airportsToVisit[index] = result.data.airports;
-        vm.hotelsToVisit[index] = result.data.hotels;
-      }
-    }
-
-    function fail(err) {
-      toastrFactory.error(err.data.errors.name.message);
-      $log.log('Visits Controller XHR Failed: ' + err.data);
-    }
-  }
-})();
-(function () {
-  'use strict';
-
-  angular
-    .module('app')
     .controller('RestaurantsController', controller);
 
   controller.$inject = [
@@ -887,6 +701,102 @@
     function fail(err) {
       toastrFactory.error(err.data.errors.name.message);
       $log.log('Restaurants Controller XHR Failed: ' + err.data);
+    }
+  }
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('app')
+    .controller('VisitsController', controller);
+
+  controller.$inject = [
+    "$q",
+    "$log",
+    "$location",
+    "visitFactory",
+    "companyFactory",
+    "employeeFactory",
+    "toastrFactory",
+    "regionFactory"
+    // "multiselectFactory",
+  ];
+
+  function controller(
+    $q,
+    $log,
+    $location,
+    visitFactory,
+    companyFactory,
+    employeeFactory,
+    toastrFactory,
+    regionFactory
+    // multiselectFactory,
+  ) {
+    var vm = this;
+    vm.regions = regionFactory.regions;
+    // vm.selectProps = multiselectFactory.selectProps("Add Attendees");
+    vm.branchesToVisit = [],
+    vm.execs = [];
+
+    vm.add = add;
+    vm.getCompanyBranches = getCompanyBranches;
+
+    initialize();
+    //////////
+
+    function initialize() {
+
+      var promises = [
+        companyFactory.all(),
+        employeeFactory.executives()
+      ];
+
+      $q.all(promises)
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.companies = res[0].data;
+        vm.execs = res[1].data;
+      }
+    }
+
+    function add(isValid) {
+      if (isValid) {
+        var payload = {
+          visit: vm.visit
+        };
+
+        visitFactory.add(payload)
+          .then(success)
+          .catch(fail);
+      }
+
+      function success() {
+        toastrFactory.success("Added visit!");
+        vm.visit = {};
+      }
+    }
+
+    // gets branches for the dropdown of each visit after a user selects a company
+    function getCompanyBranches(company_id, index) {
+      // reset branch
+      delete vm.visit.branch;
+
+      for (var i = 0; i < vm.companies.length; i++) {
+        if (company_id === vm.companies[i]._id) {
+          if (vm.companies[i].branches.length > 0) {
+            vm.branchesToVisit = vm.companies[i].branches;
+          }
+        }
+      }
+    }
+
+    function fail(err) {
+      toastrFactory.error(err.data.errors.name.message);
+      $log.log('Visits Controller XHR Failed: ' + err.data);
     }
   }
 })();
@@ -2863,8 +2773,24 @@
     //////////
 
     function initialize() {
+      getAllVisits();
       getCompanies();
       getEmployees();
+    }
+
+    function getAllVisits() {
+      visitFactory.all()
+        .then(success)
+        .catch(fail);
+
+      function success(res) {
+        vm.visits = res.data;
+
+        // set dates to be formatted as strings, so that it's searchable via angular
+        for (var i = 0; i < vm.visits.length; i++) {
+          vm.visits[i].date = moment(vm.visits[i].date).format("MMM Do, YYYY");
+        }
+      }
     }
 
     function getCompanies() {
@@ -2911,12 +2837,11 @@
     }
 
     function view(id) {
-      // FIXME: how to get itinerary?
-      $location.path('itinerary/' + '/visit/' + id);
+      $location.path('/visit/' + id);
     }
 
     function fail(err) {
-      $log.log('Itineraries List Controller XHR Failed: ', err.data);
+      $log.log('Exec Visits Report Controller XHR Failed: ', err.data);
     }
   }
 })();

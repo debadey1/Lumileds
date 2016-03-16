@@ -1,0 +1,36 @@
+<div class="row">
+	<div class="col m12">
+		<h5 class="left"><span class="green-text text-accent-4">Add</span> Visit</h5>
+		<a class="btn blue darken-4 right" href="#/reports/visits-per-exec">View All</a>
+	</div>
+</div>
+<form name="form" ng-submit="vm.add(form.$valid)">
+ 	<div class="row valign-wrapper">
+		<div class="input-field col m3">
+			<input type='date' placeholder="Date" ng-model='vm.visit.date'>
+		</div>
+	  <div class="col m3">
+	    <select class="browser-default" ng-model='vm.visit.company' ng-change="vm.getCompanyBranches(vm.visit.company, $index)" required>
+		    <option value="" disabled selected>Company</option>
+	      <option ng-repeat="company in vm.companies" value="{{company._id}}">{{company.name}}</option>
+	    </select>
+	  </div>
+	  <div class="col m3">
+  		<select class="browser-default" ng-model='vm.visit.branch'>
+		    <option value="" disabled selected>Branch</option>
+	      <option ng-repeat="branch in vm.branchesToVisit" value="{{branch._id}}">{{branch.location.city}} Branch</option>
+	    </select>
+  	</div>
+  	<div class="input-field col m3">
+  		<select class="browser-default multiple" ng-model='vm.visit.executives' multiple>
+		    <option value="" disabled selected>Executives</option>
+	      <option ng-repeat="exec in vm.execs" value="{{exec._id}}">{{exec.name}}</option>
+	    </select>
+  	</div>
+	</div>
+	<div class="row">
+		<div class="input-field col m12">
+			<button type='submit' ng-disabled="form.$invalid" class="btn green accent-4">Submit</button>
+		</div>
+ 	</div>
+</form>

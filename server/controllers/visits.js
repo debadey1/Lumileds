@@ -17,27 +17,33 @@ var exports = {
 
 function all(req, res) {
   Visit.find()
-    .deepPopulate(["company", "branch.location", "employees", "manager", "executives"])
+    .deepPopulate(["company", "branch.location", "executives"])
     .exec()
-    .then(function (result) {
-      res.status(200).send(result);
-      return result;
-    })
-    .catch(function (err) {
-      res.status(500).send(err);
-    });
+    .then(success)
+    .catch(fail);
+
+  function success(result) {
+    res.status(200).send(result);
+    return result;
+  }
+  function fail(err) {
+    res.status(500).send(err);
+  }
 }
 
 function create(req, res) {
-  new Visit(req.body)
+  new Visit(req.body.visit)
     .save()
-    .then(function (result) {
-      res.status(200).send(result);
-      // return Employee.update({_id:{$in:result.employees}}, {$push: {visits: result._id}}, {multi: true}).exec();
-    })
-    .catch(function (err) {
-      res.status(500).send(err);
-    });
+    .then(success)
+    .catch(fail);
+
+  function success(result) {
+    res.status(200).send(result);
+    return result;
+  }
+  function fail(err) {
+    res.status(500).send(err);
+  }
 }
 
 function destroy(req, res) {
@@ -113,15 +119,18 @@ function destroy(req, res) {
 
 function one(req, res) {
   Visit.findById(req.params.id)
-    .deepPopulate(["company", "employees", "branch.location", "airport", "hotel", "manager", "executives"])
+    .deepPopulate(["company", "branch.location", "executives"])
     .exec()
-    .then(function (result) {
-      res.status(200).send(result);
-      return result;
-    })
-    .catch(function (err) {
-      res.status(500).send(err);
-    });
+    .then(success)
+    .catch(fail);
+
+  function success(result) {
+    res.status(200).send(result);
+    return result;
+  }
+  function fail(err) {
+    res.status(500).send(err);
+  }
 }
 
 function edit(req, res) {
@@ -244,7 +253,7 @@ function getExecVisits(req, res) {
     }
   })
     .lean()
-    .deepPopulate(["executives"])
+    .deepPopulate(["executives", "company", "branch.location"])
     .exec()
     .then(success)
     .catch(fail);

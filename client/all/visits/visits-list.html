@@ -14,22 +14,16 @@
 	<table class="highlight">
 		<thead>
 			<tr>
-				<th>#</th>
 				<th>Date</th>
+				<th>Execs</th>
 				<th>Location</th>
-				<th>Exec</th>
-				<th>Sales Manager</th>
-				<th>Attendees</th>
 			</tr>
 		</thead>
 		<tbody ng-repeat="visit in vm.visits | filter: visitFilter | orderBy: 'date' track by $index">
 			<tr ng-click="vm.view(visit._id)">
-				<td>{{$index+1}}</td>
 				<td>{{visit.date}}</td>
-				<td>{{visit.company.name}} - {{visit.branch.location.city}} Branch</td>
 				<td><span ng-repeat="exec in visit.executives">{{exec.name}}<span ng-if="!$last">, </span></td>
-				<td>{{visit.manager.name}}</td>
-				<td><span ng-repeat="e in visit.employees">{{e.name}}<span ng-if="!$last">, </span></span></td>
+				<td>{{visit.company.name}} - {{visit.branch.location.city}} Branch</td>
 			</tr>
 		</tbody>
 	</table>

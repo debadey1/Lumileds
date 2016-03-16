@@ -8,7 +8,6 @@
   controller.$inject = [
     "$log",
     "$location",
-    "companyFactory",
     "employeeFactory",
     "toastrFactory",
     "regionFactory"
@@ -17,7 +16,6 @@
   function controller(
     $log,
     $location,
-    companyFactory,
     employeeFactory,
     toastrFactory,
     regionFactory
@@ -25,22 +23,8 @@
     var vm = this;
     vm.regions = regionFactory.regions;
 
-    vm.employees = getEmployees();
-
     vm.add = add;
-    vm.view = view;
     //////////
-
-
-    function getEmployees() {
-      employeeFactory.all()
-        .then(success)
-        .catch(fail);
-
-      function success(res) {
-        vm.employees = res.data;
-      }
-    }
 
     function add(isValid) {
       if (isValid) {
@@ -57,14 +41,9 @@
 
       function success() {
         toastrFactory.success("Added Lumileds employee!");
-        getEmployees();
         vm.new_employee = {};
         vm.new_location = {};
       }
-    }
-
-    function view(data) {
-      $location.path('/employee/lumileds/' + data._id);
     }
 
     function fail(err) {

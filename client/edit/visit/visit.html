@@ -20,20 +20,6 @@
 	      <option ng-repeat="branch in vm.branchesToVisit" value="{{branch._id}}">{{branch.location.city}} Branch</option>
 	    </select>
 		</div>
-		<div class="input-field col m3">
-	    <label class="active">Airport</label>
-  		<select class="browser-default" ng-model='vm.new_airport'>
-		    <option value="" disabled>{{vm.visit.airport.name}}</option>
-	      <option ng-repeat="airport in vm.airportsToVisit" value="{{airport._id}}">{{airport.name}}</option>
-	    </select>
-  	</div>
-  	<div class="input-field col m3">
-	    <label class="active">Hotel</label>
-  		<select class="browser-default" ng-model='vm.new_hotel'>
-		    <option value="" disabled>{{vm.visit.hotel.name}}</option>
-	      <option ng-repeat="hotel in vm.hotelsToVisit" value="{{hotel._id}}">{{hotel.name}}</option>
-	    </select>
-  	</div>
 	</div>
 	<div class="row">
 		<div class="input-field col m12">
@@ -46,13 +32,6 @@
 		<div class="input-field col m3">
 			<input type='date' class=" validate" placeholder="Start Date" ng-model='vm.visit.date' required>
 		</div>
-  	<div class="col m3">
-	    <label class="active">Sales Manager</label>
-  		<select class="browser-default" ng-model='vm.new_manager'>
-		    <option value="" disabled>{{vm.visit.manager.name}}</option>
-	      <option ng-repeat="manager in vm.managers" value="{{manager._id}}">{{manager.name}}</option>
-	    </select>
-  	</div>
 	</div>
 	<div class="row">
 		<div class="col m4">
@@ -80,36 +59,6 @@
 			    item-label="name"
 			    tick-property="ticked"
 			    translation="vm.selectExecsRemove"
-			>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col m4">
-			<p>Add Attendees</p>
-			<div
-			    isteven-multi-select
-			    input-model="vm.employees"
-			    output-model="vm.add_employees"
-			    output-properties="_id"
-			    button-label="name"
-			    item-label="name"
-			    tick-property="ticked"
-			    translation="vm.selectPropsAdd"
-			>
-			</div>
-		</div>
-		<div class="col m4">
-			<p>Remove Attendees</p>
-			<div
-			    isteven-multi-select
-			    input-model="vm.visit.employees"
-			    output-model="vm.remove_employees"
-			    output-properties="_id"
-			    button-label="name"
-			    item-label="name"
-			    tick-property="ticked"
-			    translation="vm.selectPropsRemove"
 			>
 			</div>
 		</div>

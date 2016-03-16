@@ -48,13 +48,11 @@
 		  </div>
 		</div>
 		<div class="row">
-      <div class="input-field col s6 m6">
-        <textarea id="textarea" class="materialize-textarea" ng-model='vm.branch.notes'></textarea>
+      <div class=" col s10 m10">
         <label for="textarea">Notes</label>
+        <textarea id="textarea" ng-model='vm.branch.notes' rows="2"></textarea>
       </div>
-    </div>
-    <div class="row">
-    	<div class="col m3">
+    	<div class="input-field col m2">
 				<input type='submit' value='Submit' ng-click='vm.edit()' class="btn green accent-4">
 			</div>
     </div>

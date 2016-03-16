@@ -13,3 +13,7 @@ select.multiple {
 .left-border {
 	border-left: 1px solid black;
 }
+
+div.row.blue {
+	height: 10px;
+}
