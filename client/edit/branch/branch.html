@@ -69,6 +69,7 @@
 				<td>{{airport.location.street}} {{airport.location.city}}, <span ng-if="airport.location.state">{{airport.location.state}}, </span>{{airport.location.country}}</td>
 			</tr>
 		</table>
+		<div class="row blue blue-text darken-4 text-darken-4 z-depth-2">-</div>
 		<h5>Hotels: </h5>
 		<table class="bordered highlight">
 			<tr ng-repeat="hotel in vm.branch.hotels | orderBy: 'hotel.name' track by $index" ng-click="vm.view('/branch/' + vm.branch_id + '/hotel/' + hotel._id)">
@@ -77,6 +78,7 @@
 				<td>{{hotel.location.street}} {{hotel.location.city}}, <span ng-if="hotel.location.state">{{hotel.location.state}}, </span>{{hotel.location.country}}</td>
 			</tr>
 		</table>
+		<div class="row blue blue-text darken-4 text-darken-4 z-depth-2">-</div>
 		<h5>Restaurants: </h5>
 		<table class="bordered highlight">
 			<tr ng-repeat="restaurant in vm.branch.restaurants | orderBy: 'restaurant.name' track by $index" ng-click="vm.view('/branch/' + vm.branch_id + '/restaurant/' + restaurant._id)">
